@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Login</string>
+    <string name="student">Student</string>
+    <string name="faculty_staff">Faculty/Staff</string>
+    <string name="admin">Admin</string>
+    <string name="imgdetails">IIITD</string>
+    <string name="check_availability">Check Availability</string>
+
+
+    <string name="check_in">Check-in \n</string>
+
+    <string name="check_out">Check-out \n</string>
+    <string name="room">Room \n</string>
+    <string name="male">Male \n</string>
+    <string name="female">Female \n</string>
+    <string name="let_s_go">Let\'s Go</string>
+    <string name="rooms">Rooms</string>
+    <string name="cancel">Cancel</string>
+    <string name="apply">Apply</string>
+    <string name="male_s">Male(s)</string>
+    <string name="female_s">Female(s)</string>
+
+</resources>

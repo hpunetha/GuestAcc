@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="18dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <GridLayout
+            android:id="@+id/gridFourCrossFour"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:columnCount="4"
+            android:rowCount="4">
+
+            <TextView
+                android:id="@+id/textViewRooms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="5dp"
+                android:padding="15dp"
+                android:text="@string/rooms"
+                android:textSize="15sp" />
+
+            <ImageButton
+                android:id="@+id/imageBtnReduceRoomCount"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:padding="5dp"
+                app:srcCompat="@android:drawable/btn_minus" />
+
+            <TextView
+                android:id="@+id/textViewRoomCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+
+                android:text="0"
+                android:textSize="15sp" />
+
+            <ImageButton
+                android:id="@+id/imageBtnIncreRoomCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:elevation="0dp"
+                android:padding="5dp"
+                app:srcCompat="@android:drawable/btn_plus" />
+
+            <TextView
+                android:id="@+id/textViewMales"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="5dp"
+                android:padding="15dp"
+                android:text="@string/male_s"
+                android:textSize="15sp" />
+
+            <ImageButton
+                android:id="@+id/imageBtnReduceMaleCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:padding="5dp"
+                app:srcCompat="@android:drawable/btn_minus" />
+
+            <TextView
+                android:id="@+id/textViewMaleCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="0"
+                android:textSize="15sp" />
+
+            <ImageButton
+                android:id="@+id/imageBtnIncreMaleCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:padding="5dp"
+                app:srcCompat="@android:drawable/btn_plus" />
+
+            <TextView
+                android:id="@+id/textViewFemales"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="5dp"
+                android:padding="15dp"
+
+                android:text="@string/female_s"
+                android:textSize="15sp" />
+
+            <ImageButton
+                android:id="@+id/imageBtnReduceFemaleCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:padding="5dp"
+                app:srcCompat="@android:drawable/btn_minus" />
+
+            <TextView
+                android:id="@+id/textViewFemaleCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="0"
+                android:textSize="15sp" />
+
+            <ImageButton
+                android:id="@+id/imageBtnIncreFemaleCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:padding="5dp"
+                app:srcCompat="@android:drawable/btn_plus" />
+
+        </GridLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnCancel"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/cancel"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/btnApply"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/apply"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+</android.support.constraint.ConstraintLayout>

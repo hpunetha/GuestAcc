@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/img_back"
+    tools:context="in.ac.iiitd.guestacc.UserHomeActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textViewCheckAvail"
+            style="@style/Widget.AppCompat.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp"
+            android:text="@string/check_availability"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:orientation="horizontal">
+
+            <EditText
+
+                android:id="@+id/editTextFrom"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="false"
+
+                android:inputType="textMultiLine"
+                android:lines="2"
+                android:minLines="2"
+
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp"
+                android:textAllCaps="false"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/editTextTo"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="false"
+
+
+                android:inputType="textMultiLine"
+                android:lines="2"
+                android:minLines="2"
+
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp"
+                android:textAllCaps="false"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/editTextRoom"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+
+                android:layout_weight="1"
+
+                android:clickable="true"
+                android:inputType="textMultiLine"
+                android:lines="2"
+                android:minLines="2"
+
+                android:focusable="false"
+                android:text="@string/room"
+
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp"
+                android:textAlignment="viewStart"
+                android:textAllCaps="false"
+
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/editTextMaleCount"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+
+                android:inputType="textMultiLine"
+                android:lines="2"
+                android:minLines="2"
+
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="false"
+                android:text="@string/male"
+
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/editTextFemaleCount"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="false"
+                android:text="@string/female"
+
+                android:inputType="textMultiLine"
+                android:lines="2"
+                android:minLines="2"
+
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp"
+                android:textAlignment="viewEnd"
+
+                android:textAllCaps="false"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_weight="1"
+                android:text="@string/let_s_go"
+                android:textAllCaps="false"
+                android:textSize="15sp"
+                tools:layout_editor_absoluteY="463dp" />
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+
+</android.support.constraint.ConstraintLayout>
