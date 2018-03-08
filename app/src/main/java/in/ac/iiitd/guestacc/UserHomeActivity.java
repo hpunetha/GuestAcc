@@ -2,6 +2,7 @@ package in.ac.iiitd.guestacc;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -16,17 +18,27 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import android.support.v4.app.DialogFragment;
 
+public class UserHomeActivity extends AppCompatActivity {
+    int mDateVal =0;
+    Date mToDate;
+    int mRoomNum;
+    int mMaleNum,mFemNum;
 
-public class UserHomeActivity extends AppCompatActivity implements View.OnClickListener {
-    int dateval=0;
-    Date toDate;
+    final int maxRoom = 10;
+    final int maxMale = 10;
+    final int maxFemale =10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_home);
+
+
+
+        mRoomNum=0;
+        mMaleNum=0;
+        mFemNum=0;
 
         final TextView mTextViewCheckAvail = (TextView)findViewById(R.id.textViewCheckAvail);
         final EditText mEditTextFromDate= (EditText) findViewById(R.id.editTextFrom);
@@ -58,7 +70,7 @@ public class UserHomeActivity extends AppCompatActivity implements View.OnClickL
         final String mFormat = "E, MMM d";
         SimpleDateFormat mPreSDFormat = new SimpleDateFormat(mFormat, Locale.US);
         Date mPreDate = new Date();
-        toDate=mPreDate;
+        mToDate =mPreDate;
         String mPreTextCheckin = getString(R.string.check_in)+  mPreSDFormat.format(mPreDate);
         mEditTextFromDate.setText(mPreTextCheckin);
 
@@ -85,18 +97,18 @@ public class UserHomeActivity extends AppCompatActivity implements View.OnClickL
 
 //                String mFormat = "E, MMM d";
                 SimpleDateFormat mSimpleDF = new SimpleDateFormat(mFormat, Locale.US);
-                if (dateval==1)
+                if (mDateVal ==1)
                 {
                     String mTextIn = getString(R.string.check_in)+ mSimpleDF.format(mCal.getTime());
-                    toDate=mCal.getTime();
+                    mToDate =mCal.getTime();
                     mEditTextFromDate.setText(mTextIn);
                     Calendar mChkCal = Calendar.getInstance();
-                    mChkCal.setTime(toDate);
+                    mChkCal.setTime(mToDate);
                     mChkCal.add(Calendar.DATE,1);
                     String mTextOut = getString(R.string.check_out) + mSimpleDF.format(mChkCal.getTime());
                     mEditTextToDate.setText(mTextOut);
                 }
-                else if (dateval==2)
+                else if (mDateVal ==2)
                 {
                     String text = getString(R.string.check_out) + mSimpleDF.format(mCal.getTime());
                     mEditTextToDate.setText(text);
@@ -114,7 +126,7 @@ public class UserHomeActivity extends AppCompatActivity implements View.OnClickL
                         .get(Calendar.YEAR), mCal.get(Calendar.MONTH),
                         mCal.get(Calendar.DAY_OF_MONTH));
 
-                dateval=1;
+                mDateVal =1;
                 mDatePickDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
 
                 mDatePickDialog.show();
@@ -129,10 +141,10 @@ public class UserHomeActivity extends AppCompatActivity implements View.OnClickL
                 mDatePickDialog = new DatePickerDialog(UserHomeActivity.this, date, mCal
                         .get(Calendar.YEAR), mCal.get(Calendar.MONTH),
                         mCal.get(Calendar.DAY_OF_MONTH));
-                dateval=2;
+                mDateVal =2;
 
                 Calendar mChkCal = Calendar.getInstance();
-                mChkCal.setTime(toDate);
+                mChkCal.setTime(mToDate);
                 mChkCal.add(Calendar.DATE,1);
                 //Date mPreNextDate = mChkCal.getTime();
 
@@ -145,23 +157,22 @@ public class UserHomeActivity extends AppCompatActivity implements View.OnClickL
         mEditTextRoomCount.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder mBuild = new AlertDialog.Builder(UserHomeActivity.this);
-                View mView = getLayoutInflater().inflate(R.layout.activity_user_home_details_dialog,null);
-                final TextView mRooms = (TextView) mView.findViewById(R.id.textViewRoomCount);
-                final TextView mMales = (TextView) mView.findViewById(R.id.textViewMaleCount);
-                final TextView mFemales = (TextView) mView.findViewById(R.id.textViewFemaleCount);
-                final Button mApply = (Button) mView.findViewById(R.id.btnApply);
-                mApply.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Log.i("success","success");
-                    }
-                });
+                openDialog(view);
 
-                mBuild.setView(mView);
-                AlertDialog mAlertDialog = mBuild.create();
-                mAlertDialog.show();
+            }
+        });
 
+        mEditTextMaleCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openDialog(view);
+            }
+        });
+
+        mEditTextFemaleCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openDialog(view);
             }
         });
 
@@ -170,8 +181,163 @@ public class UserHomeActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
-    @Override
-    public void onClick(View view) {
+    private void openDialog(View view)
+    {
+        AlertDialog.Builder mBuild = new AlertDialog.Builder(UserHomeActivity.this);
+        View mView = getLayoutInflater().inflate(R.layout.activity_user_home_details_dialog,null);
+        final TextView mRooms = (TextView) mView.findViewById(R.id.textViewRoomCount);
+        final TextView mMales = (TextView) mView.findViewById(R.id.textViewMaleCount);
+        final TextView mFemales = (TextView) mView.findViewById(R.id.textViewFemaleCount);
 
+        mRooms.setText(String.valueOf(mRoomNum));
+        mMales.setText(String.valueOf(mMaleNum));
+        mFemales.setText(String.valueOf(mFemNum));
+
+        final Button mApply = (Button) mView.findViewById(R.id.btnApply);
+        final Button mCancel = (Button) mView.findViewById(R.id.btnCancel);
+        final ImageButton mImageBtnIncreRoomCount = (ImageButton) mView.findViewById(R.id.imageBtnIncreRoomCount);
+        final ImageButton mImageBtnReduceRoomCount = (ImageButton) mView.findViewById(R.id.imageBtnReduceRoomCount);
+        final ImageButton mImageBtnIncreMaleCount = (ImageButton)mView.findViewById(R.id.imageBtnIncreMaleCount);
+        final ImageButton mImageBtnReduceMaleCount = ( ImageButton)mView.findViewById(R.id.imageBtnReduceMaleCount);
+        final ImageButton mImageBtnIncreFemaleCount = (ImageButton) mView.findViewById(R.id.imageBtnIncreFemaleCount);
+        final ImageButton mImageBtnReduceFemaleCount = (ImageButton) mView.findViewById(R.id.imageBtnReduceFemaleCount);
+
+
+
+        mBuild.setView(mView);
+        final AlertDialog mAlertDialog = mBuild.create();
+        mAlertDialog.show();
+
+        mImageBtnIncreRoomCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                int temproom = Integer.parseInt(mRooms.getText().toString());
+                temproom += 1;
+                if (temproom<maxRoom) {
+                    mRooms.setText(String.valueOf(temproom));
+                }
+                else
+                {
+                    Log.w("Error","Maximum value of Rooms Reached");
+                }
+
+            }
+        });
+
+        mImageBtnReduceRoomCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                int temproom = Integer.parseInt(mRooms.getText().toString());
+                temproom -= 1;
+                if (temproom>=0) {
+                    mRooms.setText(String.valueOf(temproom));
+                }
+                else
+                {
+                    Log.w("Error","Minimum value of Rooms Reached");
+                }
+            }
+        });
+
+        mImageBtnIncreMaleCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int tempmale = Integer.parseInt(mMales.getText().toString());
+                tempmale += 1;
+                if (tempmale<maxMale) {
+                    mMales.setText(String.valueOf(tempmale));
+                }
+                else
+                {
+                    Log.w("Error","Maximum value of Males Reached");
+                }
+
+            }
+        });
+
+        mImageBtnReduceMaleCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int tempmale = Integer.parseInt(mMales.getText().toString());
+                tempmale -= 1;
+
+                if (tempmale>=0) {
+                    mMales.setText(String.valueOf(tempmale));
+                }
+                else
+                {
+                    Log.w("Error","Minimum value of Males Reached");
+                }
+            }
+        });
+
+        mImageBtnIncreFemaleCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int tempfemale = Integer.parseInt(mFemales.getText().toString());
+                tempfemale += 1;
+                if (tempfemale<maxFemale) {
+                    mFemales.setText(String.valueOf(tempfemale));
+                }
+                else
+                {
+                    Log.w("Error","Maximum value of Females Reached");
+                }
+            }
+        });
+
+        mImageBtnReduceFemaleCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int tempfemale = Integer.parseInt(mFemales.getText().toString());
+                tempfemale -= 1;
+
+                if (tempfemale>=0) {
+                    mFemales.setText(String.valueOf(tempfemale));
+                }
+                else
+                {
+                    Log.w("Error","Minimum value of Females Reached");
+                }
+            }
+        });
+
+        mApply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                Log.i("success","success");
+                mRoomNum = Integer.parseInt(mRooms.getText().toString());
+                mMaleNum = Integer.parseInt(mMales.getText().toString());
+                mFemNum = Integer.parseInt(mFemales.getText().toString());
+
+
+                final EditText mEditTextRoomCount= (EditText) findViewById(R.id.editTextRoom);
+                final EditText mEditTextMaleCount= (EditText) findViewById(R.id.editTextMaleCount);
+                final EditText mEditTextFemaleCount= (EditText) findViewById(R.id.editTextFemaleCount);
+
+                String mSetRoom = getString(R.string.room) + String.valueOf(mRoomNum);
+                mEditTextRoomCount.setText(mSetRoom);
+
+                String mSetMaleCount = getString(R.string.male) +String.valueOf(mMaleNum);
+                mEditTextMaleCount.setText(mSetMaleCount);
+
+                String mSetFemaleCount = getString(R.string.female) + String.valueOf(mFemNum);
+                mEditTextFemaleCount.setText(mSetFemaleCount);
+                mAlertDialog.hide();
+            }
+        });
+
+
+        mCancel.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view) {
+                mAlertDialog.hide();
+            }
+        });
     }
+
 }
