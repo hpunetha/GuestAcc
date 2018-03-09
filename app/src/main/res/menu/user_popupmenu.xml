@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/itemMyBookings"
+        android:title="My Bookings" />
+    <item
+        android:id="@+id/itemViewAvail"
+        android:title="View Availability" />
+    <item
+        android:id="@+id/itemFAQs"
+        android:title="FAQs" />
+    <item
+        android:id="@+id/itemSignOut"
+        android:title="Sign Out" />
+</menu>
