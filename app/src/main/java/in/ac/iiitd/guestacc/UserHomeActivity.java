@@ -2,7 +2,7 @@ package in.ac.iiitd.guestacc;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.media.Image;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,8 +21,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-
-import javax.xml.datatype.Duration;
 
 
 public class UserHomeActivity extends AppCompatActivity {
@@ -33,6 +32,8 @@ public class UserHomeActivity extends AppCompatActivity {
     final int maxRoom = 10;
     final int maxMale = 10;
     final int maxFemale =10;
+
+    final int maxSlidePics = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,12 @@ public class UserHomeActivity extends AppCompatActivity {
         final EditText mEditTextMaleCount= (EditText) findViewById(R.id.editTextMaleCount);
         final EditText mEditTextFemaleCount= (EditText) findViewById(R.id.editTextFemaleCount);
         final ImageButton mImageBtnMenu = (ImageButton) findViewById(R.id.imageBtnMenu);
+        final ImageView mImageViewPicsShow = (ImageView) findViewById(R.id.imageViewPicsShow);
+
+
+        mImageBtnMenu.setVisibility(View.INVISIBLE);
+
+        final FloatingActionButton mFloatActionBtnMenu = (FloatingActionButton) findViewById(R.id.floatActionBtnMenu);
         mRoomNum=0;
         mMaleNum=0;
         mFemNum=0;
@@ -195,15 +202,17 @@ public class UserHomeActivity extends AppCompatActivity {
 
         //Taken code end
 
-        mImageBtnMenu.setOnClickListener(new View.OnClickListener() {
+
+        mFloatActionBtnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 mMenuPressCount++;
-                mImageBtnMenu.setImageResource(R.drawable.menuicon2);
+                mFloatActionBtnMenu.setImageResource(R.drawable.menuicon2);
 
 
 
-                PopupMenu mPopup = new PopupMenu(UserHomeActivity.this,mImageBtnMenu);
+                PopupMenu mPopup = new PopupMenu(UserHomeActivity.this,mFloatActionBtnMenu);
                 mPopup.getMenuInflater().inflate(R.menu.user_popupmenu,mPopup.getMenu());
 
                 mPopup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -217,13 +226,46 @@ public class UserHomeActivity extends AppCompatActivity {
                 mPopup.setOnDismissListener(new PopupMenu.OnDismissListener() {
                     @Override
                     public void onDismiss(PopupMenu popupMenu) {
-                        mImageBtnMenu.setImageResource(R.drawable.menuicon);
+                        mFloatActionBtnMenu.setImageResource(R.drawable.menuicon);
                     }
                 });
 
                 mPopup.show();
+
             }
         });
+
+
+
+//        mImageBtnMenu.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                mMenuPressCount++;
+//                mImageBtnMenu.setImageResource(R.drawable.menuicon2);
+//
+//
+//
+//                PopupMenu mPopup = new PopupMenu(UserHomeActivity.this,mImageBtnMenu);
+//                mPopup.getMenuInflater().inflate(R.menu.user_popupmenu,mPopup.getMenu());
+//
+//                mPopup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//                    @Override
+//                    public boolean onMenuItemClick(MenuItem menuItem) {
+//                        Toast.makeText(UserHomeActivity.this, menuItem.getTitle(), Toast.LENGTH_SHORT).show();
+//                        return true;
+//                    }
+//                });
+//
+//                mPopup.setOnDismissListener(new PopupMenu.OnDismissListener() {
+//                    @Override
+//                    public void onDismiss(PopupMenu popupMenu) {
+//                        mImageBtnMenu.setImageResource(R.drawable.menuicon);
+//                    }
+//                });
+//
+//                mPopup.show();
+//            }
+//        });
 
     }
 

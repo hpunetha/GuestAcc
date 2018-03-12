@@ -13,11 +13,12 @@
     <string name="room">Room(s) \n</string>
     <string name="male">Male(s) \n</string>
     <string name="female">Female(s) \n</string>
-    <string name="let_s_go">Check</string>
+    <string name="let_s_go">Check Availability</string>
     <string name="rooms">Rooms</string>
     <string name="cancel">Cancel</string>
     <string name="apply">Apply</string>
     <string name="male_s">Male(s)</string>
     <string name="female_s">Female(s)</string>
+    <string name="more_options">More Options...</string>
 
 </resources>

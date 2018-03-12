@@ -38,11 +38,15 @@ public class TypeLoginActivity extends AppCompatActivity {
         if (mRadioStudentChecked)
         {
             Intent mUserHome = new Intent(this, UserHomeActivity.class);
+            mUserHome.putExtra("UserType",0);
             startActivity(mUserHome);
 
         }
         else if (mRadioFacultyChecked)
         {
+            Intent mFacultyHome = new Intent(this, UserHomeActivity.class);
+            mFacultyHome.putExtra("UserType",1);
+            startActivity(mFacultyHome);
 
         }
         else if (mRadioAdminChecked)
