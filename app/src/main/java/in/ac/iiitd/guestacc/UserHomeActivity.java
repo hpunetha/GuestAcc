@@ -2,6 +2,7 @@ package in.ac.iiitd.guestacc;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -52,7 +53,16 @@ public class UserHomeActivity extends AppCompatActivity {
         final EditText mEditTextFemaleCount= (EditText) findViewById(R.id.editTextFemaleCount);
         final ImageButton mImageBtnMenu = (ImageButton) findViewById(R.id.imageBtnMenu);
         final ImageView mImageViewPicsShow = (ImageView) findViewById(R.id.imageViewPicsShow);
+        final Button mBtnCheckAvail = (Button) findViewById(R.id.btnCheckAvail);
 
+        mBtnCheckAvail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent mViewAv = new Intent(UserHomeActivity.this, ViewAvailability.class);
+               // mViewAv.putExtra("UserType",0);
+                startActivity(mViewAv);
+            }
+        });
 
         mImageBtnMenu.setVisibility(View.INVISIBLE);
 

@@ -20,5 +20,7 @@
     <string name="male_s">Male(s)</string>
     <string name="female_s">Female(s)</string>
     <string name="more_options">More Options...</string>
+    <string name="inr">INR 1500</string>
+    <string name="cardVal">0</string>
 
 </resources>
