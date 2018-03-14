@@ -67,6 +67,29 @@ public class ViewAvailability extends AppCompatActivity {
                         "Available: 0",
                         2500,
                         R.drawable.sampled));
+        List_of_rooms.add(
+                new room(
+                        1,
+                        "Boys Hostel 2",
+                        "Available: 0",
+                        1500,
+                        R.drawable.sampled));
+
+        List_of_rooms.add(
+                new room(
+                        1,
+                        "Boys Hostel 2",
+                        "Available: 0",
+                        1500,
+                        R.drawable.sampled));
+        List_of_rooms.add(
+                new room(
+                        1,
+                        "Boys Hostel 2",
+                        "Available: 0",
+                        1500,
+                        R.drawable.sampled));
+
 
 
         counter++;

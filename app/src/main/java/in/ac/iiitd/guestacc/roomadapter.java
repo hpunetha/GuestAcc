@@ -1,6 +1,7 @@
 package in.ac.iiitd.guestacc;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,7 +21,7 @@ import java.util.List;
 public class roomadapter extends RecyclerView.Adapter<roomadapter.roomViewHolder> {
 
     private Context context;
-
+    boolean mIsPlus=false,mIsMinus=false;
     private final ClickListener listener;
     private List<room> List_of_guest_rooms;
     public int number_of_elements=10;
@@ -44,6 +45,7 @@ public class roomadapter extends RecyclerView.Adapter<roomadapter.roomViewHolder
         Number_of_Views++;
         currentValue[Number_of_Views] = 0;
 
+
        //AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
         roomViewHolder temp_holder = new roomViewHolder(view, new CardViewClickInterface() {
@@ -64,12 +66,26 @@ public class roomadapter extends RecyclerView.Adapter<roomadapter.roomViewHolder
 
         main_holder.plus.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Toast.makeText(context,"Guest Added",Toast.LENGTH_SHORT).show();
+            public void onClick(View view)
+            {
+               // Toast.makeText(context,"Guest Added",Toast.LENGTH_SHORT).show();
+
+//                if (mIsPlus)
+//                {
+//                    main_holder.plus.setImageResource(R.drawable.plusicon);
+//                }
+//                else
+//                {
+//                    main_holder.plus.setImageResource(R.drawable.plusiconpress);
+//                }
+//
+//                mIsPlus = !mIsPlus;
 
                 room r = getItem(position);
-               temp = currentValue[position] = currentValue[position] + 1;
-               main_holder.counter.setText(String.valueOf(temp));
+                temp = currentValue[position] = currentValue[position] + 1;
+                main_holder.counter.setText(String.valueOf(temp));
+
+
             }
         });
 
@@ -81,14 +97,14 @@ public class roomadapter extends RecyclerView.Adapter<roomadapter.roomViewHolder
                 room r = getItem(position);
                 if(temp <= 0)
                 {
-                    Toast.makeText(context,"All Guests Removed",Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context,"All Guests Removed",Toast.LENGTH_SHORT).show();
                     temp = 0;
                     currentValue[position] = 0;
                     main_holder.counter.setText((String.valueOf(temp)));
                 }
                 else
                 {
-                    Toast.makeText(context,"Guest Removed",Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context,"Guest Removed",Toast.LENGTH_SHORT).show();
                     temp = currentValue[position] = currentValue[position] - 1;
                     main_holder.counter.setText(String.valueOf(temp));
                 }

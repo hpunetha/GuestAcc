@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,6 +35,7 @@ public class UserHomeActivity extends AppCompatActivity {
     final int maxMale = 10;
     final int maxFemale =10;
 
+
     final int maxSlidePics = 5;
 
     @Override
@@ -52,8 +54,10 @@ public class UserHomeActivity extends AppCompatActivity {
         final EditText mEditTextMaleCount= (EditText) findViewById(R.id.editTextMaleCount);
         final EditText mEditTextFemaleCount= (EditText) findViewById(R.id.editTextFemaleCount);
         final ImageButton mImageBtnMenu = (ImageButton) findViewById(R.id.imageBtnMenu);
-        final ImageView mImageViewPicsShow = (ImageView) findViewById(R.id.imageViewPicsShow);
+       // final ImageView mImageViewPicsShow = (ImageView) findViewById(R.id.imageViewPicsShow);
         final Button mBtnCheckAvail = (Button) findViewById(R.id.btnCheckAvail);
+
+
 
         mBtnCheckAvail.setOnClickListener(new View.OnClickListener() {
             @Override
