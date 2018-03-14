@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ic_launcher_background"
+    android:background="@drawable/backgrnd"
     tools:context="in.ac.iiitd.guestacc.TypeLoginActivity">
 
     <ScrollView
@@ -18,8 +18,12 @@
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="240dp"
+                android:layout_gravity="center_horizontal"
+                android:padding="10dp"
+                android:layout_width="360dp"
+                android:layout_height="230dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/custombtn1"
                 android:contentDescription="@string/imgdetails"
                 app:srcCompat="@drawable/img_def1" />
 
@@ -32,10 +36,11 @@
                     android:id="@+id/signIn"
                     android:layout_width="200dp"
                     android:layout_height="100dp"
+                    android:padding="2dp"
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="20dp"
                     android:background="@drawable/custombtn1"
                     app:buttonSize="wide"
 

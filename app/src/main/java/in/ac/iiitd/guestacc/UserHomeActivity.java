@@ -15,6 +15,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,7 +57,7 @@ public class UserHomeActivity extends AppCompatActivity {
         final ImageButton mImageBtnMenu = (ImageButton) findViewById(R.id.imageBtnMenu);
        // final ImageView mImageViewPicsShow = (ImageView) findViewById(R.id.imageViewPicsShow);
         final Button mBtnCheckAvail = (Button) findViewById(R.id.btnCheckAvail);
-
+        final LinearLayout mLinearLayoutParent = (LinearLayout) findViewById(R.id.linearLayoutParent);
 
 
         mBtnCheckAvail.setOnClickListener(new View.OnClickListener() {
@@ -220,7 +221,7 @@ public class UserHomeActivity extends AppCompatActivity {
         mFloatActionBtnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                mLinearLayoutParent.setAlpha(0.5f);
                 mMenuPressCount++;
                 mFloatActionBtnMenu.setImageResource(R.drawable.menuicon2);
 
@@ -241,6 +242,7 @@ public class UserHomeActivity extends AppCompatActivity {
                     @Override
                     public void onDismiss(PopupMenu popupMenu) {
                         mFloatActionBtnMenu.setImageResource(R.drawable.menuicon);
+                        mLinearLayoutParent.setAlpha(1f);
                     }
                 });
 
@@ -248,6 +250,7 @@ public class UserHomeActivity extends AppCompatActivity {
 
             }
         });
+
 
 
 

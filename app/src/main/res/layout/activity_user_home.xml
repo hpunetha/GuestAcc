@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/img_back"
+    android:background="@drawable/backgrnd"
     tools:context="in.ac.iiitd.guestacc.UserHomeActivity">
 
 
@@ -12,17 +12,18 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/ic_launcher_background">
+        >
 
 
         <LinearLayout
+            android:id="@+id/linearLayoutParent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
 
+            android:layout_marginTop="8dp"
             android:orientation="vertical"
             android:padding="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -33,7 +34,6 @@
             app:layout_constraintVertical_bias="1.0">
 
 
-
             <TextView
                 android:id="@+id/textViewCheckAvail"
                 style="@style/Widget.AppCompat.EditText"
@@ -41,9 +41,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="8dp"
                 android:background="@drawable/custombtn1"
                 android:paddingEnd="10dp"
                 android:paddingStart="10dp"
@@ -64,11 +64,11 @@
                     style="@style/Widget.AppCompat.Button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:cursorVisible="false"
-
                     android:layout_weight="1"
+
                     android:background="@drawable/custombuttondesc"
                     android:clickable="true"
+                    android:cursorVisible="false"
 
                     android:focusable="false"
                     android:inputType="textMultiLine"
@@ -115,11 +115,11 @@
                     style="@style/Widget.AppCompat.Button"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:cursorVisible="false"
                     android:layout_weight="1"
-
                     android:background="@drawable/custombuttondesc"
+
                     android:clickable="true"
+                    android:cursorVisible="false"
                     android:focusable="false"
                     android:inputType="textMultiLine"
 
@@ -139,10 +139,10 @@
                     style="@style/Widget.AppCompat.Button"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:cursorVisible="false"
                     android:layout_weight="1"
                     android:background="@drawable/custombuttondesc"
                     android:clickable="true"
+                    android:cursorVisible="false"
 
                     android:focusable="false"
                     android:inputType="textMultiLine"
@@ -160,10 +160,10 @@
                     style="@style/Widget.AppCompat.Button"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:cursorVisible="false"
                     android:layout_weight="1"
                     android:background="@drawable/custombuttondesc"
                     android:clickable="true"
+                    android:cursorVisible="false"
                     android:focusable="false"
 
                     android:inputType="textMultiLine"
@@ -209,10 +209,10 @@
 
                 <ImageView
                     android:id="@+id/imageViewPicsShow"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginEnd="5dp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginStart="5dp"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/hp_room1" />
 
