@@ -20,7 +20,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 public class TypeLoginActivity extends AppCompatActivity {
 
@@ -72,13 +76,68 @@ public class TypeLoginActivity extends AppCompatActivity {
             boolean flag = false;
 
             mDatabase = FirebaseDatabase.getInstance();
-            DatabaseReference myRef = mDatabase.getReference("faculty_staff");
+            DatabaseReference myRef = mDatabase.getReference("faculty_staff/faculty");
 
             myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    HashMap val = (HashMap) dataSnapshot.getValue();
-                    Log.w("Value is => ",val.toString());
+                    ArrayList<Map<String,String>> val = (ArrayList<Map<String, String>>) dataSnapshot.getValue();
+
+                    try
+                    {
+                        if (val != null)
+                        {
+                            Log.w("Initial HashMap Val=",val.toString());
+
+                            for (Map <String,String> abc:val)
+                            {
+                                if (abc!=null) {
+                                    for (String ab: abc.values()) {
+                                        Log.w("Last HashMap Val=", ab);
+
+                                    }
+                                }
+                            }
+
+                            //Iterator
+
+//                                String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+//
+//                                if (email != null)
+//                                {
+//
+//                                    for (Object hm : val.entrySet())
+//                                    {
+//                                        List<Map<String,Object>> vp =
+//                                        Log.w("Last HashMap Val=",hm.toString());
+//
+////                                        for (Object pt : hm)
+////                                        {
+////
+////                                        }
+//
+//                                    }
+//
+//                                }
+//                                else
+//                                {
+//                                    Log.w("ERROR =>","No User Logged in");
+//                                }
+
+
+                            }
+                        else
+                        {
+                            Log.w("HashMap Value is => ", "NULL");
+                        }
+
+                    }
+                    catch(NullPointerException e)
+                    {
+                        e.printStackTrace();
+                    }
+
+
                 }
 
                 @Override
@@ -98,10 +157,10 @@ public class TypeLoginActivity extends AppCompatActivity {
             }
             else
             {
-                FirebaseAuth.getInstance().signOut();
-                Intent mSignOut = new Intent(this, MainActivity.class);
-                mSignOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(mSignOut);
+//                FirebaseAuth.getInstance().signOut();
+//                Intent mSignOut = new Intent(this, MainActivity.class);
+//                mSignOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(mSignOut);
                 //this.finish();
 
             }
