@@ -20,6 +20,8 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -28,6 +30,7 @@ import java.util.Locale;
 
 public class UserHomeActivity extends AppCompatActivity {
     int mDateVal =0;
+    int mBackCount=0;
     Date mToDate;
     int mRoomNum;
     int mMaleNum,mFemNum;
@@ -234,6 +237,26 @@ public class UserHomeActivity extends AppCompatActivity {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         Toast.makeText(UserHomeActivity.this, menuItem.getTitle(), Toast.LENGTH_SHORT).show();
+
+                        switch (menuItem.getItemId())
+                        {
+                            case R.id.itemMyBookings:
+                                break;
+                            case R.id.itemViewAvail:
+                                break;
+                            case R.id.itemFAQs:
+                                break;
+                            case R.id.itemSignOut:
+                                FirebaseAuth.getInstance().signOut();
+                                Intent mSignOut = new Intent(UserHomeActivity.this, MainActivity.class);
+                                mSignOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(mSignOut);
+                                //UserHomeActivity.this.finish();
+
+                                break;
+
+                        }
+
                         return true;
                     }
                 });
@@ -284,6 +307,22 @@ public class UserHomeActivity extends AppCompatActivity {
 //            }
 //        });
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        mBackCount++;
+
+        if (mBackCount == 1) {
+            Toast.makeText(this, "Press again to sign-out", Toast.LENGTH_SHORT).show();
+
+
+        } else if (mBackCount > 1) {
+            FirebaseAuth.getInstance().signOut();
+            Intent mSignOut = new Intent(UserHomeActivity.this, MainActivity.class);
+            mSignOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(mSignOut);
+        }
     }
 
     private void openDialog(View view)
@@ -444,5 +483,6 @@ public class UserHomeActivity extends AppCompatActivity {
             }
         });
     }
+
 
 }

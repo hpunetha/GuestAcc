@@ -24,6 +24,8 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 public class MainActivity extends AppCompatActivity {
 
+    private int mBackCount=0;
+
     private static final int CONST_SIGNIN = 100;
     FirebaseAuth mFbAuth;
     GoogleSignInClient mGSClient;
@@ -132,9 +134,25 @@ public class MainActivity extends AppCompatActivity {
     {
     }
 
+    @Override
+    public void onBackPressed() {
+        mBackCount++;
+
+        if (mBackCount==1)
+        {
+            Toast.makeText(this,"Press again to exit",Toast.LENGTH_SHORT).show();
+
+
+        } else if (mBackCount>1)
+        {
+            this.finish();
+        }
+// empty so nothing happens
+    }
+
     private void signInSuccessful(FirebaseUser mUserID)
     {
-        Toast.makeText(this,"Logged in => " + mUserID.getDisplayName(),Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"Signed in as " + mUserID.getDisplayName(),Toast.LENGTH_SHORT).show();
         Intent mLoginTypeLoad = new Intent(this, TypeLoginActivity.class);
         startActivity(mLoginTypeLoad);
     }
