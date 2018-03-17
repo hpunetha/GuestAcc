@@ -4,22 +4,27 @@ package in.ac.iiitd.guestacc;
  * Created by KunalChoudhary on 3/6/2018.
  */
 
-public class room {
+public class Room {
 
-    private int room_id;
-    private String RoomTitle, availabitily;
+    private String room_id;
+    private String RoomTitle;
+    private String availability;
     private double price;
     private int image;
 
-    public room(int id, String title, String availabitily, double price, int guest_room_image) {
+    public Room(String id, String title, String availability, double price, int guest_room_image) {
         this.room_id = id;
         this.RoomTitle = title;
-        this.availabitily = availabitily;
+        this.availability = availability;
         this.price = price;
         this.image = guest_room_image;
     }
 
-    public int getId() {
+    public Room()
+    {
+    }
+
+    public String getId() {
         return room_id;
     }
 
@@ -27,8 +32,8 @@ public class room {
         return RoomTitle;
     }
 
-    public String getAvailabitily() {
-        return availabitily;
+    public String getAvailability() {
+        return availability;
     }
 
     public double getPrice() {
@@ -40,4 +45,7 @@ public class room {
     }
 
 
+    public void setAvailability(String availability) {
+        this.availability = availability;
+    }
 }

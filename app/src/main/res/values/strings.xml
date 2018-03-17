@@ -24,5 +24,7 @@
     <string name="cardVal">0</string>
     <string name="check_avail">Check Availability</string>
     <string name="avail_rooms">Available Rooms</string>
+    <string name="avail">"Available : "</string>
+    <string name="errormsg">"Error : "</string>
 
 </resources>

@@ -30,6 +30,7 @@ public class TypeLoginActivity extends AppCompatActivity {
 
     FirebaseDatabase mDatabase;
     Firebase mFbClient;
+    String email ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,17 @@ public class TypeLoginActivity extends AppCompatActivity {
         final RadioButton mRadioFaculty = (RadioButton) findViewById(R.id.radioFaculty);
         final RadioButton mRadioAdmin = (RadioButton) findViewById(R.id.radioAdmin);
         RadioGroup mRadioGroupLoginType= (RadioGroup) findViewById(R.id.radioGroupLoginType);
+
+
+        try {
+            email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+            mDatabase = FirebaseDatabase.getInstance();
+        }
+        catch (NullPointerException e)
+        {
+            e.printStackTrace();
+        }
+
 
         mRadioGroupLoginType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -73,14 +85,15 @@ public class TypeLoginActivity extends AppCompatActivity {
         }
         else if (mRadioFacultyChecked)
         {
-            boolean flag = false;
 
-            mDatabase = FirebaseDatabase.getInstance();
+
+
             DatabaseReference myRef = mDatabase.getReference("faculty_staff/faculty");
 
-            myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            myRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+                    boolean flag = false;
                     ArrayList<Map<String,String>> val = (ArrayList<Map<String, String>>) dataSnapshot.getValue();
 
                     try
@@ -92,37 +105,42 @@ public class TypeLoginActivity extends AppCompatActivity {
                             for (Map <String,String> abc:val)
                             {
                                 if (abc!=null) {
-                                    for (String ab: abc.values()) {
-                                        Log.w("Last HashMap Val=", ab);
+//                                    for (String ab: abc.values()) {
+//                                        Log.w("Last HashMap Val=", ab);
+//
+//                                    }
+                                    for (Map.Entry<String,String> ab: abc.entrySet()) {
+
+                                        if (ab!=null)
+                                        {
+                                            if (ab.getKey().equalsIgnoreCase("emailid"))
+                                            {
+                                                String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+
+                                                if (email!=null)
+                                                {
+                                                    if (ab.getValue().equalsIgnoreCase(email))
+                                                    {
+                                                        Log.w("Faculty Found ", ab.getValue());
+                                                        Intent mFacultyHome = new Intent(TypeLoginActivity.this, UserHomeActivity.class);
+                                                        mFacultyHome.putExtra("UserType",1);
+                                                        startActivity(mFacultyHome);
+
+                                                        flag=true;
+                                                    }
+
+                                                }
+                                                Log.w("Last HashMap Val=", ab.getValue());
+                                            }
+
+                                        }
+
+
 
                                     }
                                 }
                             }
 
-                            //Iterator
-
-//                                String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-//
-//                                if (email != null)
-//                                {
-//
-//                                    for (Object hm : val.entrySet())
-//                                    {
-//                                        List<Map<String,Object>> vp =
-//                                        Log.w("Last HashMap Val=",hm.toString());
-//
-////                                        for (Object pt : hm)
-////                                        {
-////
-////                                        }
-//
-//                                    }
-//
-//                                }
-//                                else
-//                                {
-//                                    Log.w("ERROR =>","No User Logged in");
-//                                }
 
 
                             }
@@ -131,12 +149,23 @@ public class TypeLoginActivity extends AppCompatActivity {
                             Log.w("HashMap Value is => ", "NULL");
                         }
 
+
+
                     }
                     catch(NullPointerException e)
                     {
                         e.printStackTrace();
                     }
 
+                    if (!flag)
+                    {
+                        FirebaseAuth.getInstance().signOut();
+                        Toast.makeText(TypeLoginActivity.this,"Not Permitted to Sign-in as Faculty", Toast.LENGTH_SHORT).show();
+                        Intent mSignOut = new Intent(TypeLoginActivity.this, MainActivity.class);
+                        mSignOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(mSignOut);
+
+                    }
 
                 }
 
@@ -149,21 +178,7 @@ public class TypeLoginActivity extends AppCompatActivity {
 
             // flag=true;
 
-            if (flag)
-            {
-                Intent mFacultyHome = new Intent(this, UserHomeActivity.class);
-                mFacultyHome.putExtra("UserType",1);
-                startActivity(mFacultyHome);
-            }
-            else
-            {
-//                FirebaseAuth.getInstance().signOut();
-//                Intent mSignOut = new Intent(this, MainActivity.class);
-//                mSignOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                startActivity(mSignOut);
-                //this.finish();
 
-            }
 //
 
             //
@@ -175,23 +190,98 @@ public class TypeLoginActivity extends AppCompatActivity {
         {
             boolean flag = false;
 
+            //mDatabase = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = mDatabase.getReference("admin_details");
 
-            // flag=true;
+            myRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    boolean flag = false;
+                    ArrayList<Map<String,String>> val = (ArrayList<Map<String, String>>) dataSnapshot.getValue();
 
-            if (flag)
-            {
-//                Intent mAdminHome = new Intent(this, AdminHomeActivity.class);
-//                startActivity(mAdminHome);
-            }
-            else
-            {
-                FirebaseAuth.getInstance().signOut();
-                Intent mSignOut = new Intent(this, MainActivity.class);
-                mSignOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(mSignOut);
-                //this.finish();
+                    try
+                    {
+                        if (val != null)
+                        {
+                            Log.w("Admin Initial HashMap=",val.toString());
 
-            }
+                            for (Map <String,String> abc:val)
+                            {
+                                if (abc!=null) {
+//                                    for (String ab: abc.values()) {
+//                                        Log.w("Last HashMap Val=", ab);
+//
+//                                    }
+                                    for (Map.Entry<String,String> ab: abc.entrySet()) {
+
+                                        if (ab!=null)
+                                        {
+                                            if (ab.getKey().equalsIgnoreCase("emailid"))
+                                            {
+
+
+                                                if (email!=null)
+                                                {
+                                                    if (ab.getValue().equalsIgnoreCase(email))
+                                                    {
+                                                        Log.w("Admin Found ", ab.getValue());
+                                                        Toast.makeText(TypeLoginActivity.this,"Authenticated as Admin", Toast.LENGTH_SHORT).show();
+
+
+                                                        flag=true;
+                                                    }
+
+                                                }
+                                                else
+                                                {
+                                                    Log.w("NULL EMAIL Found ", " NULL ");
+                                                }
+                                                Log.w("Last HashMap Val=", ab.getValue());
+                                            }
+
+                                        }
+
+
+
+                                    }
+                                }
+                            }
+
+
+
+                        }
+                        else
+                        {
+                            Log.w("HashMap Value is => ", "NULL");
+                        }
+
+
+
+                    }
+                    catch(NullPointerException e)
+                    {
+                        e.printStackTrace();
+                    }
+
+                    if (!flag)
+                    {
+                        FirebaseAuth.getInstance().signOut();
+                        Toast.makeText(TypeLoginActivity.this,"Not Permitted to Sign-in as Admin", Toast.LENGTH_SHORT).show();
+                        Intent mSignOut = new Intent(TypeLoginActivity.this, MainActivity.class);
+                        mSignOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(mSignOut);
+
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+
 
         }
     }

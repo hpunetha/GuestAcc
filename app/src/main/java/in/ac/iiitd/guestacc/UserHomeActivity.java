@@ -20,6 +20,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.Auth;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.SimpleDateFormat;
@@ -38,12 +39,12 @@ public class UserHomeActivity extends AppCompatActivity {
     final int maxRoom = 10;
     final int maxMale = 10;
     final int maxFemale =10;
-
-
+    private String mSendToDate,mSendFromDate;
     final int maxSlidePics = 5;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_home);
 
@@ -57,22 +58,15 @@ public class UserHomeActivity extends AppCompatActivity {
         final EditText mEditTextRoomCount= (EditText) findViewById(R.id.editTextRoom);
         final EditText mEditTextMaleCount= (EditText) findViewById(R.id.editTextMaleCount);
         final EditText mEditTextFemaleCount= (EditText) findViewById(R.id.editTextFemaleCount);
-        final ImageButton mImageBtnMenu = (ImageButton) findViewById(R.id.imageBtnMenu);
+        //final ImageButton mImageBtnMenu = (ImageButton) findViewById(R.id.imageBtnMenu);
        // final ImageView mImageViewPicsShow = (ImageView) findViewById(R.id.imageViewPicsShow);
         final Button mBtnCheckAvail = (Button) findViewById(R.id.btnCheckAvail);
         final LinearLayout mLinearLayoutParent = (LinearLayout) findViewById(R.id.linearLayoutParent);
 
 
-        mBtnCheckAvail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent mViewAv = new Intent(UserHomeActivity.this, ViewAvailability.class);
-               // mViewAv.putExtra("UserType",0);
-                startActivity(mViewAv);
-            }
-        });
 
-        mImageBtnMenu.setVisibility(View.INVISIBLE);
+
+        //mImageBtnMenu.setVisibility(View.INVISIBLE);
 
         final FloatingActionButton mFloatActionBtnMenu = (FloatingActionButton) findViewById(R.id.floatActionBtnMenu);
         mRoomNum=0;
@@ -110,11 +104,12 @@ public class UserHomeActivity extends AppCompatActivity {
         mEditTextFemaleCount.animate().translationXBy(-500f).alpha(1f).setDuration(400);
 
         final String mFormat = "E, MMM d";
-        SimpleDateFormat mPreSDFormat = new SimpleDateFormat(mFormat, Locale.US);
+        SimpleDateFormat mPreSDFormat = new SimpleDateFormat(mFormat, Locale.ENGLISH);
         Date mPreDate = new Date();
         mToDate =mPreDate;
         String mPreTextCheckin = getString(R.string.check_in)+  mPreSDFormat.format(mPreDate);
         mEditTextFromDate.setText(mPreTextCheckin);
+        mSendFromDate = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH).format(mPreDate.getTime());
 
         Calendar mPreCal = Calendar.getInstance();
         mPreCal.setTime(mPreDate);
@@ -123,6 +118,7 @@ public class UserHomeActivity extends AppCompatActivity {
        // final Calendar mPreCalFinal = mPreCal;
         String mPreTextCheckout = getString(R.string.check_out)+  mPreSDFormat.format(mPreNextDate);
         mEditTextToDate.setText(mPreTextCheckout);
+        mSendToDate = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH).format(mPreNextDate.getTime());
 
 
         //Taken from source : ->
@@ -138,10 +134,13 @@ public class UserHomeActivity extends AppCompatActivity {
                 mCal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
 //                String mFormat = "E, MMM d";
-                SimpleDateFormat mSimpleDF = new SimpleDateFormat(mFormat, Locale.US);
+                SimpleDateFormat mSimpleDF = new SimpleDateFormat(mFormat, Locale.ENGLISH);
                 if (mDateVal ==1)
                 {
                     String mTextIn = getString(R.string.check_in)+ mSimpleDF.format(mCal.getTime());
+
+                    mSendFromDate = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH).format(mCal.getTime());
+
                     mToDate =mCal.getTime();
                     mEditTextFromDate.setText(mTextIn);
                     Calendar mChkCal = Calendar.getInstance();
@@ -149,11 +148,16 @@ public class UserHomeActivity extends AppCompatActivity {
                     mChkCal.add(Calendar.DATE,1);
                     String mTextOut = getString(R.string.check_out) + mSimpleDF.format(mChkCal.getTime());
                     mEditTextToDate.setText(mTextOut);
+
+                    mSendToDate = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH).format(mChkCal.getTime());
+
                 }
                 else if (mDateVal ==2)
                 {
                     String text = getString(R.string.check_out) + mSimpleDF.format(mCal.getTime());
                     mEditTextToDate.setText(text);
+
+                    mSendToDate = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH).format(mCal.getTime());
                 }
             }
 
@@ -236,18 +240,27 @@ public class UserHomeActivity extends AppCompatActivity {
                 mPopup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
-                        Toast.makeText(UserHomeActivity.this, menuItem.getTitle(), Toast.LENGTH_SHORT).show();
 
                         switch (menuItem.getItemId())
                         {
                             case R.id.itemMyBookings:
+                                Toast.makeText(UserHomeActivity.this, menuItem.getTitle(), Toast.LENGTH_SHORT).show();
+
                                 break;
                             case R.id.itemViewAvail:
+                                Toast.makeText(UserHomeActivity.this, menuItem.getTitle(), Toast.LENGTH_SHORT).show();
+
                                 break;
                             case R.id.itemFAQs:
+                                Toast.makeText(UserHomeActivity.this, menuItem.getTitle(), Toast.LENGTH_SHORT).show();
+
                                 break;
                             case R.id.itemSignOut:
                                 FirebaseAuth.getInstance().signOut();
+                                Toast.makeText(UserHomeActivity.this, "Signed-Out", Toast.LENGTH_SHORT).show();
+
+
+
                                 Intent mSignOut = new Intent(UserHomeActivity.this, MainActivity.class);
                                 mSignOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(mSignOut);
@@ -274,38 +287,24 @@ public class UserHomeActivity extends AppCompatActivity {
             }
         });
 
+        mBtnCheckAvail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+
+                Intent mViewAv = new Intent(UserHomeActivity.this, ViewAvailability.class);
+                mViewAv.putExtra("from_date",mSendFromDate);
+                mViewAv.putExtra("to_date",mSendToDate);
+                mViewAv.putExtra("rooms",mRoomNum);
+                mViewAv.putExtra("males",mMaleNum);
+                mViewAv.putExtra("females",mFemNum);
+
+                // mViewAv.putExtra("UserType",0);
+                startActivity(mViewAv);
+            }
+        });
 
 
-
-//        mImageBtnMenu.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                mMenuPressCount++;
-//                mImageBtnMenu.setImageResource(R.drawable.menuicon2);
-//
-//
-//
-//                PopupMenu mPopup = new PopupMenu(UserHomeActivity.this,mImageBtnMenu);
-//                mPopup.getMenuInflater().inflate(R.menu.user_popupmenu,mPopup.getMenu());
-//
-//                mPopup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-//                    @Override
-//                    public boolean onMenuItemClick(MenuItem menuItem) {
-//                        Toast.makeText(UserHomeActivity.this, menuItem.getTitle(), Toast.LENGTH_SHORT).show();
-//                        return true;
-//                    }
-//                });
-//
-//                mPopup.setOnDismissListener(new PopupMenu.OnDismissListener() {
-//                    @Override
-//                    public void onDismiss(PopupMenu popupMenu) {
-//                        mImageBtnMenu.setImageResource(R.drawable.menuicon);
-//                    }
-//                });
-//
-//                mPopup.show();
-//            }
-//        });
 
     }
 
@@ -483,6 +482,7 @@ public class UserHomeActivity extends AppCompatActivity {
             }
         });
     }
+
 
 
 }
