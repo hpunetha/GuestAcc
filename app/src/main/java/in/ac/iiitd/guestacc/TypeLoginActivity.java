@@ -122,7 +122,7 @@ public class TypeLoginActivity extends AppCompatActivity {
                                                     if (ab.getValue().equalsIgnoreCase(email))
                                                     {
                                                         Log.w("Faculty Found ", ab.getValue());
-                                                        Intent mFacultyHome = new Intent(TypeLoginActivity.this, UserHomeActivity.class);
+                                                        Intent mFacultyHome = new Intent(TypeLoginActivity.this, FacultyHomeActivity.class);
                                                         mFacultyHome.putExtra("UserType",1);
                                                         startActivity(mFacultyHome);
 

@@ -9,26 +9,28 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
-            android:label="@string/app_name"
-
-            >
-
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TypeLoginActivity"
-            android:label="@string/app_name"
-            />
-        <activity android:name=".UserHomeActivity"
-            android:label="@string/check_avail"
-            />
-
-        <activity android:name=".ViewAvailability"
-            android:label="@string/avail_rooms"/>
+        <activity
+            android:name=".TypeLoginActivity"
+            android:label="@string/app_name" />
+        <activity
+            android:name=".UserHomeActivity"
+            android:label="@string/check_avail" />
+        <activity
+            android:name=".ViewAvailability"
+            android:label="@string/avail_rooms" />
+        <activity
+            android:name=".FacultyHomeActivity"
+            android:label="@string/title_activity_faculty_home"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
