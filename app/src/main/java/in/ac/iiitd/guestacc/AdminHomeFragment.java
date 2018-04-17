@@ -110,13 +110,17 @@ public class AdminHomeFragment extends Fragment {
 
             //Log.i("data",date);
             mFireBaseReference.addValueEventListener(new ValueEventListener() {
+                @SuppressLint("SetTextI18n")
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     Log.i("DataSnapshot", String.valueOf(dataSnapshot.getChildrenCount()));
                     for (DataSnapshot bookingData: dataSnapshot.getChildren()){
                         if (bookingData.getKey().equals("2018-03-17")){
                             //for (bookingData.getKey().)
+                            //bookingData.getValue("rooms");
                             Log.i("Data", String.valueOf(bookingData.getChildrenCount()));
+                            mTextViewBookedRooms.setText("Booked Rooms : "+String.valueOf
+                                    (bookingData.getChildrenCount()));
                         }
                     }
                 }

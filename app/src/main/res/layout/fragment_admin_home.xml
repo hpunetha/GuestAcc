@@ -35,7 +35,7 @@
                     android:layout_marginTop="4dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Booked rooms : 5"/>
+                    android:hint="Booked rooms"/>
 
                 <TextView
                     android:id="@+id/adminRoomsAvailable"
