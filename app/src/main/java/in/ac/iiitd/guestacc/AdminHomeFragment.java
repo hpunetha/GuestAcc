@@ -36,6 +36,8 @@ public class AdminHomeFragment extends Fragment {
     CardView adminHomeCardView;
     TextView mTextViewBookedRooms, mTextViewAvailableRooms;
     DatabaseReference mFireBaseReference;
+    //https://stackoverflow.com/questions/8654990/how-can-i-get-current-date-in-android
+    String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 
     //Database
 
@@ -102,27 +104,27 @@ public class AdminHomeFragment extends Fragment {
         protected String doInBackground(String... strings) {
 
             mFireBaseReference = FirebaseDatabase.getInstance().getReference("bookings");
-            //https://stackoverflow.com/questions/8654990/how-can-i-get-current-date-in-android
-            final String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-            HashSet<String> bookingsRooms = new HashSet<>(Arrays.asList("bh1","bh2","gh1","gh2",
-                    "fr1","fr2"));
-            //Log.i("HashsetSize", String.valueOf(bookingsRooms.size()));
 
-            //Log.i("data",date);
+            final HashSet<String> bookingsRooms = new HashSet<>(Arrays.asList("bh1","bh2","gh1","gh2","fr1","fr2","ff1","ff2"));
+            final int mRoomSize = bookingsRooms.size();
+
+            date = "2018-03-17";
             mFireBaseReference.addValueEventListener(new ValueEventListener() {
                 @SuppressLint("SetTextI18n")
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    Log.i("DataSnapshot", String.valueOf(dataSnapshot.getChildrenCount()));
+                    //Log.i("DataSnapshot", String.valueOf(dataSnapshot.getChildrenCount()));
                     for (DataSnapshot bookingData: dataSnapshot.getChildren()){
-                        if (bookingData.getKey().equals("2018-03-17")){
-                            //for (bookingData.getKey().)
-                            //bookingData.getValue("rooms");
-                            Log.i("Data", String.valueOf(bookingData.getChildrenCount()));
-                            mTextViewBookedRooms.setText("Booked Rooms : "+String.valueOf
-                                    (bookingData.getChildrenCount()));
+                        if (bookingData.getKey().equals(date)){
+                            for (DataSnapshot checkBookingData: dataSnapshot.child(date).getChildren()){
+                                for (DataSnapshot roomBookedClient: checkBookingData.child("rooms").getChildren()){
+                                    bookingsRooms.remove(roomBookedClient.getKey());
+                                }
+                            }
                         }
                     }
+                    mTextViewBookedRooms.setText("Booked Rooms: "+String.valueOf(mRoomSize-bookingsRooms.size()));
+                    mTextViewAvailableRooms.setText("Available Rooms: "+String.valueOf(bookingsRooms.size()));
                 }
 
                 @Override
@@ -133,15 +135,4 @@ public class AdminHomeFragment extends Fragment {
             return null;
         }
     }
-
-/*
-    @SuppressLint("StaticFieldLeak")
-    class getStatusForToday extends AsyncTask<void,void,void>{
-
-
-        @Override
-        protected void doInBackground(void... voids) {
-
-        }
-    }*/
 }
