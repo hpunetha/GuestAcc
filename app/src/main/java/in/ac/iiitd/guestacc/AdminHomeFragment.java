@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 /**
  * Created by kd on 15/4/18.
  */
@@ -16,6 +18,7 @@ import android.widget.TextView;
 public class AdminHomeFragment extends Fragment {
 
     CardView adminHomeCardView;
+    TextView mTextViewBookedRooms, mTextViewAvailableRooms;
 
     //Database
 
@@ -24,7 +27,13 @@ public class AdminHomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View adminHomeView = inflater.inflate(R.layout.fragment_admin_home,container,false);
 
+        mTextViewBookedRooms = (TextView)adminHomeView.findViewById(R.id.adminBookedRooms);
+        mTextViewAvailableRooms = (TextView)adminHomeView.findViewById(R.id.adminRoomsAvailable);
+
+
+
         adminHomeCardView = (CardView) adminHomeView.findViewById(R.id.adminHomeCardView1);
+
         adminHomeCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

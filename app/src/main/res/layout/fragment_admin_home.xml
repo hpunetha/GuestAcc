@@ -31,12 +31,14 @@
                     android:layout_height="1dp"
                     android:background="#000000" />
                 <TextView
+                    android:id="@+id/adminBookedRooms"
                     android:layout_marginTop="4dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Booked rooms : 5"/>
 
                 <TextView
+                    android:id="@+id/adminRoomsAvailable"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Rooms Available: 4" />
