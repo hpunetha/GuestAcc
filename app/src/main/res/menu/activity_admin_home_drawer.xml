@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/adminRoomStatus"
+            android:title="Room Status" />
+        <item
+            android:id="@+id/adminCancelBooking"
+            android:title="Cancel Booking" />
+        <item
+            android:id="@+id/adminAddRoom"
+            android:title="Add Room" />
+        <item
+            android:id="@+id/adminAddAdmin"
+            android:title="Add Admin" />
+        <item
+            android:id="@+id/adminLogout"
+            android:title="Logout"/>
+    </group>
+
+</menu>

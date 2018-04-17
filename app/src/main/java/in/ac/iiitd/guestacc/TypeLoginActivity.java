@@ -178,10 +178,10 @@ public class TypeLoginActivity extends AppCompatActivity {
 
             // flag=true;
 
-            if (flag)
+            if (!flag)
             {
-//                Intent mAdminHome = new Intent(this, AdminHomeActivity.class);
-//                startActivity(mAdminHome);
+                Intent mAdminHome = new Intent(this, AdminHomeActivity.class);
+                startActivity(mAdminHome);
             }
             else
             {
