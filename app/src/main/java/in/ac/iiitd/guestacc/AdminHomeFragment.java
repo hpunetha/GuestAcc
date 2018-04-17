@@ -7,6 +7,7 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 /**
  * Created by kd on 15/4/18.
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 public class AdminHomeFragment extends Fragment {
 
     CardView adminHomeCardView;
+
     //Database
 
     @Nullable
