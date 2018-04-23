@@ -72,5 +72,20 @@
             android:textSize="15sp" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_margin="16sp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/button_adminRoomCheckAvailability"
+            android:layout_margin="15sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Search" />
+    </LinearLayout>
+
 
 </LinearLayout>

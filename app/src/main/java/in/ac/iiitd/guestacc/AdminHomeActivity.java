@@ -54,8 +54,10 @@ public class AdminHomeActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
 
         int id = item.getItemId();
-
-        if (id == R.id.adminRoomStatus) {
+        if (id == R.id.adminHome){
+            getFragmentManager().beginTransaction().replace(R.id.adminHomeFrame,new AdminHomeFragment()).commit();
+        }
+        else if (id == R.id.adminRoomStatus) {
             getFragmentManager().beginTransaction().replace(R.id.adminHomeFrame,new AdminRoomStatusFragment()).commit();
         } else if (id == R.id.adminCancelBooking) {
 

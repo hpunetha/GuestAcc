@@ -55,6 +55,7 @@ public class AdminHomeFragment extends Fragment {
         new getFacultyRequest().execute("");
 
 
+        //Status for Today
         adminHomeCardView = (CardView) adminHomeView.findViewById(R.id.adminHomeCardView1);
         adminHomeCardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,6 +65,7 @@ public class AdminHomeFragment extends Fragment {
             }
         });
 
+        //Pending Approval
         adminHomeCardView = (CardView)adminHomeView.findViewById(R.id.adminHomeCardView2);
         adminHomeCardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +75,7 @@ public class AdminHomeFragment extends Fragment {
             }
         });
 
+        //Verify Payment
         adminHomeCardView = (CardView)adminHomeView.findViewById(R.id.adminHomeCardView3);
         adminHomeCardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +85,7 @@ public class AdminHomeFragment extends Fragment {
             }
         });
 
+        //Faculty Registration Requests
         adminHomeCardView = (CardView)adminHomeView.findViewById(R.id.adminHomeCardView4);
         adminHomeCardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -186,15 +190,6 @@ public class AdminHomeFragment extends Fragment {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     //Log.i("DataSnapshot", String.valueOf(dataSnapshot.getChildrenCount()));
-                    /*for (DataSnapshot bookingData: dataSnapshot.getChildren()){
-                        if (bookingData.getKey().equals(date)){
-                            for (DataSnapshot checkBookingData: dataSnapshot.child(date).getChildren()){
-                                for (DataSnapshot roomBookedClient: checkBookingData.child("rooms").getChildren()){
-                                    bookingsRooms.remove(roomBookedClient.getKey());
-                                }
-                            }
-                        }
-                    }*/
 
                     Log.i("Database",dataSnapshot.getKey());
                     Log.i("Database", String.valueOf(dataSnapshot.getChildrenCount()));
