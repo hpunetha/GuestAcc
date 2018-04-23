@@ -31,4 +31,9 @@
 
     <string name="action_settings">Settings</string>
 
+    <string-array name="adminRoomStatusSpinner">
+        <item>Available</item>
+        <item>Booked</item>
+        <item>Pending Payment</item>
+    </string-array>
 </resources>
