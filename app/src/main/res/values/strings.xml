@@ -10,7 +10,7 @@
     <string name="check_in">Check-in \n</string>
 
     <string name="check_out">Check-out \n</string>
-    <string name="room">Room(s) \n</string>
+    <string name="associated_room_id">Room(s) \n</string>
     <string name="male">Male(s) \n</string>
     <string name="female">Female(s) \n</string>
     <string name="let_s_go">Check Availability</string>
@@ -24,5 +24,8 @@
     <string name="cardVal">0</string>
     <string name="check_avail">Check Availability</string>
     <string name="avail_rooms">Available Rooms</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

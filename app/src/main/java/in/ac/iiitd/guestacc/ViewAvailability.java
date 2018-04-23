@@ -39,7 +39,7 @@ public class ViewAvailability extends AppCompatActivity {
         List_of_rooms.add(
                 new room(
                         1,
-                        "Boys Hostel Room",
+                        "Boys Hostel associated_room_id",
                         "Available: 0",
                         1500,
                         R.drawable.samplea));
@@ -47,7 +47,7 @@ public class ViewAvailability extends AppCompatActivity {
         List_of_rooms.add(
                 new room(
                         1,
-                        "Girls Hostel Room",
+                        "Girls Hostel associated_room_id",
                         "Available: 0",
                         1500,
                         R.drawable.sampleb));

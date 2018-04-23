@@ -26,7 +26,7 @@ public class roomadapter extends RecyclerView.Adapter<roomadapter.roomViewHolder
     private List<room> List_of_guest_rooms;
     public int number_of_elements=10;
     TextView counter;
-    public int currentValue[] = new int[number_of_elements];    //current value of TextView corresponding to each Cardview.
+    public int currentValue[] = new int[number_of_elements];    //current value of TextView corresponding to_date each Cardview.
     public int Number_of_Views = 0;
     int flag = 1;
     int temp = 0;
