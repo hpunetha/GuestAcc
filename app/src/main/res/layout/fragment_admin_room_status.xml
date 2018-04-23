@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -12,14 +13,14 @@
 
         <TextView
             android:layout_margin="10sp"
-            android:textSize="12sp"
+            android:textSize="18sp"
             android:id="@+id/adminRoomStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Status" />
+            android:text="Status"/>
 
         <Spinner
-            android:layout_marginLeft="10sp"
+            android:layout_marginStart="10sp"
             android:layout_margin="10sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -35,20 +36,17 @@
 
         <EditText
 
-            android:id="@+id/editTextFrom"
+            android:id="@+id/editTextAdminRoomFrom"
             style="@style/Widget.AppCompat.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-
             android:background="@drawable/custombuttondesc"
             android:clickable="true"
             android:cursorVisible="false"
-
             android:focusable="false"
             android:inputType="textMultiLine"
             android:lines="2"
-
             android:minLines="2"
             android:paddingEnd="10dp"
             android:paddingStart="10dp"
@@ -56,20 +54,17 @@
             android:textSize="15sp" />
 
         <EditText
-            android:id="@+id/editTextTo"
+            android:id="@+id/editTextAdminRoomTo"
             style="@style/Widget.AppCompat.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:layout_weight="1"
             android:background="@drawable/custombuttondesc"
             android:clickable="true"
             android:cursorVisible="false"
-
             android:focusable="false"
             android:inputType="textMultiLine"
             android:lines="2"
-
             android:minLines="2"
             android:paddingEnd="10dp"
             android:paddingStart="10dp"

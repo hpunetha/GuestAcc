@@ -29,7 +29,12 @@ public class AdminRoomStatusFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View adminRoomStatus = inflater.inflate(R.layout.fragment_admin_room_status,container,false);
 
-        /*final String mFormat = "E, MMM d";
+        mEditTextFromDate = (EditText)adminRoomStatus.findViewById(R.id.editTextAdminRoomFrom);
+        mEditTextToDate = (EditText)adminRoomStatus.findViewById(R.id.editTextAdminRoomTo);
+
+        //*****************************************Calendar instances*********************************************
+
+        final String mFormat = "E, MMM d";
         SimpleDateFormat mPreSDFormat = new SimpleDateFormat(mFormat, Locale.ENGLISH);
         Date mPreDate = new Date();
         mToDate =mPreDate;
@@ -47,7 +52,6 @@ public class AdminRoomStatusFragment extends Fragment {
         mSendToDate = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH).format(mPreNextDate.getTime());
 
 
-        //Taken from source : ->
         final Calendar mCal = Calendar.getInstance();
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
             //DatePickerDialog.
@@ -59,7 +63,7 @@ public class AdminRoomStatusFragment extends Fragment {
                 mCal.set(Calendar.MONTH, monthOfYear);
                 mCal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-//                String mFormat = "E, MMM d";
+//              String mFormat = "E, MMM d";
                 SimpleDateFormat mSimpleDF = new SimpleDateFormat(mFormat, Locale.ENGLISH);
 
                 if (mDateVal ==1)
@@ -100,7 +104,7 @@ public class AdminRoomStatusFragment extends Fragment {
                         mCal.get(Calendar.DAY_OF_MONTH));
 
                 mDateVal =1;
-                mDatePickDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+                //mDatePickDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
 
                 mDatePickDialog.show();
             }
@@ -121,11 +125,12 @@ public class AdminRoomStatusFragment extends Fragment {
                 mChkCal.add(Calendar.DATE,1);
                 //Date mPreNextDate = mChkCal.getTime();
 
-
                 mDatePickDialog.getDatePicker().setMinDate(mChkCal.getTimeInMillis());
                 mDatePickDialog.show();
             }
-        });*/
+        });
+
+        //*********************************************************************************************************************
         return adminRoomStatus;
     }
 }
