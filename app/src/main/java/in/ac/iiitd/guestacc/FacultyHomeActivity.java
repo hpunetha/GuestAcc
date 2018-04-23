@@ -108,6 +108,21 @@ public class FacultyHomeActivity extends AppCompatActivity
         mAgreeTermsCheckBox =(CheckBox) findViewById(R.id.agreeTermsCheckBox);
         mAgreeTextView= (TextView) findViewById(R.id.agreeTermsTextView);
 
+        mAgreeTermsCheckBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mAgreeTermsCheckBox.isChecked())
+                {
+                    btnCheckAvailFaculty.setEnabled(true);
+
+                }
+                else
+                {
+                    btnCheckAvailFaculty.setEnabled(false);
+                }
+
+            }
+        });
 
         mAgreeTermsRelativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,14 +145,26 @@ public class FacultyHomeActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
 
+                if (mAllRoomsDetails.size()>0)
+                {
 
-
-
-                mCheckAvailTask = new CheckAvailabilityTask(FacultyHomeActivity.this);
-                mCheckAvailTask.execute();
+                    mCheckAvailTask = new CheckAvailabilityTask(FacultyHomeActivity.this);
+                    mCheckAvailTask.execute();
 
 //                Intent mBookingDetail = new Intent(FacultyHomeActivity.this, BookingDetail.class);
 //                startActivity(mBookingDetail);
+
+                }
+                else
+                {
+
+                    Snackbar.make(view, "No Rooms are added. Please add rooms first", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+
+
+
+
 
 
             }
@@ -337,13 +364,14 @@ public class FacultyHomeActivity extends AppCompatActivity
                     mTotalPriceTextView.setText(String.valueOf(mTotalPrice));
                 }
             }
+            else if (resultCode == Activity.RESULT_CANCELED)
+            {
+                    mEditTextRoomDetailsFaculty.setText(getResources().getString(R.string.add_room));
+            }
 
 
-//            if (resultCode == Activity.RESULT_CANCELED) {
-//                //Write your code if there's no result
-//            }
         }
-    }//onActivityResult
+    }
 
 
 
@@ -472,10 +500,21 @@ public class FacultyHomeActivity extends AppCompatActivity
                             {
                                 Log.i("Bookings","Bookings for " + tempDateString + " children " + dataSnapshot.getChildren().toString());
 
-                                for(DataSnapshot dbS: dataSnapshot.getChildren())
-                                {
+                                for (DataSnapshot dbS : dataSnapshot.getChildren()) {
+                                try {
 
+                                        Log.i("id booking", "id ->" + dbS.getKey() + " booking status->" + dbS.child("booking_status").getValue());
 
+                                        if (dbS.child("booking_status").getValue().toString().equalsIgnoreCase("completed")) {
+                                                //Check in completed bookings
+                                        }
+
+                                    }
+                                    catch (NullPointerException e)
+                                    {
+                                        e.printStackTrace();
+                                        continue;
+                                    }
                                 }
                             }
                             else
