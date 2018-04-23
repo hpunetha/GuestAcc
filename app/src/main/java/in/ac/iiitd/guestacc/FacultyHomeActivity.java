@@ -25,15 +25,23 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 public class FacultyHomeActivity extends AppCompatActivity
@@ -62,7 +70,7 @@ public class FacultyHomeActivity extends AppCompatActivity
     TextView mAgreeTextView;
     CheckBox mAgreeTermsCheckBox;
     RelativeLayout mAgreeTermsRelativeLayout;
-    String mSendToDate,mSendFromDate;
+    public static String mSendToDate,mSendFromDate;
     CheckAvailabilityTask mCheckAvailTask;
     Button btnCheckAvailFaculty;
     Date mToDate;
@@ -122,14 +130,15 @@ public class FacultyHomeActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
 
-                Intent mBookingDetail = new Intent(FacultyHomeActivity.this, BookingDetail.class);
-
-                startActivity(mBookingDetail);
 
 
 
                 mCheckAvailTask = new CheckAvailabilityTask(FacultyHomeActivity.this);
                 mCheckAvailTask.execute();
+
+//                Intent mBookingDetail = new Intent(FacultyHomeActivity.this, BookingDetail.class);
+//                startActivity(mBookingDetail);
+
 
             }
         });
@@ -417,10 +426,81 @@ public class FacultyHomeActivity extends AppCompatActivity
         }
 
         @Override
-        protected String doInBackground(String... strings) {
-                Log.i("sendToDate",mSendToDate);
-                Log.i("fromDate",mSendFromDate);
-                DatabaseReference myRef = mDatabase.getReference("bookings_final");
+        protected String doInBackground(String... strings)
+        {
+            Date mFromDate,mToDate1;
+            List<Date> mDateList;
+            Calendar mCalender;
+            mFromDate=mToDate;
+
+            Log.i("sendToDate",mSendToDate);
+            Log.i("fromDate",mSendFromDate);
+
+            //Reference=> https://stackoverflow.com/questions/4216745/java-string-to-date-conversion
+            DateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH);
+            try {
+                mFromDate = mDateFormat.parse(mSendFromDate);
+                mToDate1 = mDateFormat.parse(mSendToDate);
+                // Reference=>   https://stackoverflow.com/questions/2689379/how-to-get-a-list-of-dates-between-two-dates-in-java
+
+                mDateList= new ArrayList<Date>();
+                mCalender= new GregorianCalendar();
+                mCalender.setTime(mFromDate);
+                while (mCalender.getTime().before(mToDate1))
+                {
+                    Date result = mCalender.getTime();
+                    mDateList.add(result);
+                    mCalender.add(Calendar.DATE, 1);
+                }
+
+                Log.i("Date List",mDateList.toString());
+
+                DatabaseReference myRef;
+                String basetable ="bookings_final";
+
+                for (Date tempdate: mDateList) {
+                    final String tempDateString = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH).format(tempdate);
+                    String strDBAccess = basetable +'/'+tempDateString;
+                    Log.i("date access",strDBAccess);
+                    myRef = mDatabase.getReference(strDBAccess);
+
+                    myRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot)
+                        {
+                            if (dataSnapshot.getChildrenCount()!=0)
+                            {
+                                Log.i("Bookings","Bookings for " + tempDateString + " children " + dataSnapshot.getChildren().toString());
+
+                                for(DataSnapshot dbS: dataSnapshot.getChildren())
+                                {
+
+
+                                }
+                            }
+                            else
+                            {
+                                Log.i("No Bookings ", "No Bookings for date "+tempDateString);
+
+
+                            }
+
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+
 
 
 
