@@ -219,8 +219,8 @@ public class TypeLoginActivity extends AppCompatActivity {
                                                     {
                                                         Log.w("Admin Found ", ab.getValue());
                                                         Toast.makeText(TypeLoginActivity.this,"Authenticated as Admin", Toast.LENGTH_SHORT).show();
-
-
+                                                        Intent mAdminHome = new Intent(TypeLoginActivity.this,AdminHomeActivity.class);
+                                                        startActivity(mAdminHome);
                                                         flag=true;
                                                     }
 

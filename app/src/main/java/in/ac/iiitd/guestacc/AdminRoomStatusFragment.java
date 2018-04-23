@@ -29,7 +29,7 @@ public class AdminRoomStatusFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View adminRoomStatus = inflater.inflate(R.layout.fragment_admin_room_status,container,false);
 
-        final String mFormat = "E, MMM d";
+        /*final String mFormat = "E, MMM d";
         SimpleDateFormat mPreSDFormat = new SimpleDateFormat(mFormat, Locale.ENGLISH);
         Date mPreDate = new Date();
         mToDate =mPreDate;
@@ -41,7 +41,7 @@ public class AdminRoomStatusFragment extends Fragment {
         mPreCal.setTime(mPreDate);
         mPreCal.add(Calendar.DATE,1);
         Date mPreNextDate = mPreCal.getTime();
-        // final Calendar mPreCalFinal = mPreCal;
+
         String mPreTextCheckout = getString(R.string.check_out)+  mPreSDFormat.format(mPreNextDate);
         mEditTextToDate.setText(mPreTextCheckout);
         mSendToDate = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH).format(mPreNextDate.getTime());
@@ -125,7 +125,7 @@ public class AdminRoomStatusFragment extends Fragment {
                 mDatePickDialog.getDatePicker().setMinDate(mChkCal.getTimeInMillis());
                 mDatePickDialog.show();
             }
-        });
+        });*/
         return adminRoomStatus;
     }
 }

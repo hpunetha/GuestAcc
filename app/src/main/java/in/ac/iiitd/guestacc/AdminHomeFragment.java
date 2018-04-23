@@ -95,11 +95,13 @@ public class AdminHomeFragment extends Fragment {
 
     //**************************************Pending Approval****************************************************
 
+    @SuppressLint("StaticFieldLeak")
     private class getPendingApproval extends AsyncTask<String,String,String>{
         @Override
         protected String doInBackground(String... strings) {
             mFireBaseReference = FirebaseDatabase.getInstance().getReference("pending_requests/pending_approval");
             mFireBaseReference.addValueEventListener(new ValueEventListener() {
+                @SuppressLint("SetTextI18n")
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     mTextViewPendingApproval.setText(String.valueOf(dataSnapshot.getChildrenCount())+" Requests");
@@ -116,11 +118,13 @@ public class AdminHomeFragment extends Fragment {
 
     //**************************************Verify Payment****************************************************
 
+    @SuppressLint("StaticFieldLeak")
     private class getVerifyPayment extends AsyncTask<String,String,String>{
         @Override
         protected String doInBackground(String... strings) {
             mFireBaseReference = FirebaseDatabase.getInstance().getReference("pending_requests/verify_payment");
             mFireBaseReference.addValueEventListener(new ValueEventListener() {
+                @SuppressLint("SetTextI18n")
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     mTextViewVerifyPayment.setText(String.valueOf(dataSnapshot.getChildrenCount())+" Requests");
@@ -138,6 +142,7 @@ public class AdminHomeFragment extends Fragment {
 
     //**************************************Faculty Requests****************************************************
 
+    @SuppressLint("StaticFieldLeak")
     private class getFacultyRequest extends AsyncTask<String,String,String>{
         @Override
         protected String doInBackground(String... strings) {
