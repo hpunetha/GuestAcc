@@ -29,6 +29,13 @@
             android:name=".ViewAvailability"
             android:label="@string/avail_rooms" />
         <activity
+            android:name=".FacultyHomeActivity"
+            android:label="@string/title_activity_faculty_home"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".FacultyRoomAddActivity" />
+        <activity android:name=".BookingDetail"></activity>
+
+        <activity
             android:name=".AdminHomeActivity"
             android:label="@string/title_activity_admin_home"
             android:theme="@style/AppTheme.NoActionBar"></activity>

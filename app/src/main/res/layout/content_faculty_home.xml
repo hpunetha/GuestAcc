@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="in.ac.iiitd.guestacc.FacultyHomeActivity"
+    tools:showIn="@layout/app_bar_faculty_home">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:id="@+id/scrollView2"
+            android:layout_width="match_parent"
+            android:layout_height="600dp"
+            >
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:id="@+id/linearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="30dp"
+                        android:orientation="horizontal">
+
+                        <EditText
+
+                            android:id="@+id/editTextFacultyFrom"
+                            style="@style/Widget.AppCompat.Button"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/custombuttondesc"
+
+                            android:clickable="true"
+                            android:cursorVisible="false"
+
+                            android:focusable="false"
+                            android:inputType="textMultiLine"
+                            android:lines="2"
+
+                            android:minLines="2"
+                            android:paddingEnd="10dp"
+                            android:paddingStart="10dp"
+                            android:textAllCaps="false"
+                            android:textSize="15sp" />
+
+                        <EditText
+                            android:id="@+id/editTextFacultyTo"
+                            style="@style/Widget.AppCompat.Button"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/custombuttondesc"
+
+                            android:clickable="true"
+                            android:cursorVisible="false"
+
+                            android:focusable="false"
+                            android:inputType="textMultiLine"
+                            android:lines="2"
+
+                            android:minLines="2"
+                            android:paddingEnd="10dp"
+                            android:paddingStart="10dp"
+                            android:textAllCaps="false"
+                            android:textSize="15sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_margin="10dp"
+                        android:orientation="horizontal"
+
+
+
+                        android:layout_marginStart="5dp">
+
+                        <EditText
+                            android:id="@+id/editTextRoomDetailsFaculty"
+                            style="@style/Base.Widget.AppCompat.Button.Borderless"
+
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+
+                            android:layout_weight="1"
+                            android:background="@drawable/custombuttondesc"
+                            android:clickable="true"
+
+                            android:cursorVisible="false"
+                            android:focusable="false"
+                            android:inputType="textMultiLine"
+
+                            android:lines="1"
+                            android:maxLines="2"
+
+
+                            android:text="+ Add Rooms"
+                            android:textAlignment="center"
+
+                            android:textAllCaps="false"
+                            android:textSize="15sp" />
+
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/termsRelativeLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="20dp">
+
+
+                        <android.support.v7.widget.CardView
+                            android:id="@+id/contractedCardView"
+                            android:layout_width="match_parent"
+                            android:layout_height="130dp"
+                            android:layout_margin="10dp"
+                            android:elevation="1dp"
+                            android:padding="10dp"
+                            app:cardBackgroundColor="@color/cardview_light_background"
+                            app:cardCornerRadius="12dp">
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent">
+
+                                <TextView
+                                    android:id="@+id/termsheadingcontracted"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:background="@color/colorPrimary"
+
+
+                                    android:minLines="1"
+                                    android:padding="10dp"
+                                    android:text="Terms and Conditions"
+                                    android:textColor="@android:color/white" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/termsheadingcontracted"
+                                    android:maxLines="30"
+                                    android:padding="10dp"
+                                    android:text="@string/termscontracted" />
+
+                            </RelativeLayout>
+                        </android.support.v7.widget.CardView>
+
+                        <android.support.v7.widget.CardView
+                            android:id="@+id/expandedCardView"
+                            android:layout_width="match_parent"
+                            android:layout_height="250dp"
+                            android:layout_margin="10dp"
+                            android:elevation="1dp"
+                            android:padding="10dp"
+                            android:visibility="gone"
+                            app:cardBackgroundColor="@color/cardview_light_background"
+                            app:cardCornerRadius="12dp">
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent">
+
+                                <TextView
+                                    android:id="@+id/termsheadingexpanded"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:background="@color/colorPrimary"
+
+
+                                    android:minLines="1"
+                                    android:padding="10dp"
+                                    android:text="Terms and Conditions"
+                                    android:textColor="@android:color/white" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+
+                                    android:layout_below="@id/termsheadingexpanded"
+                                    android:maxLines="40"
+                                    android:padding="10dp"
+                                    android:text="@string/termsexpanded" />
+
+                            </RelativeLayout>
+
+                        </android.support.v7.widget.CardView>
+
+                        <RelativeLayout
+                            android:id="@+id/agreeTermsRelativeLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+
+                            android:layout_below="@id/contractedCardView"
+                            android:orientation="horizontal">
+
+                            <CheckBox
+                                android:id="@+id/agreeTermsCheckBox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="10dp"
+
+                                />
+
+                            <TextView
+                                android:id="@+id/agreeTermsTextView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+
+                                android:layout_marginStart="5dp"
+
+                                android:layout_toEndOf="@id/agreeTermsCheckBox"
+                                android:text="@string/i_agree_with_the_terms_and_conditions" />
+
+                        </RelativeLayout>
+
+                    </RelativeLayout>
+
+                    <Button
+                        android:id="@+id/btnCheckAvailFaculty"
+                        style="@style/Base.Widget.AppCompat.Button.Borderless"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
+                        android:background="@color/colorPrimary"
+
+                        android:text="@string/book"
+                        android:textAllCaps="false"
+                        android:textSize="15sp"
+                        />
+
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/totalpriceID"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginEnd="164dp"
+                    android:layout_marginTop="360dp"
+                    android:text="Total Price"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/totalroomID"
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Total Rooms"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/totalpriceID"
+                    app:layout_constraintVertical_bias="0.119" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+
+    </RelativeLayout>
+
+
+
+
+
+
+</RelativeLayout>
