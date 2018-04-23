@@ -74,7 +74,7 @@ public class UserHomeActivity extends AppCompatActivity {
         mFemNum=0;
 
         //Initialize the values of edit texts
-        String mSetRoom = getString(R.string.room) + String.valueOf(mRoomNum);
+        String mSetRoom = getString(R.string.rooms) + String.valueOf(mRoomNum);
         mEditTextRoomCount.setText(mSetRoom);
 
         String mSetMaleCount = getString(R.string.male) +String.valueOf(mMaleNum);
@@ -121,7 +121,7 @@ public class UserHomeActivity extends AppCompatActivity {
         mSendToDate = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH).format(mPreNextDate.getTime());
 
 
-        //Taken from source : ->
+        //Taken from_date source : ->
         final Calendar mCal = Calendar.getInstance();
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
             //DatePickerDialog.
@@ -313,7 +313,7 @@ public class UserHomeActivity extends AppCompatActivity {
         mBackCount++;
 
         if (mBackCount == 1) {
-            Toast.makeText(this, "Press again to sign-out", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Press again to_date sign-out", Toast.LENGTH_SHORT).show();
 
 
         } else if (mBackCount > 1) {
@@ -461,7 +461,7 @@ public class UserHomeActivity extends AppCompatActivity {
                 final EditText mEditTextMaleCount= (EditText) findViewById(R.id.editTextMaleCount);
                 final EditText mEditTextFemaleCount= (EditText) findViewById(R.id.editTextFemaleCount);
 
-                String mSetRoom = getString(R.string.room) + String.valueOf(mRoomNum);
+                String mSetRoom = getString(R.string.rooms) + String.valueOf(mRoomNum);
                 mEditTextRoomCount.setText(mSetRoom);
 
                 String mSetMaleCount = getString(R.string.male) +String.valueOf(mMaleNum);

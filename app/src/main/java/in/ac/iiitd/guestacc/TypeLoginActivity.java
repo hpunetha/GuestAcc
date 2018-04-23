@@ -6,24 +6,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import com.firebase.client.Firebase;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 public class TypeLoginActivity extends AppCompatActivity {
@@ -78,7 +70,7 @@ public class TypeLoginActivity extends AppCompatActivity {
 //            FirebaseUser User = FirebaseAuth.getInstance().getCurrentUser();
 //            Toast.makeText(TypeLoginActivity.this,User.getDisplayName(), Toast.LENGTH_SHORT).show();
 
-            Intent mUserHome = new Intent(this, UserHomeActivity.class);
+            Intent mUserHome = new Intent(this, BookingDetail.class);
             mUserHome.putExtra("UserType",0);
             startActivity(mUserHome);
 

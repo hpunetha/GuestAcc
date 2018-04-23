@@ -35,6 +35,8 @@
             android:label="@string/title_activity_faculty_home"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".FacultyRoomAddActivity" />
+        <activity android:name=".BookingDetail"></activity>
+
     </application>
 
 </manifest>
