@@ -4,15 +4,21 @@ import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -23,6 +29,7 @@ public class AdminRoomStatusFragment extends Fragment {
     Date mToDate;
     int mDateVal;
     String mSendFromDate,mSendToDate;
+    Button mAdminRoomAvailability;
     EditText mEditTextFromDate, mEditTextToDate;
     @Nullable
     @Override
@@ -31,6 +38,7 @@ public class AdminRoomStatusFragment extends Fragment {
 
         mEditTextFromDate = (EditText)adminRoomStatus.findViewById(R.id.editTextAdminRoomFrom);
         mEditTextToDate = (EditText)adminRoomStatus.findViewById(R.id.editTextAdminRoomTo);
+        mAdminRoomAvailability = (Button)adminRoomStatus.findViewById(R.id.button_adminRoomCheckAvailability);
 
         //*****************************************Calendar instances*********************************************
 
@@ -130,6 +138,39 @@ public class AdminRoomStatusFragment extends Fragment {
             }
         });
 
+        /*mAdminRoomAvailability.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Date mFromDate,mToDate1;
+                List<Date> mDateList;
+                Calendar mCalender;
+                mFromDate=mToDate;
+
+                Log.i("sendToDate",mSendToDate);
+                Log.i("fromDate",mSendFromDate);
+
+                //Reference=> https://stackoverflow.com/questions/4216745/java-string-to-date-conversion
+                DateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH);
+                try {
+                    mFromDate = mDateFormat.parse(mSendFromDate);
+                    mToDate1 = mDateFormat.parse(mSendToDate);
+                    // Reference=>   https://stacverflow.com/questions/2689379/how-to-get-a-list-of-dates-between-two-dates-in-java
+
+                    mDateList= new ArrayList<Date>();
+                    mCalender= new GregorianCalendar();
+                    mCalender.setTime(mFromDate);
+                    while (mCalender.getTime().before(mToDate1))
+                    {
+                        Date result = mCalender.getTime();
+                        mDateList.add(result);
+                        mCalender.add(Calendar.DATE, 1);
+                    }
+
+                    Log.i("Date List",mDateList.toString());
+
+                }
+        });*/
         //*********************************************************************************************************************
         return adminRoomStatus;
     }
