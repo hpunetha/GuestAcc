@@ -1,5 +1,6 @@
 package in.ac.iiitd.guestacc;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -392,6 +393,7 @@ public class FacultyHomeActivity extends AppCompatActivity
     }
 
 
+    @SuppressLint("StaticFieldLeak")
     class CheckAvailabilityTask extends AsyncTask<String,String,String>
     {
         private FacultyHomeActivity mFacHomeAct;
