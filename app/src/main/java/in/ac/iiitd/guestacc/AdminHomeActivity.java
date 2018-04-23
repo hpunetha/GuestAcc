@@ -34,8 +34,8 @@ public class AdminHomeActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.admin_nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        getFragmentManager().beginTransaction().replace(R.id.adminHomeFrame,new AdminHomeFragment
-                ()).commit();
+        getFragmentManager().beginTransaction().add(R.id.adminHomeFrame, new AdminHomeFragment()).commit();
+        //getFragmentManager().beginTransaction().replace(R.id.adminHomeFrame,new AdminHomeFragment()).commit();
     }
 
 
@@ -56,7 +56,7 @@ public class AdminHomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.adminRoomStatus) {
-            // Handle the camera action
+            getFragmentManager().beginTransaction().replace(R.id.adminHomeFrame,new AdminRoomStatusFragment()).commit();
         } else if (id == R.id.adminCancelBooking) {
 
         } else if (id == R.id.adminAddRoom) {

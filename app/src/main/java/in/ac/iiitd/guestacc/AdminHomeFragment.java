@@ -1,7 +1,6 @@
 package in.ac.iiitd.guestacc;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,8 +18,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.w3c.dom.Text;
-
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -34,26 +31,31 @@ import java.util.Locale;
 public class AdminHomeFragment extends Fragment {
 
     CardView adminHomeCardView;
-    TextView mTextViewBookedRooms, mTextViewAvailableRooms;
+    TextView mTextViewBookedRooms, mTextViewAvailableRooms, mTextViewFacultyRequest,mTextViewVerifyPayment,mTextViewPendingApproval;
+
     DatabaseReference mFireBaseReference;
     //https://stackoverflow.com/questions/8654990/how-can-i-get-current-date-in-android
     String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-
-    //Database
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View adminHomeView = inflater.inflate(R.layout.fragment_admin_home,container,false);
 
-        mTextViewBookedRooms = (TextView)adminHomeView.findViewById(R.id.adminBookedRooms);
+        mTextViewBookedRooms = (TextView)adminHomeView.findViewById(R.id.adminHomeBookedRooms);
         mTextViewAvailableRooms = (TextView)adminHomeView.findViewById(R.id.adminRoomsAvailable);
+        mTextViewFacultyRequest = (TextView)adminHomeView.findViewById(R.id.adminHomeFacultyRequest);
+        mTextViewVerifyPayment = (TextView)adminHomeView.findViewById(R.id.adminHomeVerifyPayment);
+        mTextViewPendingApproval = (TextView)adminHomeView.findViewById(R.id.adminHomePendingApproval);
 
-        //Thread for getting status for today - admin home screen
+        //Threads for receiving data - admin home screen
         new getStatusForToday().execute("");
+        new getPendingApproval().execute("");
+        new getVerifyPayment().execute("");
+        new getFacultyRequest().execute("");
+
 
         adminHomeCardView = (CardView) adminHomeView.findViewById(R.id.adminHomeCardView1);
-
         adminHomeCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,8 +90,72 @@ public class AdminHomeFragment extends Fragment {
                 //startActivity(intent);
             }
         });
-
         return adminHomeView;
+    }
+
+    //**************************************Pending Approval****************************************************
+
+    private class getPendingApproval extends AsyncTask<String,String,String>{
+        @Override
+        protected String doInBackground(String... strings) {
+            mFireBaseReference = FirebaseDatabase.getInstance().getReference("pending_requests/pending_approval");
+            mFireBaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    mTextViewPendingApproval.setText(String.valueOf(dataSnapshot.getChildrenCount())+" Requests");
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+            return null;
+        }
+    }
+
+    //**************************************Verify Payment****************************************************
+
+    private class getVerifyPayment extends AsyncTask<String,String,String>{
+        @Override
+        protected String doInBackground(String... strings) {
+            mFireBaseReference = FirebaseDatabase.getInstance().getReference("pending_requests/verify_payment");
+            mFireBaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    mTextViewVerifyPayment.setText(String.valueOf(dataSnapshot.getChildrenCount())+" Requests");
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+            return null;
+        }
+    }
+
+    //**************************************Faculty Requests****************************************************
+
+    private class getFacultyRequest extends AsyncTask<String,String,String>{
+        @Override
+        protected String doInBackground(String... strings) {
+            mFireBaseReference = FirebaseDatabase.getInstance().getReference("join_requests");
+            mFireBaseReference.addValueEventListener(new ValueEventListener() {
+                @SuppressLint("SetTextI18n")
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    mTextViewFacultyRequest.setText(String.valueOf(dataSnapshot.getChildrenCount())+" Requests");
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+            return null;
+        }
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -103,18 +169,19 @@ public class AdminHomeFragment extends Fragment {
         @Override
         protected String doInBackground(String... strings) {
 
-            mFireBaseReference = FirebaseDatabase.getInstance().getReference("bookings");
+            date = "2018-03-18";
+            mFireBaseReference = FirebaseDatabase.getInstance().getReference("bookings/"+date);
 
             final HashSet<String> bookingsRooms = new HashSet<>(Arrays.asList("bh1","bh2","gh1","gh2","fr1","fr2","ff1","ff2"));
             final int mRoomSize = bookingsRooms.size();
 
-            date = "2018-03-17";
+
             mFireBaseReference.addValueEventListener(new ValueEventListener() {
                 @SuppressLint("SetTextI18n")
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     //Log.i("DataSnapshot", String.valueOf(dataSnapshot.getChildrenCount()));
-                    for (DataSnapshot bookingData: dataSnapshot.getChildren()){
+                    /*for (DataSnapshot bookingData: dataSnapshot.getChildren()){
                         if (bookingData.getKey().equals(date)){
                             for (DataSnapshot checkBookingData: dataSnapshot.child(date).getChildren()){
                                 for (DataSnapshot roomBookedClient: checkBookingData.child("rooms").getChildren()){
@@ -122,9 +189,23 @@ public class AdminHomeFragment extends Fragment {
                                 }
                             }
                         }
+                    }*/
+
+                    Log.i("Database",dataSnapshot.getKey());
+                    Log.i("Database", String.valueOf(dataSnapshot.getChildrenCount()));
+                    if (dataSnapshot.getChildrenCount() != 0){
+                        for (DataSnapshot bookingData:dataSnapshot.getChildren()){
+                            for (DataSnapshot roomBookedClient: bookingData.child("rooms").getChildren()){
+                                bookingsRooms.remove(roomBookedClient.getKey());
+                            }
+                        }
+                        mTextViewBookedRooms.setText("Booked Rooms: "+String.valueOf(mRoomSize-bookingsRooms.size()));
+                        mTextViewAvailableRooms.setText("Available Rooms: "+String.valueOf(bookingsRooms.size()));
                     }
-                    mTextViewBookedRooms.setText("Booked Rooms: "+String.valueOf(mRoomSize-bookingsRooms.size()));
-                    mTextViewAvailableRooms.setText("Available Rooms: "+String.valueOf(bookingsRooms.size()));
+                    else {
+                        mTextViewBookedRooms.setText("Booked Rooms: "+String.valueOf(mRoomSize-bookingsRooms.size()));
+                        mTextViewAvailableRooms.setText("Available Rooms: "+String.valueOf(bookingsRooms.size()));
+                    }
                 }
 
                 @Override

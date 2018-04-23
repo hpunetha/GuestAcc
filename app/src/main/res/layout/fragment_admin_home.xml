@@ -31,7 +31,7 @@
                     android:layout_height="1dp"
                     android:background="#000000" />
                 <TextView
-                    android:id="@+id/adminBookedRooms"
+                    android:id="@+id/adminHomeBookedRooms"
                     android:layout_marginTop="4dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -71,10 +71,11 @@
                     android:layout_height="1dp"
                     android:background="#000000" />
                 <TextView
+                    android:id="@+id/adminHomePendingApproval"
                     android:layout_marginTop="4dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="2 Requests"/>
+                    android:hint="Requests"/>
 
             </LinearLayout>
 
@@ -105,10 +106,11 @@
                     android:layout_height="1dp"
                     android:background="#000000" />
                 <TextView
+                    android:id="@+id/adminHomeVerifyPayment"
                     android:layout_marginTop="4dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="4 Requests"/>
+                    android:hint="Requests"/>
 
             </LinearLayout>
 
@@ -140,10 +142,11 @@
                     android:layout_height="1dp"
                     android:background="#000000" />
                 <TextView
+                    android:id="@+id/adminHomeFacultyRequest"
                     android:layout_marginTop="4dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="3 Requests"/>
+                    android:text="Requests"/>
 
             </LinearLayout>
 

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_margin="10sp"
+            android:textSize="12sp"
+            android:id="@+id/adminRoomStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Status" />
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/spinnerItems"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="5dp"
+        android:orientation="horizontal">
+
+        <EditText
+
+            android:id="@+id/editTextFrom"
+            style="@style/Widget.AppCompat.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+
+            android:background="@drawable/custombuttondesc"
+            android:clickable="true"
+            android:cursorVisible="false"
+
+            android:focusable="false"
+            android:inputType="textMultiLine"
+            android:lines="2"
+
+            android:minLines="2"
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp"
+            android:textAllCaps="false"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/editTextTo"
+            style="@style/Widget.AppCompat.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_weight="1"
+            android:background="@drawable/custombuttondesc"
+            android:clickable="true"
+            android:cursorVisible="false"
+
+            android:focusable="false"
+            android:inputType="textMultiLine"
+            android:lines="2"
+
+            android:minLines="2"
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp"
+            android:textAllCaps="false"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+
+</LinearLayout>
