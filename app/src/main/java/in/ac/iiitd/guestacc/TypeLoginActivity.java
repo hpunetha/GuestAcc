@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 import com.google.firebase.database.DataSnapshot;
@@ -70,7 +71,7 @@ public class TypeLoginActivity extends AppCompatActivity {
 //            FirebaseUser User = FirebaseAuth.getInstance().getCurrentUser();
 //            Toast.makeText(TypeLoginActivity.this,User.getDisplayName(), Toast.LENGTH_SHORT).show();
 
-            Intent mUserHome = new Intent(this, BookingDetail.class);
+            Intent mUserHome = new Intent(this, UserHomeActivity.class);
             mUserHome.putExtra("UserType",0);
             startActivity(mUserHome);
 

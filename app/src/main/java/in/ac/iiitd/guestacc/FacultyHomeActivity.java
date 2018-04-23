@@ -122,6 +122,10 @@ public class FacultyHomeActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
 
+                Intent mBookingDetail = new Intent(FacultyHomeActivity.this, BookingDetail.class);
+
+                startActivity(mBookingDetail);
+
 
 
                 mCheckAvailTask = new CheckAvailabilityTask(FacultyHomeActivity.this);
