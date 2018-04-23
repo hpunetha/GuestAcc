@@ -33,4 +33,21 @@
 
     <string name="action_settings">Settings</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_room">+ Add Room</string>
+    <string name="room_details">Room ID </string>
+    <string name="total_price">Total Price: ₹</string>
+    <string name="total_rooms">Total Rooms:</string>
+    <string name="price_rs">Price: ₹</string>
+    <string name="only_rs">₹</string>
+    <string name="preferences">Preferences</string>
+    <string name="book">Book</string>
+    <string name="termscontracted">1 - Maximum two people can stay in any Room/Flat. \n\
+2 - Only Female Guests can stay in Girls Hostel. \n\</string>
+    <string name="termsexpanded">1 - Maximum two people can stay in any Room/Flat. \n\
+2 - Only Female Guests can stay in Girls Hostel. \n\
+3- Students can book rooms only for their Parents and immediate siblings.\n\</string>
+    <string name="i_agree_with_the_terms_and_conditions">I agree with the terms and conditions.</string>
+
 </resources>

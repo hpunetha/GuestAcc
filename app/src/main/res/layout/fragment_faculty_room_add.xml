@@ -1,0 +1,273 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="in.ac.iiitd.guestacc.FacultyRoomAddFragment">
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="1dp"
+
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:elevation="1dp"
+                app:cardBackgroundColor="@color/cardview_light_background"
+                app:cardCornerRadius="12dp">
+
+
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="left"
+                    android:layout_alignBaseline="@id/textViewFemaleNew"
+                    android:layout_alignBottom="@id/textViewFemaleNew"
+                    android:padding="8dp">
+
+
+                    <TextView
+                        android:id="@+id/textViewRoomDetails"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="6dp"
+                        android:paddingBottom="4dp"
+
+                        android:text="@string/room_details"
+                        android:textColor="#000000"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/textViewRoomPriceDisplay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/price_rs"
+                        android:layout_marginTop="6dp"
+                        android:paddingBottom="4dp"
+                        android:layout_marginStart="80dp"
+                        android:layout_toEndOf="@id/textViewRoomDetails"
+                        android:textColor="#000000"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                    android:id="@+id/textViewMaleNew"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                        android:layout_below="@id/textViewRoomDetails"
+                    android:layout_marginStart="15dp"
+                        android:layout_marginTop="10dp"
+
+                    android:text="Male(s)"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                    android:textColor="#000000"
+                    android:textSize="15sp"
+                     />
+                    <TextView
+                        android:id="@+id/textViewFemaleNew"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+
+                        android:layout_marginTop="10dp"
+                        android:layout_below="@id/textViewMaleNew"
+                        android:text="Female(s)"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                        android:textColor="#000000"
+                        android:textSize="15sp"
+                        />
+                    <RadioGroup
+                        android:id="@+id/radioGroupRoomFlat"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_below="@id/textViewFemaleNew">
+
+
+
+
+                            <RadioButton
+                                android:id="@+id/radioRoom"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+
+                                android:text="Room" />
+
+                            <RadioButton
+                                android:id="@+id/radioFlat"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="20dp"
+                                android:layout_toEndOf="@id/radioRoom"
+                                android:text="Flat" />
+
+
+                    </RadioGroup>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_below="@id/radioGroupRoomFlat">
+
+                        <TextView
+                            android:id="@+id/textViewPreference"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="15dp"
+
+
+
+                            android:text="@string/preferences"
+                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                            android:textColor="#000000"
+                            android:textSize="15sp"
+                            />
+                        <Spinner
+                            android:id="@+id/spinnerPreferences"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_toEndOf="@id/textViewPreference">
+
+                        </Spinner>
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@+id/relativeLayout"
+                        android:layout_alignTop="@+id/textViewMaleNew"
+                        android:layout_gravity="right">
+
+
+                        <ImageButton
+                            android:id="@+id/minusMale"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:padding="2dp"
+
+                            android:layout_centerVertical="true"
+
+                            android:background="#00000000"
+
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/minusbuttondesc" />
+
+
+                        <TextView
+                            android:id="@+id/countertextMale"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_toEndOf="@id/minusMale"
+                            android:padding="2dp"
+                            android:paddingEnd="12dp"
+                            android:paddingStart="12dp"
+                            android:text="@string/cardVal"
+                            android:textSize="18sp" />
+
+                        <ImageButton
+                            android:id="@+id/plusMale"
+                            android:padding="2dp"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_centerVertical="true"
+                            android:layout_toEndOf="@+id/countertextMale"
+                            android:background="#00000000"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/plusbuttondesc" />
+
+
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignTop="@+id/textViewFemaleNew"
+                        android:layout_gravity="right"
+                        android:layout_marginStart="25dp"
+                        android:layout_toEndOf="@+id/textViewFemaleNew"
+                        android:id="@+id/relativeLayout">
+
+
+                        <ImageButton
+                            android:id="@+id/minusFemale"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:padding="2dp"
+
+                            android:layout_centerVertical="true"
+
+                            android:background="#00000000"
+
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/minusbuttondesc" />
+
+
+                        <TextView
+                            android:id="@+id/countertextFemale"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_toEndOf="@id/minusFemale"
+                            android:padding="2dp"
+                            android:paddingEnd="12dp"
+                            android:paddingStart="12dp"
+                            android:text="@string/cardVal"
+                            android:textSize="18sp" />
+
+                        <ImageButton
+                            android:id="@+id/plusFemale"
+                            android:layout_width="25dp"
+                            android:padding="2dp"
+                            android:layout_height="25dp"
+                            android:layout_centerVertical="true"
+                            android:layout_toEndOf="@+id/countertextFemale"
+                            android:background="#00000000"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/plusbuttondesc" />
+
+
+                    </RelativeLayout>
+
+                    <ImageButton
+                        android:id="@+id/buttonCloseFragment"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentTop="true"
+                        android:background="#00000000"
+                        android:padding="2dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/close128px" />
+
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+
+
+
+</FrameLayout>
