@@ -1,5 +1,6 @@
 package in.ac.iiitd.guestacc;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.os.AsyncTask;
@@ -157,6 +158,7 @@ public class AdminRoomStatusFragment extends Fragment {
         return adminRoomStatus;
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class checkRoomAvailabilityStatus extends AsyncTask<String,String,String>{
 
         @Override
