@@ -189,6 +189,7 @@ public class AdminRoomStatusFragment extends Fragment {
                 }
 
                 Log.i("Date List",mDateList.toString());
+                Log.i("Date list", String.valueOf(mDateList.size()));
 
                 DatabaseReference myRef;
                 String basetable ="bookings_final";
