@@ -31,7 +31,7 @@ import java.util.Locale;
 public class AdminHomeFragment extends Fragment {
 
     CardView adminHomeCardView;
-    TextView mTextViewBookedRooms, mTextViewAvailableRooms, mTextViewFacultyRequest,mTextViewVerifyPayment,mTextViewPendingApproval;
+    TextView mTextViewBookedRooms, mTextViewAvailableRooms, mTextViewFacultyRequest, mTextViewVerifyPayment, mTextViewPendingApproval;
 
     DatabaseReference mFireBaseReference;
     //https://stackoverflow.com/questions/8654990/how-can-i-get-current-date-in-android
@@ -40,13 +40,13 @@ public class AdminHomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View adminHomeView = inflater.inflate(R.layout.fragment_admin_home,container,false);
+        View adminHomeView = inflater.inflate(R.layout.fragment_admin_home, container, false);
 
-        mTextViewBookedRooms = (TextView)adminHomeView.findViewById(R.id.adminHomeBookedRooms);
-        mTextViewAvailableRooms = (TextView)adminHomeView.findViewById(R.id.adminRoomsAvailable);
-        mTextViewFacultyRequest = (TextView)adminHomeView.findViewById(R.id.adminHomeFacultyRequest);
-        mTextViewVerifyPayment = (TextView)adminHomeView.findViewById(R.id.adminHomeVerifyPayment);
-        mTextViewPendingApproval = (TextView)adminHomeView.findViewById(R.id.adminHomePendingApproval);
+        mTextViewBookedRooms = (TextView) adminHomeView.findViewById(R.id.adminHomeBookedRooms);
+        mTextViewAvailableRooms = (TextView) adminHomeView.findViewById(R.id.adminRoomsAvailable);
+        mTextViewFacultyRequest = (TextView) adminHomeView.findViewById(R.id.adminHomeFacultyRequest);
+        mTextViewVerifyPayment = (TextView) adminHomeView.findViewById(R.id.adminHomeVerifyPayment);
+        mTextViewPendingApproval = (TextView) adminHomeView.findViewById(R.id.adminHomePendingApproval);
 
         //Threads for receiving data - admin home screen
         new getStatusForToday().execute("");
@@ -66,7 +66,7 @@ public class AdminHomeFragment extends Fragment {
         });
 
         //Pending Approval
-        adminHomeCardView = (CardView)adminHomeView.findViewById(R.id.adminHomeCardView2);
+        adminHomeCardView = (CardView) adminHomeView.findViewById(R.id.adminHomeCardView2);
         adminHomeCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,7 +76,7 @@ public class AdminHomeFragment extends Fragment {
         });
 
         //Verify Payment
-        adminHomeCardView = (CardView)adminHomeView.findViewById(R.id.adminHomeCardView3);
+        adminHomeCardView = (CardView) adminHomeView.findViewById(R.id.adminHomeCardView3);
         adminHomeCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,7 +86,7 @@ public class AdminHomeFragment extends Fragment {
         });
 
         //Faculty Registration Requests
-        adminHomeCardView = (CardView)adminHomeView.findViewById(R.id.adminHomeCardView4);
+        adminHomeCardView = (CardView) adminHomeView.findViewById(R.id.adminHomeCardView4);
         adminHomeCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,7 +100,7 @@ public class AdminHomeFragment extends Fragment {
     //**************************************Pending Approval****************************************************
 
     @SuppressLint("StaticFieldLeak")
-    private class getPendingApproval extends AsyncTask<String,String,String>{
+    private class getPendingApproval extends AsyncTask<String, String, String> {
         @Override
         protected String doInBackground(String... strings) {
             mFireBaseReference = FirebaseDatabase.getInstance().getReference("pending_requests/pending_approval");
@@ -108,7 +108,7 @@ public class AdminHomeFragment extends Fragment {
                 @SuppressLint("SetTextI18n")
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    mTextViewPendingApproval.setText(String.valueOf(dataSnapshot.getChildrenCount())+" Requests");
+                    mTextViewPendingApproval.setText(String.valueOf(dataSnapshot.getChildrenCount()) + " Requests");
                 }
 
                 @Override
@@ -123,7 +123,7 @@ public class AdminHomeFragment extends Fragment {
     //**************************************Verify Payment****************************************************
 
     @SuppressLint("StaticFieldLeak")
-    private class getVerifyPayment extends AsyncTask<String,String,String>{
+    private class getVerifyPayment extends AsyncTask<String, String, String> {
         @Override
         protected String doInBackground(String... strings) {
             mFireBaseReference = FirebaseDatabase.getInstance().getReference("pending_requests/verify_payment");
@@ -131,7 +131,7 @@ public class AdminHomeFragment extends Fragment {
                 @SuppressLint("SetTextI18n")
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    mTextViewVerifyPayment.setText(String.valueOf(dataSnapshot.getChildrenCount())+" Requests");
+                    mTextViewVerifyPayment.setText(String.valueOf(dataSnapshot.getChildrenCount()) + " Requests");
                 }
 
                 @Override
@@ -147,7 +147,7 @@ public class AdminHomeFragment extends Fragment {
     //**************************************Faculty Requests****************************************************
 
     @SuppressLint("StaticFieldLeak")
-    private class getFacultyRequest extends AsyncTask<String,String,String>{
+    private class getFacultyRequest extends AsyncTask<String, String, String> {
         @Override
         protected String doInBackground(String... strings) {
             mFireBaseReference = FirebaseDatabase.getInstance().getReference("join_requests");
@@ -155,7 +155,7 @@ public class AdminHomeFragment extends Fragment {
                 @SuppressLint("SetTextI18n")
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    mTextViewFacultyRequest.setText(String.valueOf(dataSnapshot.getChildrenCount())+" Requests");
+                    mTextViewFacultyRequest.setText(String.valueOf(dataSnapshot.getChildrenCount()) + " Requests");
                 }
 
                 @Override
@@ -168,7 +168,7 @@ public class AdminHomeFragment extends Fragment {
     }
 
     @SuppressLint("StaticFieldLeak")
-    private class getStatusForToday extends AsyncTask<String,String,String>{
+    private class getStatusForToday extends AsyncTask<String, String, String> {
 
         @Override
         protected void onPostExecute(String s) {
@@ -179,9 +179,9 @@ public class AdminHomeFragment extends Fragment {
         protected String doInBackground(String... strings) {
 
             date = "2018-03-18";
-            mFireBaseReference = FirebaseDatabase.getInstance().getReference("bookings/"+date);
+            mFireBaseReference = FirebaseDatabase.getInstance().getReference("bookings/" + date);
 
-            final HashSet<String> bookingsRooms = new HashSet<>(Arrays.asList("bh1","bh2","gh1","gh2","fr1","fr2","ff1","ff2"));
+            final HashSet<String> bookingsRooms = new HashSet<>(Arrays.asList("bh1", "bh2", "gh1", "gh2", "fr1", "fr2", "ff1", "ff2"));
             final int mRoomSize = bookingsRooms.size();
 
 
@@ -191,20 +191,19 @@ public class AdminHomeFragment extends Fragment {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     //Log.i("DataSnapshot", String.valueOf(dataSnapshot.getChildrenCount()));
 
-                    Log.i("Database",dataSnapshot.getKey());
+                    Log.i("Database", dataSnapshot.getKey());
                     Log.i("Database", String.valueOf(dataSnapshot.getChildrenCount()));
-                    if (dataSnapshot.getChildrenCount() != 0){
-                        for (DataSnapshot bookingData:dataSnapshot.getChildren()){
-                            for (DataSnapshot roomBookedClient: bookingData.child("rooms").getChildren()){
+                    if (dataSnapshot.getChildrenCount() != 0) {
+                        for (DataSnapshot bookingData : dataSnapshot.getChildren()) {
+                            for (DataSnapshot roomBookedClient : bookingData.child("rooms").getChildren()) {
                                 bookingsRooms.remove(roomBookedClient.getKey());
                             }
                         }
-                        mTextViewBookedRooms.setText("Booked Rooms: "+String.valueOf(mRoomSize-bookingsRooms.size()));
-                        mTextViewAvailableRooms.setText("Available Rooms: "+String.valueOf(bookingsRooms.size()));
-                    }
-                    else {
-                        mTextViewBookedRooms.setText("Booked Rooms: "+String.valueOf(mRoomSize-bookingsRooms.size()));
-                        mTextViewAvailableRooms.setText("Available Rooms: "+String.valueOf(bookingsRooms.size()));
+                        mTextViewBookedRooms.setText("Booked Rooms: " + String.valueOf(mRoomSize - bookingsRooms.size()));
+                        mTextViewAvailableRooms.setText("Available Rooms: " + String.valueOf(bookingsRooms.size()));
+                    } else {
+                        mTextViewBookedRooms.setText("Booked Rooms: " + String.valueOf(mRoomSize - bookingsRooms.size()));
+                        mTextViewAvailableRooms.setText("Available Rooms: " + String.valueOf(bookingsRooms.size()));
                     }
                 }
 

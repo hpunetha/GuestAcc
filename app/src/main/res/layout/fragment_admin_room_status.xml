@@ -20,6 +20,7 @@
             android:text="Status"/>
 
         <Spinner
+            android:id="@+id/spinner_adminAvailabilityStatus"
             android:layout_marginStart="10sp"
             android:layout_margin="10sp"
             android:layout_width="wrap_content"
