@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        xmlns:card_view = "http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical"
+        card_view:cardUseCompatPadding="true"
+        card_view:cardElevation="3dp"
+        card_view:cardCornerRadius="2dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <RelativeLayout
+                android:id="@+id/main_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorAccent">
+
+                    <TextView
+                        android:id="@+id/ReqID"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginStart="42dp"
+                        android:text="ReqID"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/Date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginEnd="63dp"
+                        android:text="Date"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/relativeLayout2"
+                    android:layout_marginStart="13dp"
+                    android:layout_marginTop="12dp"
+                    android:text="Type"
+                    android:textColor="@android:color/darker_gray"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/typeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/type"
+                    android:layout_marginStart="13dp"
+                    android:layout_toEndOf="@+id/type"
+                    android:text="Official"
+                    android:textColor="@android:color/background_dark"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/fundedBy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/typeText"
+                    android:layout_marginStart="99dp"
+                    android:layout_toEndOf="@+id/typeText"
+                    android:text="Funded By" />
+
+                <TextView
+                    android:id="@+id/fundedbyText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignTop="@+id/fundedBy"
+                    android:layout_marginEnd="19dp"
+                    android:text="Project"
+                    android:textColor="@android:color/background_dark"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/projectName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/type"
+                    android:layout_below="@+id/type"
+                    android:layout_marginTop="12dp"
+                    android:text="Project Name" />
+
+                <TextView
+                    android:id="@+id/projectNameText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/fundedbyText"
+                    android:layout_alignStart="@+id/fundedBy"
+                    android:layout_alignTop="@+id/projectName"
+                    android:text="ABCD"
+                    android:textColor="@android:color/background_dark"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/reason"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/projectName"
+                    android:layout_below="@+id/projectName"
+                    android:layout_marginTop="11dp"
+                    android:text="Reason of Visit" />
+
+                <TextView
+                    android:id="@+id/reasonText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/reason"
+                    android:layout_alignEnd="@+id/projectNameText"
+                    android:layout_alignStart="@+id/projectNameText"
+                    android:text="--------------------" />
+
+                <TextView
+                    android:id="@+id/male"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/reason"
+                    android:layout_below="@+id/reason"
+                    android:layout_marginTop="11dp"
+                    android:text="Male :" />
+
+                <TextView
+                    android:id="@+id/female"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/male"
+                    android:layout_alignStart="@+id/reasonText"
+                    android:text="Female :" />
+
+                <TextView
+                    android:id="@+id/maleNo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/male"
+                    android:layout_alignBottom="@+id/male"
+                    android:layout_toEndOf="@+id/projectName"
+                    android:text="1"
+                    android:textColor="@android:color/background_dark"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/femaleNo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/reasonText"
+                    android:layout_alignStart="@+id/fundedbyText"
+                    android:layout_alignTop="@+id/female"
+                    android:text="1"
+                    android:textColor="@android:color/background_dark"
+                    android:textStyle="bold" />
+
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/midlayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/main_layout"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/bottomLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/main_layout">
+
+                <Button
+                    android:id="@+id/cancel"
+                    android:layout_width="100sp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/accept"
+                    android:layout_alignBottom="@+id/accept"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="15dp"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:minHeight="0dp"
+                    android:minWidth="0dp"
+                    android:text="Cancel"
+                    android:textAllCaps="false"
+                    android:textSize="12dp" />
+
+                <Button
+                    android:id="@+id/accept"
+                    android:layout_width="100sp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:minHeight="0dp"
+                    android:minWidth="0dp"
+                    android:text="Accept"
+                    android:textAllCaps="false"
+                    android:textSize="12dp" />
+            </RelativeLayout>
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>

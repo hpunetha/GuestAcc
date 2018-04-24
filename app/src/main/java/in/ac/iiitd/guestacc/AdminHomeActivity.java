@@ -1,5 +1,6 @@
 package in.ac.iiitd.guestacc;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -59,6 +60,8 @@ public class AdminHomeActivity extends AppCompatActivity
         } else if (id == R.id.adminRoomStatus) {
             getFragmentManager().beginTransaction().replace(R.id.adminHomeFrame, new AdminRoomStatusFragment()).commit();
         } else if (id == R.id.adminCancelBooking) {
+            Intent adminCancelBookingIntent = new Intent(AdminHomeActivity.this,Admin_CancelBookings.class);
+            startActivity(adminCancelBookingIntent);
 
         } else if (id == R.id.adminAddRoom) {
 

@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        xmlns:card_view = "http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="1dp"
+        card_view:cardUseCompatPadding="true"
+        card_view:cardElevation="4dp"
+        card_view:cardCornerRadius="3dp">
+
+        <LinearLayout
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="13dp"
+                    android:text="Req ID"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/reqid_cancel_bookings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/textView"
+                    android:layout_marginStart="11dp"
+                    android:layout_toEndOf="@+id/textView"
+                    android:text="1"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="11dp"
+                    android:text="Total Guest"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/total_guest_cancel_bookings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/textView3"
+                    android:layout_alignBottom="@+id/textView3"
+                    android:layout_marginStart="40dp"
+                    android:layout_toEndOf="@+id/textView3"
+                    android:text="4500" />
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/total_guest_cancel_bookings"
+                    android:layout_alignBottom="@+id/total_guest_cancel_bookings"
+                    android:layout_marginEnd="49dp"
+                    android:layout_toStartOf="@+id/roomname_cancel_bookings"
+                    android:text="Rooms"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/roomname_cancel_bookings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/textView6"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="14dp"
+                    android:text="BH1,BH3"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/textView3"
+                    android:layout_below="@+id/textView3"
+                    android:layout_marginTop="12dp"
+                    android:text="Rooms"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/nrooms_cancel_bookings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/total_guest_cancel_bookings"
+                    android:layout_alignTop="@+id/textView10"
+                    android:text="2"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textView13"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/textView10"
+                    android:layout_below="@+id/textView10"
+                    android:layout_marginTop="14dp"
+                    android:text="Booked for "
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/start_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/total_guest_cancel_bookings"
+                    android:layout_alignTop="@+id/textView13"
+                    android:text="24 April" />
+
+                <TextView
+                    android:id="@+id/textView15"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/start_date"
+                    android:layout_toEndOf="@+id/start_date"
+                    android:layout_toStartOf="@+id/end_sate"
+                    android:text="-"
+                    android:textAlignment="center"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/end_sate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/textView15"
+                    android:layout_alignEnd="@+id/textView6"
+                    android:text="2 May" />
+
+                <Button
+                    android:id="@+id/cancel_cancel_bookings"
+                    style="@style/Widget.AppCompat.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_alignBottom="@+id/end_sate"
+                    android:layout_alignEnd="@+id/roomname_cancel_bookings"
+
+                    android:backgroundTint="@color/colorPrimary"
+                    android:minHeight="0dp"
+                    android:minWidth="0dp"
+                    android:text="Cancel"
+                    android:textAllCaps="false"
+                    android:textSize="10sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible">
+
+                <Button
+                    android:id="@+id/confirm_cancel_cancel_bookings"
+                    style="@style/Widget.AppCompat.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_below="@+id/edit_text_cancel_bookings"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="11dp"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:minHeight="0dp"
+                    android:minWidth="0dp"
+                    android:text="Confirm Cancellation"
+                    android:textAllCaps="false"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="29dp"
+                    android:layout_marginTop="20dp"
+                    android:text="Reason"
+                    android:textStyle="bold"
+                    />
+
+                <EditText
+                    android:id="@+id/edit_text_cancel_bookings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/textView2"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignTop="@+id/textView2"
+                    android:layout_marginLeft="12sp"
+                    android:layout_marginRight="12sp"
+                    android:layout_toEndOf="@+id/textView2"
+                    android:background="@null"
+                    android:textSize="8sp" />
+            </RelativeLayout>
+
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>

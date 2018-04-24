@@ -2,6 +2,7 @@ package in.ac.iiitd.guestacc;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -70,8 +71,8 @@ public class AdminHomeFragment extends Fragment {
         adminHomeCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent = new Intent(AdminHomeActivity.this, Item1.class);
-                //startActivity(intent);
+                Intent adminPendingApprovalIntent = new Intent(getActivity(), Admin_Pending_Approval.class);
+                startActivity(adminPendingApprovalIntent);
             }
         });
 
@@ -80,8 +81,8 @@ public class AdminHomeFragment extends Fragment {
         adminHomeCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent = new Intent(AdminHomeActivity.this, Item1.class);
-                //startActivity(intent);
+                Intent adminValidatePaymentIntent = new Intent(getActivity(), Admin_ValidatePayment.class);
+                startActivity(adminValidatePaymentIntent);
             }
         });
 
