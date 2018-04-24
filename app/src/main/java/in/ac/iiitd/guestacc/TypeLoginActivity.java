@@ -190,8 +190,24 @@ public class TypeLoginActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     boolean flag = false;
-                    ArrayList<Map<String,String>> val = (ArrayList<Map<String, String>>) dataSnapshot.getValue();
-
+                    //ArrayList<Map<String,String>> val = (ArrayList<Map<String, String>>) dataSnapshot.getValue();
+                    try {
+                        for (DataSnapshot val: dataSnapshot.getChildren()){
+                            //Log.i ("Admin",val.child("emailid").getValue().toString());
+                            if (val.child("emailid").getValue().equals(email)){
+                                //Log.w("Admin Found ", ab.getValue());
+                                Toast.makeText(TypeLoginActivity.this,"Authenticated as Admin", Toast.LENGTH_SHORT).show();
+                                Intent mAdminHome = new Intent(TypeLoginActivity.this,Admin_HomeActivity.class);
+                                startActivity(mAdminHome);
+                                flag=true;
+                                break;
+                            }
+                        }
+                    }
+                    catch(NullPointerException e) {
+                        e.printStackTrace();
+                    }
+/*
                     try
                     {
                         if (val != null)
@@ -219,7 +235,7 @@ public class TypeLoginActivity extends AppCompatActivity {
                                                     {
                                                         Log.w("Admin Found ", ab.getValue());
                                                         Toast.makeText(TypeLoginActivity.this,"Authenticated as Admin", Toast.LENGTH_SHORT).show();
-                                                        Intent mAdminHome = new Intent(TypeLoginActivity.this,AdminHomeActivity.class);
+                                                        Intent mAdminHome = new Intent(TypeLoginActivity.this,Admin_HomeActivity.class);
                                                         startActivity(mAdminHome);
                                                         flag=true;
                                                     }
@@ -254,7 +270,7 @@ public class TypeLoginActivity extends AppCompatActivity {
                     catch(NullPointerException e)
                     {
                         e.printStackTrace();
-                    }
+                    }*/
 
                     if (!flag)
                     {

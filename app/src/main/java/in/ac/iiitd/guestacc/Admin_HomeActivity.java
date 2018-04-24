@@ -2,19 +2,15 @@ package in.ac.iiitd.guestacc;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 
-public class AdminHomeActivity extends AppCompatActivity
+public class Admin_HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 
@@ -35,8 +31,8 @@ public class AdminHomeActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.admin_nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        getFragmentManager().beginTransaction().add(R.id.adminHomeFrame, new AdminHomeFragment()).commit();
-        //getFragmentManager().beginTransaction().replace(R.id.adminHomeFrame,new AdminHomeFragment()).commit();
+        getFragmentManager().beginTransaction().add(R.id.adminHomeFrame, new Admin_HomeFragment()).commit();
+        //getFragmentManager().beginTransaction().replace(R.id.adminHomeFrame,new Admin_HomeFragment()).commit();
     }
 
 
@@ -56,11 +52,11 @@ public class AdminHomeActivity extends AppCompatActivity
 
         int id = item.getItemId();
         if (id == R.id.adminHome) {
-            getFragmentManager().beginTransaction().replace(R.id.adminHomeFrame, new AdminHomeFragment()).commit();
+            getFragmentManager().beginTransaction().replace(R.id.adminHomeFrame, new Admin_HomeFragment()).commit();
         } else if (id == R.id.adminRoomStatus) {
-            getFragmentManager().beginTransaction().replace(R.id.adminHomeFrame, new AdminRoomStatusFragment()).commit();
+            getFragmentManager().beginTransaction().replace(R.id.adminHomeFrame, new Admin_RoomStatus_Fragment()).commit();
         } else if (id == R.id.adminCancelBooking) {
-            Intent adminCancelBookingIntent = new Intent(AdminHomeActivity.this,Admin_CancelBookings.class);
+            Intent adminCancelBookingIntent = new Intent(Admin_HomeActivity.this,Admin_CancelBookings.class);
             startActivity(adminCancelBookingIntent);
 
         } else if (id == R.id.adminAddRoom) {

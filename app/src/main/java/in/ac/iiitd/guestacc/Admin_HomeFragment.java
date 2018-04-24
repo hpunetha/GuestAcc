@@ -29,10 +29,11 @@ import java.util.Locale;
  * Created by kd on 15/4/18.
  */
 
-public class AdminHomeFragment extends Fragment {
+public class Admin_HomeFragment extends Fragment {
 
     CardView adminHomeCardView;
     TextView mTextViewBookedRooms, mTextViewAvailableRooms, mTextViewFacultyRequest, mTextViewVerifyPayment, mTextViewPendingApproval;
+
 
     DatabaseReference mFireBaseReference;
     //https://stackoverflow.com/questions/8654990/how-can-i-get-current-date-in-android
@@ -61,8 +62,8 @@ public class AdminHomeFragment extends Fragment {
         adminHomeCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent = new Intent(AdminHomeActivity.this, Item1.class);
-                //startActivity(intent);
+                Intent adminStatusForTodayIntent = new Intent(getActivity(),Admin_StatusForToday_MainScreen.class);
+                startActivity(adminStatusForTodayIntent);
             }
         });
 
@@ -91,7 +92,7 @@ public class AdminHomeFragment extends Fragment {
         adminHomeCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent = new Intent(AdminHomeActivity.this, Item1.class);
+                //Intent intent = new Intent(Admin_HomeActivity.this, Item1.class);
                 //startActivity(intent);
             }
         });
