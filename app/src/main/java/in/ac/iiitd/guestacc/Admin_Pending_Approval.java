@@ -50,9 +50,21 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
     public void onItemClick(View view , int position , List<Admin_Data_PendingApproval_RoomData> adminDataPendingApprovalRoomData)
     {
 
+
            View row = recyclerView.getLayoutManager().findViewByPosition(position) ;
-           final View[] cardview= new View[adminDataPendingApprovalRoomData.size()];
+
              LinearLayout midLinearLayout = (LinearLayout) row.findViewById(R.id.midlayout) ;
+
+             // if the view is already clicked, then hide it and remove all the views attached to it
+             if(midLinearLayout.getVisibility()==View.VISIBLE)
+            {
+                midLinearLayout.setVisibility(View.GONE);
+                midLinearLayout.removeAllViews();
+                return ;
+            }
+
+
+        final View[] cardview= new View[adminDataPendingApprovalRoomData.size()];
 
            for(int i = 0; i< adminDataPendingApprovalRoomData.size(); i++)
            {
@@ -97,6 +109,7 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
            }
 
           midLinearLayout.setVisibility(View.VISIBLE);
+        //midLinearLayout.animate().translationY(midLinearLayout.getHeight());
        //rel.setVisibility(View.VISIBLE);
        // notifyDatasetChanged() ;
     }

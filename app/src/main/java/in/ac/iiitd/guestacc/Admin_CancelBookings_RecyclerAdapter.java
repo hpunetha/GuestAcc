@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -86,7 +87,7 @@ public class Admin_CancelBookings_RecyclerAdapter extends RecyclerView.Adapter<A
 
 
 
-        ViewHolder(View itemView)
+        ViewHolder(final View itemView)
         {
             super(itemView) ;
 
@@ -111,6 +112,17 @@ public class Admin_CancelBookings_RecyclerAdapter extends RecyclerView.Adapter<A
                 @Override
                 public void onClick(View v)
                 {
+
+                    RelativeLayout hiddenLayout = (RelativeLayout) itemView.findViewById(R.id.hidden_layout_cancel_bookings) ;
+
+                    if(hiddenLayout.getVisibility()==View.GONE)
+                    {
+                        hiddenLayout.setVisibility(View.VISIBLE);
+                    }
+                    else
+                    {
+                        hiddenLayout.setVisibility(View.GONE);
+                    }
                     // getting context from main activity
                     // dialogSelect.show(((AppCompatActivity)context).getSupportFragmentManager(),"123");
                 }

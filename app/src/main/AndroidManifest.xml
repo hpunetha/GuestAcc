@@ -42,7 +42,7 @@
         <activity android:name=".AdminTodayRoomCheck"
             android:theme="@android:style/Theme.NoTitleBar"/>
         <activity android:name=".Admin_CancelBookings"/>
-        <activity android:name=".Admin_Pending_Approval"/>
+       <activity android:name=".Admin_Pending_Approval"/>
         <activity android:name=".Admin_ValidatePayment"/>
     </application>
 

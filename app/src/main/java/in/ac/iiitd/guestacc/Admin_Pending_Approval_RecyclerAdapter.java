@@ -27,11 +27,13 @@ public class Admin_Pending_Approval_RecyclerAdapter extends RecyclerView.Adapter
     Context context;
 
 
+
     Admin_Pending_Approval_RecyclerAdapter(Context con, List<Admin_Data_PendingApproval> data)
     {
         this.inflater = LayoutInflater.from(con);
         this.data = data ;
         this.context = con ;
+
     }
 
     @Override
@@ -132,10 +134,14 @@ public class Admin_Pending_Approval_RecyclerAdapter extends RecyclerView.Adapter
         // onclick listener for view
         public void onClick(View v)
             {
-               if(mClickListener!=null) mClickListener.onItemClick(v,getAdapterPosition(),data.get(getAdapterPosition()).roomsData);
+               if(mClickListener!=null)
+
+               {
+                   mClickListener.onItemClick(v,getAdapterPosition(),data.get(getAdapterPosition()).roomsData);
+               }
 
                 //Log.e("CLICK",v.toString()) ;
-                v.setClickable(false);
+               // v.setClickable(false);
 
             }
     }
