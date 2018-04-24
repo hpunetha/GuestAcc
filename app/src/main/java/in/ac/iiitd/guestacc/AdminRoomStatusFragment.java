@@ -206,7 +206,6 @@ public class AdminRoomStatusFragment extends Fragment {
                             if (dataSnapshot.getChildrenCount()!=0)
                             {
                                 Log.i("Bookings","Bookings for " + tempDateString + " children " + dataSnapshot.getChildren().toString());
-
                                 for(DataSnapshot dbS: dataSnapshot.getChildren())
                                 {
                                     Log.i("id booking","id ->" +dbS.getKey() + " booking status->" + dbS.child("booking_status").getValue());
