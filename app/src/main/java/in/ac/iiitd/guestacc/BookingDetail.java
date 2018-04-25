@@ -108,16 +108,14 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
                 booking.setFundedby_project_pinvestigator(editText_PI.getText().toString());
                 booking.setFundedby_project_pname(editText_PName.getText().toString());
 
-                if (spinner_purpose.getSelectedItem().toString() == "Personal")
-                {
-                    if (spinner_personal_funding.getSelectedItem().toString()=="Self")
+                  if (spinner_personal_funding.getSelectedItem().toString()=="Self")
                     {
                         booking.setFundedby_personalbooking("Self");
                     }
                     if (spinner_personal_funding.getSelectedItem().toString()=="Visitor") {
                         booking.setFundedby_personalbooking("Visitor");
                     }
-                }
+
 
 
                 if (spinner_purpose.getSelectedItem().toString() == "Official") {
