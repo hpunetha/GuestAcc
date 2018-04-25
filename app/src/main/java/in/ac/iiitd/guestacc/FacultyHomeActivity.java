@@ -2,6 +2,7 @@ package in.ac.iiitd.guestacc;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.firebase.client.snapshot.BooleanNode;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,6 +45,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class FacultyHomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -75,6 +78,7 @@ public class FacultyHomeActivity extends AppCompatActivity
     Button btnCheckAvailFaculty;
     Date mToDate;
     int mDateVal =0;
+    ProgressDialog mProgDiag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +88,8 @@ public class FacultyHomeActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         mAllRoomsDetails =new HashMap<>();
+
+
 
         try
         {
@@ -433,31 +439,47 @@ public class FacultyHomeActivity extends AppCompatActivity
     }
 
 
-    class CheckAvailabilityTask extends AsyncTask<String,String,String>
+    class CheckAvailabilityTask extends AsyncTask<String,Boolean,Boolean>
     {
+        Boolean exitFlag ;
         private FacultyHomeActivity mFacHomeAct;
+        List<String> mDateList;
 
         public CheckAvailabilityTask(FacultyHomeActivity activ)
         {
             this.mFacHomeAct = activ;
+            this.exitFlag=false;
+            mDateList= new ArrayList<>();
 
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            mProgDiag = new ProgressDialog(mFacHomeAct);
+            mProgDiag.setMessage("Loading.... Please Wait");
+            mProgDiag.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            mProgDiag.setIndeterminate(true);
+            mProgDiag.show();
         }
 
-        @Override
-        protected void onProgressUpdate(String... values) {
-            super.onProgressUpdate(values);
-        }
-
-        @Override
-        protected String doInBackground(String... strings)
+         @Override
+        protected Boolean doInBackground(String... strings)
         {
             Date mFromDate,mToDate1;
-            List<Date> mDateList;
+
+            final List<String> mBookedRoomList;
+            final List<String> mAllPossibleRoomsList = new ArrayList<>();
+            mAllPossibleRoomsList.add("bh1");
+            mAllPossibleRoomsList.add("gh1");
+            mAllPossibleRoomsList.add("bh2");
+            mAllPossibleRoomsList.add("gh2");
+            mAllPossibleRoomsList.add("frr1");
+            mAllPossibleRoomsList.add("frr2");
+            mAllPossibleRoomsList.add("frr3");
+            mAllPossibleRoomsList.add("frf1");
+            mAllPossibleRoomsList.add("frf2");
+
             Calendar mCalender;
             mFromDate=mToDate;
 
@@ -471,84 +493,190 @@ public class FacultyHomeActivity extends AppCompatActivity
                 mToDate1 = mDateFormat.parse(mSendToDate);
                 // Reference=>   https://stackoverflow.com/questions/2689379/how-to-get-a-list-of-dates-between-two-dates-in-java
 
-                mDateList= new ArrayList<Date>();
+
                 mCalender= new GregorianCalendar();
+                mBookedRoomList = new ArrayList<String>();
                 mCalender.setTime(mFromDate);
                 while (mCalender.getTime().before(mToDate1))
                 {
                     Date result = mCalender.getTime();
-                    mDateList.add(result);
+                    String resultString = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH).format(result);
+
+                    mDateList.add(resultString);
                     mCalender.add(Calendar.DATE, 1);
                 }
 
                 Log.i("Date List",mDateList.toString());
 
-                DatabaseReference myRef;
+                final DatabaseReference myRef;
                 String basetable ="bookings_final";
 
-                for (Date tempdate: mDateList) {
-                    final String tempDateString = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH).format(tempdate);
-                    String strDBAccess = basetable +'/'+tempDateString;
-                    Log.i("date access",strDBAccess);
-                    myRef = mDatabase.getReference(strDBAccess);
+                final HashMap<String,Integer> mAllDateRoomsAvailabilityCount = new HashMap<>();
 
-                    myRef.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot)
+
+
+
+                //
+                String strDBAccess = basetable;
+                Log.i("date access",strDBAccess);
+                myRef = mDatabase.getReference(strDBAccess);
+
+                myRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot)
+                    {
+
+                        for(DataSnapshot child : dataSnapshot.getChildren() )
                         {
-                            if (dataSnapshot.getChildrenCount()!=0)
+                            List<String> mDateAvailableRooms = new ArrayList<>();
+
+                            mDateAvailableRooms = mAllPossibleRoomsList;
+
+                            if (mDateList.contains(child.getKey()))
                             {
-                                Log.i("Bookings","Bookings for " + tempDateString + " children " + dataSnapshot.getChildren().toString());
+                                final String tempDateString = child.getKey();
 
-                                for (DataSnapshot dbS : dataSnapshot.getChildren()) {
-                                try {
+                                if (dataSnapshot.getChildrenCount() != 0)
+                                {
+                                    Log.i("Bookings", "Bookings for " + tempDateString + " children " + dataSnapshot.getChildren().toString());
 
-                                        Log.i("id booking", "id ->" + dbS.getKey() + " booking status->" + dbS.child("booking_status").getValue());
-
-                                        if (dbS.child("booking_status").getValue().toString().equalsIgnoreCase("completed")) {
-                                                //Check in completed bookings
-                                        }
-
-                                    }
-                                    catch (NullPointerException e)
+                                    for (DataSnapshot dbS : child.getChildren())
                                     {
-                                        e.printStackTrace();
-                                        continue;
+                                        try
+                                        {
+
+                                            Log.i("id booking", "id ->" + dbS.getKey() + " booking status->" + dbS.child("booking_status").getValue());
+
+                                            //String check ="completed";
+                                            String check = "pending approval";  //to be commented
+                                            if (dbS.child("booking_status").getValue().toString().equalsIgnoreCase(check)) {
+                                                //Check in completed bookings
+
+                                                Log.i("booking status check", "Condition true");
+
+                                                //DataSnapshot guestSnapshot = dataSnapshot.child("guests");
+                                                for (DataSnapshot guests : dbS.getChildren()) {
+                                                    //                                                Log.i("Loop Entered", "entered");
+                                                    if (guests.getKey().equalsIgnoreCase("guests")) {
+
+
+                                                        Log.i("Alloc check=>", guests.child("allocated_room").toString());
+                                                        if (mDateAvailableRooms.contains(guests.child("allocated_room").toString())) {
+                                                            //Log.i("Room already exists", " in Booked Rooms List => " + mBookedRoomList.toString() + " room type=>" + guests.child("allocated_room").toString());
+                                                            mDateAvailableRooms.remove(guests.child("allocated_room").toString());
+                                                        } else {
+                                                            //mBookedRoomList.add(guests.child("allocated_room").toString());
+
+                                                            // Log.i("Room Added", " to Booked Rooms List => " + mBookedRoomList.toString());
+
+
+                                                        }
+                                                    } else {
+                                                        //                                                    Log.i("Loop Entered Else", "Else Condition Invoked");
+
+                                                    }
+                                                }
+
+                                            }
+
+                                            mAllDateRoomsAvailabilityCount.put(tempDateString, mDateAvailableRooms.size());
+                                            Log.i("Size of Rooms list", String.valueOf(mAllDateRoomsAvailabilityCount.toString()));
+
+
+                                            for (Map.Entry<String, Integer> entry : mAllDateRoomsAvailabilityCount.entrySet()) {
+                                                String d = entry.getKey();
+                                                Integer val = entry.getValue();
+                                                //if (mTotalRooms > val) {
+                                                //disable below line and enable above one
+                                                if (mTotalRooms > 2) {
+                                                    Log.i("Total ROoms", String.valueOf(mTotalRooms));
+                                                    exitFlag = true;
+                                                    mProgDiag.dismiss();
+                                                    Snackbar.make(mFacHomeAct.btnCheckAvailFaculty, "Specified number of rooms not available for given period.", Snackbar.LENGTH_LONG)
+                                                            .setAction("Action", null).show();
+//                                                    myRef.removeEventListener(this);
+//
+                                                   break;
+
+                                                }
+                                            }
+
+                                            if (exitFlag) {
+                                                Log.i("exitflag1", String.valueOf(exitFlag));
+                                                //
+                                                break;
+                                            }
+
+
+                                        } catch (NullPointerException e) {
+                                            e.printStackTrace();
+                                            continue;
+                                        }
                                     }
+                                } else {
+                                    Log.i("No Bookings ", "No Bookings for date " + tempDateString);
+
+
                                 }
+                                Log.i("exitflag2", String.valueOf(exitFlag));
                             }
-                            else
-                            {
-                                Log.i("No Bookings ", "No Bookings for date "+tempDateString);
 
 
+
+                            if (exitFlag) {
+                                Log.i("exitflag3", String.valueOf(exitFlag));
+                                //
+                                break;
                             }
 
 
                         }
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
+
+                        if(!exitFlag)
+                        {
+                            mProgDiag.dismiss();
+
+                            Intent mBookingDetail = new Intent(FacultyHomeActivity.this, BookingDetail.class);
+                            startActivity(mBookingDetail);
 
                         }
-                    });
-                }
+
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
+
+
 
 
             } catch (ParseException e) {
                 e.printStackTrace();
             }
 
+            Log.i("exitflagfinal",String.valueOf(exitFlag));
 
 
 
 
-            return null;
+            return exitFlag;
         }
 
         @Override
-        protected void onPostExecute(String s) {
+        protected void onPostExecute(Boolean s) {
             super.onPostExecute(s);
+            Log.i("exitFlagPOST",String.valueOf(exitFlag));
+
+
+
+
 
         }
 

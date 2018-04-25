@@ -207,8 +207,10 @@ public class FacultyRoomAddActivity extends AppCompatActivity implements Faculty
 //
             String totalprice = getResources().getString(R.string.total_price) + " " + String.valueOf(mTotalPrice);
             String totalroom = getResources().getString(R.string.total_rooms) + " " + String.valueOf(mTotalRooms);
-            mTotalPriceTextView.setText(totalprice);
-            mTotalRoomsTextView.setText(totalroom);
+            if(totalprice!=null && totalroom!=null) {
+                mTotalPriceTextView.setText(totalprice);
+                mTotalRoomsTextView.setText(totalroom);
+            }
 
 
 
