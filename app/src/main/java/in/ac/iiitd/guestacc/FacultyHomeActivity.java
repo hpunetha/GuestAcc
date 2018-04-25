@@ -43,7 +43,7 @@ public class FacultyHomeActivity extends AppCompatActivity
     public static HashMap<String,RoomItem> mAllRoomsDetails;
 
     private int mTotalRooms=0,mTotalMales=0,mTotalFemales=0,mTotalGuests=0;
-    private int mTotalPrice=0;
+    public static int mTotalPrice=0;
 
     public static final String TOTALPRICE = "totalprice";
     public static final String TOTALROOMS = "totalrooms";
@@ -62,7 +62,7 @@ public class FacultyHomeActivity extends AppCompatActivity
     TextView mAgreeTextView;
     CheckBox mAgreeTermsCheckBox;
     RelativeLayout mAgreeTermsRelativeLayout;
-    String mSendToDate,mSendFromDate;
+    public static String mSendToDate,mSendFromDate;
     CheckAvailabilityTask mCheckAvailTask;
     Button btnCheckAvailFaculty;
     Date mToDate;
@@ -421,8 +421,6 @@ public class FacultyHomeActivity extends AppCompatActivity
                 Log.i("sendToDate",mSendToDate);
                 Log.i("fromDate",mSendFromDate);
                 DatabaseReference myRef = mDatabase.getReference("bookings_final");
-
-
 
             return null;
         }

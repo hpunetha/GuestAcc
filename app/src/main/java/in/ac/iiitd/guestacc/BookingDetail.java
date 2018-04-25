@@ -15,22 +15,34 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
+import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+
+
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
+import java.util.Map;
 
 
-public class BookingDetail extends AppCompatActivity implements FragmentPersonalGuestHeader.OnFragmentInteractionListener{
+public class BookingDetail extends AppCompatActivity implements FragmentPersonalGuestDetails.OnFragmentInteractionListener, FragmentOfficialGuestDetails.OnFragmentInteractionListener{
     Boolean flag = true;
-    private Spinner spinner_purpose,spinner_official_funding,spinner_official_personal_funding;
+    private Spinner spinner_purpose,spinner_official_funding,spinner_official_personal_funding_payedby;
     FragmentManager mFragMan;
     FragmentTransaction mFragTran;
     public static int mFragGuestCountTag=0;
     public static int mNoOfGuests = 2;
     public static HashMap<String,Guest> hm_guestDetails = new HashMap<String, Guest>();
-    private DatabaseReference databaseReference;
+    private DatabaseReference databaseReference_bookings_final,databaseReference_pending_approval;
     Booking booking = null;
 
 
@@ -38,23 +50,14 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking_details);
-        if (savedInstanceState == null)
-        {
-            System.out.println("savedInstanceState value is null");
-            if (mFragMan!=null) {
-                for(Fragment fragment:getSupportFragmentManager().getFragments()){
-
-                    getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-                }
-            }
-        }
-        Spinner spinner_purpose = findViewById(R.id.spinner_purpose);
-        Spinner spinner_personal_funding= findViewById(R.id.spinner_personal_funding);
+        final Spinner spinner_purpose = findViewById(R.id.spinner_purpose);
+        final Spinner spinner_personal_funding= findViewById(R.id.spinner_personal_funding);
         spinner_official_funding =findViewById(R.id.spinner_official_funding);
-        spinner_official_personal_funding = findViewById(R.id.spinner_official_personal_funding);
+        spinner_official_personal_funding_payedby = findViewById(R.id.spinner_official_personal_funding_payedby);
         final EditText editText_PName = (EditText)findViewById(R.id.editText_PName);
         final EditText editText_PI = (EditText)findViewById(R.id.editText_PI);
         final EditText editText_InstituteDesc = (EditText)findViewById(R.id.editText_InstituteDesc);
+        final EditText editText_ROV = (EditText)findViewById(R.id.editText_ROV);
 
 
 
@@ -71,71 +74,130 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
         spinner_personal_funding.setAdapter(adapter_fundedBy);
 
         String[] items_official_personal_FundedBy = new String[]{"Self", "Visitor"};
-        ArrayAdapter<String> adapter_official_personal_FundedBy = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items_official_personal_FundedBy);
-        spinner_official_personal_funding.setAdapter(adapter_official_personal_FundedBy);
-
+        ArrayAdapter<String> adapter_official_personal_Funding_paidby = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items_official_personal_FundedBy);
+        spinner_official_personal_funding_payedby.setAdapter(adapter_official_personal_Funding_paidby);
 
 
 
         Button btnBook = (Button)findViewById(R.id.btnBook);
-        databaseReference = FirebaseDatabase.getInstance().getReference("bookings_final/");
+        databaseReference_bookings_final = FirebaseDatabase.getInstance().getReference("bookings_final/");
+        databaseReference_pending_approval = FirebaseDatabase.getInstance().getReference("pending_requests/pending_approval");
         btnBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                System.out.println(hm_guestDetails);
-//                Iterator<String> iterator = hm_guestDetails.keySet().iterator();
-//                while (iterator.hasNext())
-//                {
-//                    String key = iterator.next().toString();
-//                    String firstName = hm_guestDetails.get(key).getName().toString();
-//                   // String lastName = hm_guestDetails.get(key).getLast_Name().toString();
-//                    String age = hm_guestDetails.get(key).getAge().toString();
-//
-//                   // System.out.println(firstName+" "+lastName+" "+age);
-//                }
+                System.out.println(hm_guestDetails);
+                Iterator<String> iterator = hm_guestDetails.keySet().iterator();
+                while (iterator.hasNext())
+                {
+                    String key = iterator.next().toString();
+                    String firstName = hm_guestDetails.get(key).getName().toString();
+                   // String lastName = hm_guestDetails.get(key).getLast_Name().toString();
+                    String age = hm_guestDetails.get(key).getAge().toString();
+
+                   // System.out.println(firstName+" "+lastName+" "+age);
+                }
 
 
                 System.out.println("show =================>fragments ");
                 booking = new Booking();
-                booking.setBooking_status("pending approval");
-                booking.setFrom_date("25-02-2009");
-                booking.setTo_date("31-02-2009"); ;
-                booking.setFundedby_institute_details("");
-                booking.setFundedby_project_pinvestigator("p singh");
-                booking.setFundedby_project_pname("Mobile computing ");
-                booking.setFundedby_self("");
-                booking.setFundedby_visitor("");
+                booking.setBooking_status("pending_approval");
+
+                booking.setFrom_date(FacultyHomeActivity.mSendFromDate);
+                booking.setTo_date(FacultyHomeActivity.mSendToDate); ;
+                booking.setFundedby_institute_details(editText_InstituteDesc.getText().toString());
+                booking.setFundedby_project_pinvestigator(editText_PI.getText().toString());
+                booking.setFundedby_project_pname(editText_PName.getText().toString());
+
+                if (spinner_purpose.getSelectedItem().toString() == "Personal")
+                {
+                    if (spinner_personal_funding.getSelectedItem().toString()=="Self")
+                    {
+                        booking.setFundedby_personalbooking("Self");
+                    }
+                    if (spinner_personal_funding.getSelectedItem().toString()=="Visitor") {
+                        booking.setFundedby_personalbooking("Visitor");
+                    }
+                }
+
+
+                if (spinner_purpose.getSelectedItem().toString() == "Official") {
+
+                    if (spinner_official_personal_funding_payedby.getSelectedItem().toString() == "Personal") {
+                        booking.setFundedby_personal_officialbooking("TRUE");
+                        if (spinner_official_personal_funding_payedby.getSelectedItem().toString() == "Self") {
+                            booking.setPaidby_personal_officialbooking("Self");
+                        }
+                        if (spinner_official_personal_funding_payedby.getSelectedItem().toString() == "Visitor") {
+                            booking.setPaidby_personal_officialbooking("Visitor");
+                        }
+
+                    }
+                }
+
                 booking.setModification_reason("");
-                booking.setNo_of_days("1");
-                booking.setPurpose_of_visit("Project requirment analysis");
-                booking.setRequest_type_personal_or_official("Official");
+
+                booking.setPurpose_of_visit(editText_ROV.getText().toString());
+                if (spinner_purpose.getSelectedItem().toString()=="Personal")
+                    booking.setRequest_type_personal_or_official("Personal");
+                if (spinner_purpose.getSelectedItem().toString()=="Official")
+                    booking.setRequest_type_personal_or_official("Official");
+
+                Date mFromDate,mToDate1;
+                DateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                try {
+                    mFromDate = mDateFormat.parse(FacultyHomeActivity.mSendFromDate);
+                    mToDate1 = mDateFormat.parse(FacultyHomeActivity.mSendToDate);
+                    // Reference=>   https://stackoverflow.com/questions/2689379/how-to-get-a-list-of-dates-between-two-dates-in-java
+
+                    ArrayList<Date> mDateList= new ArrayList<Date>();
+                    Calendar mCalender= new GregorianCalendar();
+                    mCalender.setTime(mFromDate);
+                    while (mCalender.getTime().before(mToDate1))
+                    {
+                        Date result = mCalender.getTime();
+                        mDateList.add(result);
+                        mCalender.add(Calendar.DATE, 1);
+                    }
+                    System.out.println("mDateList=========>"+mDateList);
+                    System.out.println("Number of Days=========>"+(mDateList.size()));
+                    booking.setNo_of_days(String.valueOf(mDateList.size()));
+                }
+                catch (Exception e)
+                {
+                        e.printStackTrace();
+                }
                 Long tsLong = System.currentTimeMillis()/1000;
                 booking.setTimestamp(tsLong.toString());
-                booking.setTotal_booking_price("1500");
-                Guest guest1 = new Guest();
-                guest1.setName("Pramod Mallick");
-                guest1.setItemtag("1");
-                guest1.setAge("54");
-                guest1.setGender("Male");
-                guest1.setAssociated_room_id("1");
-                guest1.setAllocated_room("");
-                guest1.setPrefered_location("BH1");
-                booking.guests.add(guest1);
-                Guest guest2 = new Guest();
-                guest2.setName("Kalyani Swain");
-                guest2.setItemtag("1");
-                guest2.setAge("54");
-                guest2.setGender("Female");
-                guest2.setAssociated_room_id("1");
-                guest2.setAllocated_room("");
-                guest2.setPrefered_location("BH1");
-                booking.guests.add(guest2);
+                booking.setTotal_booking_price(String.valueOf(FacultyHomeActivity.mTotalPrice));
 
-                databaseReference.child("2017-03-20").push().setValue(booking);
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                Date date = new Date();
+                booking.setRaised_on(formatter.format(date));
+
+                System.out.println(hm_guestDetails);
+                Iterator<String> iterator_hm_guestDetails = hm_guestDetails.keySet().iterator();
+                while (iterator_hm_guestDetails.hasNext())
+                {
+                    Guest guest = new Guest();
+                    String key = iterator_hm_guestDetails.next().toString();
+                    guest.setName(hm_guestDetails.get(key).getName().toString());
+                    guest.setAge(hm_guestDetails.get(key).getAge().toString());
+                    guest.setGender(hm_guestDetails.get(key).getGender().toString());
+                    guest.setAssociated_room_id(hm_guestDetails.get(key).getAssociated_room_id().toString());
+                    guest.setAllocated_room(hm_guestDetails.get(key).getAllocated_room().toString());
+                    guest.setRoom_type(hm_guestDetails.get(key).getRoom_type().toString());
+                    guest.setPrefered_location(hm_guestDetails.get(key).getPrefered_location().toString());
+                    booking.guests.add(guest);
+                }
+
+                String mRequestId = databaseReference_bookings_final.child(FacultyHomeActivity.mSendFromDate).push().getKey();
+                databaseReference_bookings_final.child(FacultyHomeActivity.mSendFromDate).child(mRequestId).setValue(booking);
+                System.out.println("mRequestId=======>"+mRequestId);
 
 
-
-
+                Request request = new Request();
+                request.setFrom_date(FacultyHomeActivity.mSendFromDate);
+                databaseReference_pending_approval.child(mRequestId).setValue(request);
             }
         });
 
@@ -143,19 +205,19 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i == 0) {
-                    spinner_official_personal_funding.setVisibility(View.GONE);
+                    spinner_official_personal_funding_payedby.setVisibility(View.GONE);
                     editText_InstituteDesc.setVisibility(View.GONE);
                     editText_PName.setVisibility(View.VISIBLE);
                     editText_PI.setVisibility(View.VISIBLE);
                 }
                 if (i == 1) {
-                    spinner_official_personal_funding.setVisibility(View.GONE);
+                    spinner_official_personal_funding_payedby.setVisibility(View.GONE);
                     editText_InstituteDesc.setVisibility(View.VISIBLE);
                     editText_PName.setVisibility(View.GONE);
                     editText_PI.setVisibility(View.GONE);
                 }
                 if (i == 2) {
-                    spinner_official_personal_funding.setVisibility(View.VISIBLE);
+                    spinner_official_personal_funding_payedby.setVisibility(View.VISIBLE);
                     editText_InstituteDesc.setVisibility(View.GONE);
                     editText_PName.setVisibility(View.GONE);
                     editText_PI.setVisibility(View.GONE);
@@ -177,44 +239,95 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
 
                             getSupportFragmentManager().beginTransaction().remove(fragment).commit();
                         }
-                    }
-                        LinearLayout linearLayout_Personal = (LinearLayout) findViewById(R.id.layout_personalBookings);
-                        linearLayout_Personal.setVisibility(View.VISIBLE);
-                        LinearLayout linearLayout_Official = (LinearLayout) findViewById(R.id.layout_officialBookings);
-                        linearLayout_Official.setVisibility(View.INVISIBLE);
-                        for (int j = 0; j < mNoOfGuests; j++) {
-                            mFragGuestCountTag++;
-                            mFragMan = getSupportFragmentManager();
-                            mFragTran = mFragMan.beginTransaction();
-                            String tag = String.valueOf(mFragGuestCountTag);
-                            FragmentPersonalGuestHeader mFacultyAddFrag = FragmentPersonalGuestHeader.newInstance(tag, "MALE", "Room ID: 1");
-                            mFragTran.add(R.id.allguestDetailfragmentsPlaceHolder, mFacultyAddFrag, tag);
-                            mFragTran.commit();
                         }
-                        for (int j = 0; j < mNoOfGuests; j++) {
-                            mFragGuestCountTag++;
-                            mFragMan = getSupportFragmentManager();
-                            mFragTran = mFragMan.beginTransaction();
-                            String tag = String.valueOf(mFragGuestCountTag);
-                            FragmentPersonalGuestHeader mFacultyAddFrag = FragmentPersonalGuestHeader.newInstance(tag, "FEMALE", "Room ID: 2");
-                            mFragTran.add(R.id.allguestDetailfragmentsPlaceHolder, mFacultyAddFrag, tag);
-                            mFragTran.commit();
-                        }
-//                        flag=false;
 
-                    //}
-//                    else
-//                    {
-//                        System.out.println("Show ===========>fragments without adding any new");
-//                    }
+                    LinearLayout linearLayout_Personal = (LinearLayout) findViewById(R.id.layout_personalBookings);
+                    linearLayout_Personal.setVisibility(View.VISIBLE);
+                    LinearLayout linearLayout_Official = (LinearLayout) findViewById(R.id.layout_officialBookings);
+                    linearLayout_Official.setVisibility(View.INVISIBLE);
+
+                        for (Map.Entry<String,RoomItem> entry : FacultyHomeActivity.mAllRoomsDetails.entrySet())
+                        {
+                            String roomTagKey = entry.getKey();
+                            RoomItem roomDetails = entry.getValue();
+                            int mFemaleCount = roomDetails.mFemaleCount;
+                            int mMaleCount = roomDetails.mMaleCount;
+                            String id = roomDetails.id;
+                            int mRoomPrice = roomDetails.mRoomPrice;
+                            int mRoomType = roomDetails.mRoomType;
+                            String  roomPref  = roomDetails.roomPref;
+                            for(int k=0;k<mMaleCount;k++)
+                            {
+                                mFragGuestCountTag++;
+                                mFragMan = getSupportFragmentManager();
+                                mFragTran = mFragMan.beginTransaction();
+                                String tag = String.valueOf(mFragGuestCountTag);
+                                FragmentPersonalGuestDetails mFacultyAddFrag = FragmentPersonalGuestDetails.newInstance(tag, "MALE", "Room ID: "+id,String.valueOf(mRoomType),roomPref);
+                                mFragTran.add(R.id.allguestDetailfragmentsPlaceHolder, mFacultyAddFrag, tag);
+                                mFragTran.commit();
+                            }
+                            for(int k=0;k<mFemaleCount;k++)
+                            {
+                                mFragGuestCountTag++;
+                                mFragMan = getSupportFragmentManager();
+                                mFragTran = mFragMan.beginTransaction();
+                                String tag = String.valueOf(mFragGuestCountTag);
+                                FragmentPersonalGuestDetails mFacultyAddFrag = FragmentPersonalGuestDetails.newInstance(tag, "FEMALE", "Room ID: "+id,String.valueOf(mRoomType),roomPref);
+                                mFragTran.add(R.id.allguestDetailfragmentsPlaceHolder, mFacultyAddFrag, tag);
+                                mFragTran.commit();
+                            }
+                        }
 
                 }
                 if(i==1)
                 {
+
+                    if (mFragMan!=null) {
+                        for(Fragment fragment:getSupportFragmentManager().getFragments()){
+
+                            getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+                        }
+                    }
+
                     LinearLayout linearLayout_Personal = (LinearLayout) findViewById(R.id.layout_personalBookings);
                     linearLayout_Personal.setVisibility(View.GONE);
                     LinearLayout linearLayout_Official = (LinearLayout) findViewById(R.id.layout_officialBookings);
                     linearLayout_Official.setVisibility(View.VISIBLE);
+
+
+                    for (Map.Entry<String,RoomItem> entry : FacultyHomeActivity.mAllRoomsDetails.entrySet())
+                    {
+                        String roomTagKey = entry.getKey();
+                        RoomItem roomDetails = entry.getValue();
+                        int mFemaleCount = roomDetails.mFemaleCount;
+                        int mMaleCount = roomDetails.mMaleCount;
+                        String id = roomDetails.id;
+                        int mRoomPrice = roomDetails.mRoomPrice;
+                        int mRoomType = roomDetails.mRoomType;
+                        String  roomPref  = roomDetails.roomPref;
+                        for(int k=0;k<mMaleCount;k++)
+                        {
+                            mFragGuestCountTag++;
+                            mFragMan = getSupportFragmentManager();
+                            mFragTran = mFragMan.beginTransaction();
+                            String tag = String.valueOf(mFragGuestCountTag);
+                            FragmentOfficialGuestDetails mFacultyAddFrag = FragmentOfficialGuestDetails.newInstance(tag, "MALE", "Room ID: "+id,String.valueOf(mRoomType),roomPref);
+                            mFragTran.add(R.id.allguestDetailOfficialFragmentsPlaceHolder, mFacultyAddFrag, tag);
+                            mFragTran.commit();
+                        }
+                        for(int k=0;k<mFemaleCount;k++)
+                        {
+                            mFragGuestCountTag++;
+                            mFragMan = getSupportFragmentManager();
+                            mFragTran = mFragMan.beginTransaction();
+                            String tag = String.valueOf(mFragGuestCountTag);
+                            FragmentOfficialGuestDetails mFacultyAddFrag = FragmentOfficialGuestDetails.newInstance(tag, "FEMALE", "Room ID: "+id,String.valueOf(mRoomType),roomPref);
+                            mFragTran.add(R.id.allguestDetailOfficialFragmentsPlaceHolder, mFacultyAddFrag, tag);
+                            mFragTran.commit();
+                        }
+                    }
+
+
                 }
             }
 
