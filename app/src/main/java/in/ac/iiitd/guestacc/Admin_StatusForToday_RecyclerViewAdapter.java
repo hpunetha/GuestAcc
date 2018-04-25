@@ -1,6 +1,8 @@
 package in.ac.iiitd.guestacc;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +37,8 @@ public class Admin_StatusForToday_RecyclerViewAdapter extends RecyclerView.Adapt
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.mTextViewRoom.setText(mData.get(position).getRoomNameStatusForToday());
+        holder.mAdminStatusForTodayCardView.setCardBackgroundColor(Color.GREEN);
+
     }
 
     @Override
@@ -45,9 +49,11 @@ public class Admin_StatusForToday_RecyclerViewAdapter extends RecyclerView.Adapt
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
         TextView mTextViewRoom;
+        CardView mAdminStatusForTodayCardView;
         public MyViewHolder(View itemView){
             super(itemView);
 
+            mAdminStatusForTodayCardView = (CardView)itemView.findViewById(R.id.admin_status_for_today_cardView);
             mTextViewRoom = (TextView)itemView.findViewById(R.id.text_roomid);
         }
     }
