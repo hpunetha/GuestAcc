@@ -166,14 +166,17 @@ public class Admin_HomeFragment extends Fragment {
                                 String males ;
                                 String females ;
                                 String projectName ;
+                                List<Admin_Data_PendingApproval_RoomData> roomsData ;
+                                Log.i("guests", String.valueOf(dataSnapshot.child("guests").getChildrenCount()));
+                                //if()
 
                                 //Log.i("requestIdkey",dataSnapshot.getKey());
                                 //Log.i("requestIdcount", String.valueOf(dataSnapshot.getChildrenCount()));
-                                reqID = requestId;
-                                date = fromDate;
-                                fundedBy = dataSnapshot.child("funded_by").getValue().toString();
-                                reason = dataSnapshot.child("purpose_of_visit").getValue().toString();
-                                projectName = dataSnapshot.child("fundedby_project_pname").getValue().toString();
+                                //reqID = requestId;
+                                //date = fromDate;
+                                //fundedBy = dataSnapshot.child("funded_by").getValue().toString();
+                                //reason = dataSnapshot.child("purpose_of_visit").getValue().toString();
+                                //projectName = dataSnapshot.child("fundedby_project_pname").getValue().toString();
 
                                 //mAdminPendingApprovalData.add(new Admin_Data_PendingApproval(reqID,date,type,fundedBy,reason,males,females,projectName));
                             }
