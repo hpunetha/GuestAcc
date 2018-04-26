@@ -33,24 +33,6 @@
             app:layout_constraintVertical_bias="1.0">
 
 
-            <TextView
-                android:id="@+id/textViewCheckAvail"
-                style="@style/Widget.AppCompat.EditText"
-
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/custombtn1"
-                android:paddingEnd="10dp"
-                android:paddingStart="10dp"
-                android:text="@string/check_availability"
-                android:textAlignment="center"
-                android:textAllCaps="false"
-                android:textSize="16sp" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"

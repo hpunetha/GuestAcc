@@ -22,7 +22,7 @@
     <string name="more_options">More Options...</string>
     <string name="inr">INR 1500</string>
     <string name="cardVal">0</string>
-    <string name="check_avail">Check Availability</string>
+    <string name="check_avail">Home</string>
     <string name="avail_rooms">Available Rooms</string>
     <string name="avail">"Available : "</string>
     <string name="errormsg">"Error : "</string>
