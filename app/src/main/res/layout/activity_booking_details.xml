@@ -197,7 +197,7 @@
 
                             <Spinner
                                 android:layout_marginTop="10dp"
-                                android:id="@+id/spinner_official_personal_funding"
+                                android:id="@+id/spinner_official_personal_funding_payedby"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content">
                             </Spinner>
@@ -215,7 +215,12 @@
                     android:text="Guest details: "
                     android:layout_marginBottom="10dp"
                     style="@style/TextView"/>
-
+                <LinearLayout
+                    android:id="@+id/allguestDetailOfficialFragmentsPlaceHolder"
+                    android:layout_width="325dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                </LinearLayout>
 
             </LinearLayout>
 

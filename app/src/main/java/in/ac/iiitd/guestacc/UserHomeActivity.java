@@ -68,7 +68,7 @@ public class UserHomeActivity extends AppCompatActivity {
 
         //mImageBtnMenu.setVisibility(View.INVISIBLE);
 
-        final FloatingActionButton mFloatActionBtnMenu = (FloatingActionButton) findViewById(R.id.floatActionBtnMenu);
+        //final FloatingActionButton mFloatActionBtnMenu = (FloatingActionButton) findViewById(R.id.floatActionBtnMenu);
         mRoomNum=0;
         mMaleNum=0;
         mFemNum=0;
@@ -225,67 +225,67 @@ public class UserHomeActivity extends AppCompatActivity {
         //Taken code end
 
 
-        mFloatActionBtnMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mLinearLayoutParent.setAlpha(0.5f);
-                mMenuPressCount++;
-                mFloatActionBtnMenu.setImageResource(R.drawable.menuicon2);
+//        mFloatActionBtnMenu.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                mLinearLayoutParent.setAlpha(0.5f);
+//                mMenuPressCount++;
+//                mFloatActionBtnMenu.setImageResource(R.drawable.menuicon2);
+//
+//
+//
+//                PopupMenu mPopup = new PopupMenu(UserHomeActivity.this,mFloatActionBtnMenu);
+//                mPopup.getMenuInflater().inflate(R.menu.user_popupmenu,mPopup.getMenu());
+//
+//                mPopup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//                    @Override
+//                    public boolean onMenuItemClick(MenuItem menuItem) {
+//
+//                        switch (menuItem.getItemId())
+//                        {
+//                            case R.id.itemMyBookings:
+//                                Toast.makeText(UserHomeActivity.this, menuItem.getTitle(), Toast.LENGTH_SHORT).show();
+//
+//                                break;
+//                            case R.id.itemViewAvail:
+//                                Toast.makeText(UserHomeActivity.this, menuItem.getTitle(), Toast.LENGTH_SHORT).show();
+//
+//                                break;
+//                            case R.id.itemFAQs:
+//                                Toast.makeText(UserHomeActivity.this, menuItem.getTitle(), Toast.LENGTH_SHORT).show();
+//
+//                                break;
+//                            case R.id.itemSignOut:
+//                                FirebaseAuth.getInstance().signOut();
+//                                Toast.makeText(UserHomeActivity.this, "Signed-Out", Toast.LENGTH_SHORT).show();
+//
+//
+//
+//                                Intent mSignOut = new Intent(UserHomeActivity.this, MainActivity.class);
+//                                mSignOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                                startActivity(mSignOut);
+//                                //UserHomeActivity.this.finish();
+//
+//                                break;
+//
+//                        }
+//
+//                        return true;
+//                    }
+//                });
 
-
-
-                PopupMenu mPopup = new PopupMenu(UserHomeActivity.this,mFloatActionBtnMenu);
-                mPopup.getMenuInflater().inflate(R.menu.user_popupmenu,mPopup.getMenu());
-
-                mPopup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-
-                        switch (menuItem.getItemId())
-                        {
-                            case R.id.itemMyBookings:
-                                Toast.makeText(UserHomeActivity.this, menuItem.getTitle(), Toast.LENGTH_SHORT).show();
-
-                                break;
-                            case R.id.itemViewAvail:
-                                Toast.makeText(UserHomeActivity.this, menuItem.getTitle(), Toast.LENGTH_SHORT).show();
-
-                                break;
-                            case R.id.itemFAQs:
-                                Toast.makeText(UserHomeActivity.this, menuItem.getTitle(), Toast.LENGTH_SHORT).show();
-
-                                break;
-                            case R.id.itemSignOut:
-                                FirebaseAuth.getInstance().signOut();
-                                Toast.makeText(UserHomeActivity.this, "Signed-Out", Toast.LENGTH_SHORT).show();
-
-
-
-                                Intent mSignOut = new Intent(UserHomeActivity.this, MainActivity.class);
-                                mSignOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(mSignOut);
-                                //UserHomeActivity.this.finish();
-
-                                break;
-
-                        }
-
-                        return true;
-                    }
-                });
-
-                mPopup.setOnDismissListener(new PopupMenu.OnDismissListener() {
-                    @Override
-                    public void onDismiss(PopupMenu popupMenu) {
-                        mFloatActionBtnMenu.setImageResource(R.drawable.menuicon);
-                        mLinearLayoutParent.setAlpha(1f);
-                    }
-                });
-
-                mPopup.show();
-
-            }
-        });
+//                mPopup.setOnDismissListener(new PopupMenu.OnDismissListener() {
+//                    @Override
+//                    public void onDismiss(PopupMenu popupMenu) {
+//                        mFloatActionBtnMenu.setImageResource(R.drawable.menuicon);
+//                        mLinearLayoutParent.setAlpha(1f);
+//                    }
+//                });
+//
+//                mPopup.show();
+//
+//            }
+//        });
 
         mBtnCheckAvail.setOnClickListener(new View.OnClickListener() {
             @Override

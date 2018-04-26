@@ -231,7 +231,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <android.support.design.widget.FloatingActionButton
+       <!-- <android.support.design.widget.FloatingActionButton
             android:id="@+id/floatActionBtnMenu"
             android:layout_width="56dp"
             android:layout_height="56dp"
@@ -242,7 +242,7 @@
             android:scaleType="fitCenter"
             android:clickable="true"
             android:focusable="false"
-            app:srcCompat="@drawable/menuicon" />
+            app:srcCompat="@drawable/menuicon" />-->
 
     </RelativeLayout>
 
