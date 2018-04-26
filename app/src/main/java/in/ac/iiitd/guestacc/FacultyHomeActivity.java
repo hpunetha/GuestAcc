@@ -553,7 +553,7 @@ public class FacultyHomeActivity extends AppCompatActivity
                             {
                                 final String tempDateString = child.getKey();
 
-                                if (dataSnapshot.getChildrenCount() != 0)
+                                if (child.getChildrenCount() != 0)
                                 {
                                     Log.i("Bookings", "Bookings for " + tempDateString + " children " + dataSnapshot.getChildren().toString());
 
@@ -564,72 +564,96 @@ public class FacultyHomeActivity extends AppCompatActivity
 
                                             Log.i("id booking", "id ->" + dbS.getKey() + " booking status->" + dbS.child("booking_status").getValue());
 
-                                            //String check ="completed";
-                                            String check = "pending approval";  //to be commented
-                                            if (dbS.child("booking_status").getValue().toString().equalsIgnoreCase(check)) {
-                                                //Check in completed bookings
+                                            if (dbS.getValue()!=null) {
 
-                                                Log.i("booking status check", "Condition true");
-
-                                                //DataSnapshot guestSnapshot = dataSnapshot.child("guests");
-                                                for (DataSnapshot guests : dbS.getChildren()) {
-                                                    //                                                Log.i("Loop Entered", "entered");
-                                                    if (guests.getKey().equalsIgnoreCase("guests")) {
-
-
-                                                        Log.i("Alloc check=>", guests.child("allocated_room").toString());
-                                                        Log.i("====To Check==="," " + mDateAvailableRooms.toString() + "  == " + guests.child("allocated_room"));
-                                                        if (mDateAvailableRooms.contains(guests.child("allocated_room").toString())) {
-                                                            //Log.i("Room already exists", " in Booked Rooms List => " + mBookedRoomList.toString() + " room type=>" + guests.child("allocated_room").toString());
-                                                            mDateAvailableRooms.remove(guests.child("allocated_room").toString());
-                                                        } else {
-                                                            //mBookedRoomList.add(guests.child("allocated_room").toString());
-
-                                                            // Log.i("Room Added", " to Booked Rooms List => " + mBookedRoomList.toString());
-
-
-                                                        }
-                                                    } else {
-                                                        //                                                    Log.i("Loop Entered Else", "Else Condition Invoked");
-
-                                                    }
-                                                }
+                                                Booking mAdminBooking = dataSnapshot.getValue(Booking.class);
+                                                if (mAdminBooking.guests.size()>0)
+                                                    Log.i("INSIDETAG", mAdminBooking.guests.get(0).associated_room_id);
 
                                             }
 
-                                            mAllDateRoomsAvailabilityCount.put(tempDateString, mDateAvailableRooms.size());
-                                            Log.i("Size of Rooms list", String.valueOf(mAllDateRoomsAvailabilityCount.toString()));
-
-
-                                            for (Map.Entry<String, Integer> entry : mAllDateRoomsAvailabilityCount.entrySet()) {
-                                                String d = entry.getKey();
-                                                Integer val = entry.getValue();
-                                                //if (mTotalRooms > val) {
-                                                //disable below line and enable above one
-                                                if (mTotalRooms > 2) {
-                                                    Log.i("Total ROoms", String.valueOf(mTotalRooms));
-                                                    exitFlag = true;
-                                                    mProgDiag.dismiss();
-                                                    Snackbar.make(mFacHomeAct.btnCheckAvailFaculty, "Specified number of rooms not available for given period.", Snackbar.LENGTH_LONG)
-                                                            .setAction("Action", null).show();
-                                                    myRef.removeEventListener(this);
-//
-                                                   break;
-
-                                                }
-                                            }
-
-                                            if (exitFlag) {
-                                                Log.i("exitflag1", String.valueOf(exitFlag));
-                                                //
-                                                break;
-                                            }
-
-
-                                        } catch (NullPointerException e) {
-                                            e.printStackTrace();
-                                            continue;
                                         }
+                                        catch(Exception e)
+                                        {
+                                            e.printStackTrace();
+                                        }
+
+
+
+
+
+
+
+
+
+
+
+//                                            //String check ="completed";
+//                                            String check = "pending approval";  //to be commented
+//                                            if (dbS.child("booking_status").getValue().toString().equalsIgnoreCase(check)) {
+//                                                //Check in completed bookings
+//
+//                                                Log.i("booking status check", "Condition true");
+//
+//                                                //DataSnapshot guestSnapshot = dataSnapshot.child("guests");
+//                                                for (DataSnapshot guests : dbS.getChildren()) {
+//                                                    //                                                Log.i("Loop Entered", "entered");
+//                                                    if (guests.getKey().equalsIgnoreCase("guests")) {
+//
+//
+//                                                        Log.i("Alloc check=>", guests.child("allocated_room").toString());
+//                                                        Log.i("====To Check==="," " + mDateAvailableRooms.toString() + "  == " + guests.child("allocated_room"));
+//                                                        if (mDateAvailableRooms.contains(guests.child("allocated_room").toString())) {
+//                                                            //Log.i("Room already exists", " in Booked Rooms List => " + mBookedRoomList.toString() + " room type=>" + guests.child("allocated_room").toString());
+//                                                            mDateAvailableRooms.remove(guests.child("allocated_room").toString());
+//                                                        } else {
+//                                                            //mBookedRoomList.add(guests.child("allocated_room").toString());
+//
+//                                                            // Log.i("Room Added", " to Booked Rooms List => " + mBookedRoomList.toString());
+//
+//
+//                                                        }
+//                                                    } else {
+//                                                        //                                                    Log.i("Loop Entered Else", "Else Condition Invoked");
+//
+//                                                    }
+//                                                }
+//
+//                                            }
+//
+//                                            mAllDateRoomsAvailabilityCount.put(tempDateString, mDateAvailableRooms.size());
+//                                            Log.i("Size of Rooms list", String.valueOf(mAllDateRoomsAvailabilityCount.toString()));
+//
+//
+//                                            for (Map.Entry<String, Integer> entry : mAllDateRoomsAvailabilityCount.entrySet()) {
+//                                                String d = entry.getKey();
+//                                                Integer val = entry.getValue();
+//                                                //if (mTotalRooms > val) {
+//                                                //disable below line and enable above one
+//                                                if (mTotalRooms > 2) {
+//                                                    Log.i("Total ROoms", String.valueOf(mTotalRooms));
+//                                                    exitFlag = true;
+//                                                    mProgDiag.dismiss();
+//                                                    Snackbar.make(mFacHomeAct.btnCheckAvailFaculty, "Specified number of rooms not available for given period.", Snackbar.LENGTH_LONG)
+//                                                            .setAction("Action", null).show();
+//                                                    myRef.removeEventListener(this);
+////
+//                                                   break;
+//
+//                                                }
+//                                            }
+//
+//                                            if (exitFlag) {
+//                                                Log.i("exitflag1", String.valueOf(exitFlag));
+//                                                //
+//                                                break;
+//                                            }
+//
+//
+//                                        } catch (NullPointerException e) {
+//                                            e.printStackTrace();
+//                                            continue;
+//                                        }
                                     }
                                 } else {
                                     Log.i("No Bookings ", "No Bookings for date " + tempDateString);
