@@ -54,7 +54,7 @@ public class Admin_HomeFragment extends Fragment {
         mTextViewVerifyPayment = (TextView) adminHomeView.findViewById(R.id.adminHomeVerifyPayment);
         mTextViewPendingApproval = (TextView) adminHomeView.findViewById(R.id.adminHomePendingApproval);
         mAdminPendingApprovalData = new ArrayList<>();
-        Log.i("Checknull",mTextViewAvailableRooms.getText().toString());
+        Log.i("Checknull", mTextViewAvailableRooms.getText().toString());
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Loading.... Please Wait");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -62,11 +62,11 @@ public class Admin_HomeFragment extends Fragment {
         progressDialog.show();
 
 
-        new getStatusForToday().execute("");
-        new getPendingApproval().execute("");
-        new getVerifyPayment().execute("");
-        new getFacultyRequest().execute("");
-        new getProgressLoading().execute("");
+        new getStatusForToday().execute();
+        new getPendingApproval().execute();
+        new getVerifyPayment().execute();
+        new getFacultyRequest().execute();
+        new getProgressLoading().execute();
 
         progressDialog.dismiss();
 
@@ -78,7 +78,7 @@ public class Admin_HomeFragment extends Fragment {
         adminHomeCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent adminStatusForTodayIntent = new Intent(getActivity(),Admin_StatusForToday_MainScreen.class);
+                Intent adminStatusForTodayIntent = new Intent(getActivity(), Admin_StatusForToday_MainScreen.class);
                 startActivity(adminStatusForTodayIntent);
             }
         });
@@ -115,7 +115,7 @@ public class Admin_HomeFragment extends Fragment {
         return adminHomeView;
     }
 
-    private class getProgressLoading extends AsyncTask<String,String,String>{
+    private class getProgressLoading extends AsyncTask<String, String, String> {
 
         @Override
         protected String doInBackground(String... strings) {
@@ -145,30 +145,58 @@ public class Admin_HomeFragment extends Fragment {
                     mTextViewPendingApproval.setText(String.valueOf(dataSnapshot.getChildrenCount()) + " Requests");
                     //To clear Pending data
                     mAdminPendingApprovalData.clear();
-                    for (DataSnapshot val: dataSnapshot.getChildren()){
+                    for (DataSnapshot val : dataSnapshot.getChildren()) {
                         Log.i("request", val.getKey());
-                        Log.i("request",val.child("from_date").getValue().toString());
+                        Log.i("request", val.child("from_date").getValue().toString());
                         //requestId = val.child("2018-04-27").getValue().toString();
                         //Log.i("request",val.child())
 
                         requestId = val.getKey();
                         fromDate = val.child("from_date").getValue().toString();
 
-                        mFireBaseReferencePendingApproval = FirebaseDatabase.getInstance().getReference("bookings_final/"+fromDate+"/"+requestId);
+                        mFireBaseReferencePendingApproval = FirebaseDatabase.getInstance().getReference("bookings_final/" + fromDate + "/" + requestId);
                         mFireBaseReferencePendingApproval.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                String reqID ;
-                                String date ;
-                                String type ;
-                                String fundedBy ;
-                                String reason ;
-                                String males ;
-                                String females ;
-                                String projectName ;
-                                List<Admin_Data_PendingApproval_RoomData> roomsData ;
+                                String reqID;
+                                String date;
+                                String type;
+                                String fundedBy;
+                                String reason;
+                                String males;
+                                String females;
+                                String projectName;
+                                List<Admin_Data_PendingApproval_RoomData> roomsData = new ArrayList<>();
+                                String guest1 = null;
+                                String guest2 = null;
+                                String preference = null;
+                                //HashMap<String,ArrayList<String>> rooms = new HashMap<>();
+                                //String roomIdTemp = null;
                                 Log.i("guests", String.valueOf(dataSnapshot.child("guests").getChildrenCount()));
-                                //if()
+                                if (dataSnapshot.child("guests").getChildrenCount() != 0) {
+                                    for (DataSnapshot val : dataSnapshot.child("guests").getChildren()) {
+                                        Log.i("data", String.valueOf(val.child("name").getValue()));
+                                        Log.i("data", String.valueOf(val.child("associated_room_id").getValue()));
+
+                                        /*if (roomIdTemp == null) {
+                                            roomIdTemp = String.valueOf(val.child("associated_room_id").getValue());
+                                            guest1 = String.valueOf(val.child("name").getValue());
+                                            preference = String.valueOf(val.child("prefered_location").getValue());
+                                        } else if (roomIdTemp.equals(val.child("associated_room_id").getValue())) {
+                                            guest2 = String.valueOf(val.child("name").getValue());
+                                            roomsData.add(new Admin_Data_PendingApproval_RoomData(guest1,guest2,preference));
+                                            roomIdTemp = null;
+                                        }
+                                        else {
+                                            roomsData.add(new Admin_Data_PendingApproval_RoomData(guest1,null,preference));
+                                            roomIdTemp = null;
+                                            guest1 = String.valueOf(val.child("name").getValue());
+                                            preference = String.valueOf(val.child("prefered_location").getValue());
+                                        }*/
+
+
+                                    }
+                                }
 
                                 //Log.i("requestIdkey",dataSnapshot.getKey());
                                 //Log.i("requestIdcount", String.valueOf(dataSnapshot.getChildrenCount()));
@@ -290,7 +318,7 @@ public class Admin_HomeFragment extends Fragment {
 
                         mTextViewBookedRooms.setText("Booked Rooms: " + String.valueOf(mRoomSize - bookingsRooms.size()));
                         mTextViewAvailableRooms.setText("Available Rooms: " + String.valueOf(bookingsRooms.size()));
-                        Log.i("Checknull",mTextViewAvailableRooms.getText().toString());
+                        Log.i("Checknull", mTextViewAvailableRooms.getText().toString());
 
                     }
                 }
