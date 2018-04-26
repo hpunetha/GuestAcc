@@ -47,14 +47,18 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+/**
+ * Created by hpunetha on 4/20/2018.
+ */
+
 public class FacultyHomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     //public static HashMap<String,RoomItem> mAllRoomsDetails;
     public static HashMap<String,RoomItem> mAllRoomsDetails;
 
-    private int mTotalRooms=0,mTotalMales=0,mTotalFemales=0,mTotalGuests=0;
-    private int mTotalPrice=0;
+    public static int mTotalRooms=0,mTotalMales=0,mTotalFemales=0,mTotalGuests=0;
+    public static int mTotalPrice=0;
 
     public static final String TOTALPRICE = "totalprice";
     public static final String TOTALROOMS = "totalrooms";
@@ -154,8 +158,8 @@ public class FacultyHomeActivity extends AppCompatActivity
                 if (mAllRoomsDetails.size()>0)
                 {
 
-                    mCheckAvailTask = new CheckAvailabilityTask(FacultyHomeActivity.this);
-                    mCheckAvailTask.execute();
+                    new CheckAvailabilityTask(FacultyHomeActivity.this).execute();
+
 
 //                Intent mBookingDetail = new Intent(FacultyHomeActivity.this, BookingDetail.class);
 //                startActivity(mBookingDetail);
@@ -439,17 +443,30 @@ public class FacultyHomeActivity extends AppCompatActivity
     }
 
 
-    class CheckAvailabilityTask extends AsyncTask<String,Boolean,Boolean>
+        class CheckAvailabilityTask extends AsyncTask<String,Void,Boolean>
     {
         Boolean exitFlag ;
         private FacultyHomeActivity mFacHomeAct;
-        List<String> mDateList;
+        List<String> mDateList,mFirebaseDateList;
+        List<String> mAllPossibleRoomsList;
+        HashMap<String,Integer> mAllDateRoomsAvailabilityCount;
+
 
         public CheckAvailabilityTask(FacultyHomeActivity activ)
         {
             this.mFacHomeAct = activ;
             this.exitFlag=false;
-            mDateList= new ArrayList<>();
+
+            mAllPossibleRoomsList = new ArrayList<>();
+            mAllPossibleRoomsList.add("bh1");
+            mAllPossibleRoomsList.add("gh1");
+            mAllPossibleRoomsList.add("bh2");
+            mAllPossibleRoomsList.add("gh2");
+            mAllPossibleRoomsList.add("frr1");
+            mAllPossibleRoomsList.add("frr2");
+            mAllPossibleRoomsList.add("frr3");
+            mAllPossibleRoomsList.add("frf1");
+            mAllPossibleRoomsList.add("frf2");
 
         }
 
@@ -469,20 +486,12 @@ public class FacultyHomeActivity extends AppCompatActivity
             Date mFromDate,mToDate1;
 
             final List<String> mBookedRoomList;
-            final List<String> mAllPossibleRoomsList = new ArrayList<>();
-            mAllPossibleRoomsList.add("bh1");
-            mAllPossibleRoomsList.add("gh1");
-            mAllPossibleRoomsList.add("bh2");
-            mAllPossibleRoomsList.add("gh2");
-            mAllPossibleRoomsList.add("frr1");
-            mAllPossibleRoomsList.add("frr2");
-            mAllPossibleRoomsList.add("frr3");
-            mAllPossibleRoomsList.add("frf1");
-            mAllPossibleRoomsList.add("frf2");
 
+            mDateList= new ArrayList<>();
             Calendar mCalender;
             mFromDate=mToDate;
 
+            mFirebaseDateList = new ArrayList<>();
             Log.i("sendToDate",mSendToDate);
             Log.i("fromDate",mSendFromDate);
 
@@ -511,7 +520,7 @@ public class FacultyHomeActivity extends AppCompatActivity
                 final DatabaseReference myRef;
                 String basetable ="bookings_final";
 
-                final HashMap<String,Integer> mAllDateRoomsAvailabilityCount = new HashMap<>();
+               mAllDateRoomsAvailabilityCount = new HashMap<>();
 
 
 
@@ -525,13 +534,21 @@ public class FacultyHomeActivity extends AppCompatActivity
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot)
                     {
+//                        for(DataSnapshot child : dataSnapshot.getChildren() )
+//                        {
+//
+//
+//                        }
+
+                        Log.i("DATA SNAP START",dataSnapshot.toString());
+
 
                         for(DataSnapshot child : dataSnapshot.getChildren() )
-                        {
+                        {   exitFlag=false;
                             List<String> mDateAvailableRooms = new ArrayList<>();
 
                             mDateAvailableRooms = mAllPossibleRoomsList;
-
+                            Log.i("Retrieving child", " child key => "+child.getKey() + " and mDateList" + mDateList);
                             if (mDateList.contains(child.getKey()))
                             {
                                 final String tempDateString = child.getKey();
@@ -561,6 +578,7 @@ public class FacultyHomeActivity extends AppCompatActivity
 
 
                                                         Log.i("Alloc check=>", guests.child("allocated_room").toString());
+                                                        Log.i("====To Check==="," " + mDateAvailableRooms.toString() + "  == " + guests.child("allocated_room"));
                                                         if (mDateAvailableRooms.contains(guests.child("allocated_room").toString())) {
                                                             //Log.i("Room already exists", " in Booked Rooms List => " + mBookedRoomList.toString() + " room type=>" + guests.child("allocated_room").toString());
                                                             mDateAvailableRooms.remove(guests.child("allocated_room").toString());
@@ -594,7 +612,7 @@ public class FacultyHomeActivity extends AppCompatActivity
                                                     mProgDiag.dismiss();
                                                     Snackbar.make(mFacHomeAct.btnCheckAvailFaculty, "Specified number of rooms not available for given period.", Snackbar.LENGTH_LONG)
                                                             .setAction("Action", null).show();
-//                                                    myRef.removeEventListener(this);
+                                                    myRef.removeEventListener(this);
 //
                                                    break;
 

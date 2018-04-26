@@ -52,7 +52,7 @@ public class UserHomeActivity extends AppCompatActivity {
 
 
 
-        final TextView mTextViewCheckAvail = (TextView)findViewById(R.id.textViewCheckAvail);
+       // final TextView mTextViewCheckAvail = (TextView)findViewById(R.id.textViewCheckAvail);
         final EditText mEditTextFromDate= (EditText) findViewById(R.id.editTextFrom);
         final EditText mEditTextToDate= (EditText) findViewById(R.id.editTextTo);
         final EditText mEditTextRoomCount= (EditText) findViewById(R.id.editTextRoom);
@@ -84,8 +84,8 @@ public class UserHomeActivity extends AppCompatActivity {
         mEditTextFemaleCount.setText(mSetFemaleCount);
         // initialization ends
 
-        mTextViewCheckAvail.setTranslationY(-500f);
-        mTextViewCheckAvail.setAlpha(0f);
+        //mTextViewCheckAvail.setTranslationY(-500f);
+        //mTextViewCheckAvail.setAlpha(0f);
         mEditTextFromDate.setTranslationX(-500f);
         mEditTextFromDate.setAlpha(0f);
         mEditTextToDate.setTranslationX(500f);
@@ -96,7 +96,7 @@ public class UserHomeActivity extends AppCompatActivity {
         mEditTextMaleCount.setAlpha(0f);
 
         mEditTextFemaleCount.setTranslationX(500f);
-        mTextViewCheckAvail.animate().translationYBy(500f).alpha(1f).setDuration(400);
+        //mTextViewCheckAvail.animate().translationYBy(500f).alpha(1f).setDuration(400);
         mEditTextFromDate.animate().translationXBy(500f).alpha(1f).setDuration(400);
         mEditTextToDate.animate().translationXBy(-500f).alpha(1f).setDuration(400);
         mEditTextRoomCount.animate().translationXBy(500f).alpha(1f).setDuration(400);
