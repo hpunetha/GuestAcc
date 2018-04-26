@@ -448,8 +448,8 @@ public class FacultyHomeActivity extends AppCompatActivity
         Boolean exitFlag ;
         private FacultyHomeActivity mFacHomeAct;
         List<String> mDateList,mFirebaseDateList;
-        List<String> mAllPossibleRoomsList;
-        HashMap<String,Integer> mAllDateRoomsAvailabilityCount;
+
+        HashMap<String,Boolean> mAllDateRoomsAvailabilityCount;
 
 
         public CheckAvailabilityTask(FacultyHomeActivity activ)
@@ -457,16 +457,19 @@ public class FacultyHomeActivity extends AppCompatActivity
             this.mFacHomeAct = activ;
             this.exitFlag=false;
 
-            mAllPossibleRoomsList = new ArrayList<>();
-            mAllPossibleRoomsList.add("bh1");
-            mAllPossibleRoomsList.add("gh1");
-            mAllPossibleRoomsList.add("bh2");
-            mAllPossibleRoomsList.add("gh2");
-            mAllPossibleRoomsList.add("frr1");
-            mAllPossibleRoomsList.add("frr2");
-            mAllPossibleRoomsList.add("frr3");
-            mAllPossibleRoomsList.add("frf1");
-            mAllPossibleRoomsList.add("frf2");
+
+            mAllDateRoomsAvailabilityCount = new HashMap<>();
+            mAllDateRoomsAvailabilityCount.put("bh1",true);
+            mAllDateRoomsAvailabilityCount.put("bh2",true);
+            mAllDateRoomsAvailabilityCount.put("gh1",true);
+            mAllDateRoomsAvailabilityCount.put("gh2",true);
+            mAllDateRoomsAvailabilityCount.put("frr1",true);
+            mAllDateRoomsAvailabilityCount.put("frr2",true);
+            mAllDateRoomsAvailabilityCount.put("frr3",true);
+            mAllDateRoomsAvailabilityCount.put("frf1",true);
+            mAllDateRoomsAvailabilityCount.put("frf2",true);
+
+
 
         }
 
@@ -497,7 +500,8 @@ public class FacultyHomeActivity extends AppCompatActivity
 
             //Reference=> https://stackoverflow.com/questions/4216745/java-string-to-date-conversion
             DateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH);
-            try {
+            try
+            {
                 mFromDate = mDateFormat.parse(mSendFromDate);
                 mToDate1 = mDateFormat.parse(mSendToDate);
                 // Reference=>   https://stackoverflow.com/questions/2689379/how-to-get-a-list-of-dates-between-two-dates-in-java
@@ -518,9 +522,9 @@ public class FacultyHomeActivity extends AppCompatActivity
                 Log.i("Date List",mDateList.toString());
 
                 final DatabaseReference myRef;
-                String basetable ="bookings_final";
+               // String basetable ="bookings_final";
+                String basetable ="bookings_final_test";
 
-               mAllDateRoomsAvailabilityCount = new HashMap<>();
 
 
 
@@ -532,180 +536,134 @@ public class FacultyHomeActivity extends AppCompatActivity
 
                 myRef.addValueEventListener(new ValueEventListener() {
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshot)
-                    {
+                    public void onDataChange(DataSnapshot dataSnapshot) {
 //                        for(DataSnapshot child : dataSnapshot.getChildren() )
 //                        {
 //
 //
 //                        }
 
-                        Log.i("DATA SNAP START",dataSnapshot.toString());
+                        Log.i("DATA SNAP START", dataSnapshot.toString());
 
 
-                        for(DataSnapshot child : dataSnapshot.getChildren() )
-                        {   exitFlag=false;
-                            List<String> mDateAvailableRooms = new ArrayList<>();
+                        for (DataSnapshot child : dataSnapshot.getChildren()) {
+                            exitFlag = false;
 
-                            mDateAvailableRooms = mAllPossibleRoomsList;
-                            Log.i("Retrieving child", " child key => "+child.getKey() + " and mDateList" + mDateList);
+                            Log.i("Retrieving child", " child key => " + child.getKey() + " and mDateList" + mDateList);
                             if (mDateList.contains(child.getKey()))
                             {
                                 final String tempDateString = child.getKey();
 
-                                if (child.getChildrenCount() != 0)
-                                {
+                                if (child.getChildrenCount() != 0) {
                                     Log.i("Bookings", "Bookings for " + tempDateString + " children " + dataSnapshot.getChildren().toString());
 
-                                    for (DataSnapshot dbS : child.getChildren())
-                                    {
-                                        try
-                                        {
+                                    for (DataSnapshot dbS : child.getChildren()) {
+                                        try {
 
                                             Log.i("id booking", "id ->" + dbS.getKey() + " booking status->" + dbS.child("booking_status").getValue());
 
-                                            if (dbS.getValue()!=null) {
+                                            if (dbS.getValue() != null) {}
 
-                                                Booking mAdminBooking = dataSnapshot.getValue(Booking.class);
-                                                if (mAdminBooking.guests.size()>0)
-                                                    Log.i("INSIDETAG", mAdminBooking.guests.get(0).associated_room_id);
+                                                Booking mAdminBooking = dbS.getValue(Booking.class);
+                                                // if (mAdminBooking.guests.size()>0)
+                                                Log.i("INSIDETAG", mAdminBooking.booking_status);
+
+                                                // pending_approval change to completed
+                                                if (mAdminBooking.booking_status.equalsIgnoreCase("pending_approval"))
+                                                {
+
+
+                                                    if (mAdminBooking.guests.size() > 0) {
+                                                        for (Guest guest1 : mAdminBooking.guests) {
+
+                                                            Log.i("Check Keys",mAllDateRoomsAvailabilityCount.keySet().toString() + "  =? " + guest1.allocated_room);
+
+                                                            if (mAllDateRoomsAvailabilityCount.keySet().contains(guest1.allocated_room)) {
+                                                                mAllDateRoomsAvailabilityCount.put(guest1.allocated_room,false);
+
+
+                                                            }
+                                                        }
+
+                                                        Log.i("Final Hashmap",mAllDateRoomsAvailabilityCount.toString());
+
+
+                                                    }
+
+
+//                                                    Log.i("INSIDETAG", mAdminBooking.guests.get(0).associated_room_id);
+
+                                                }
 
                                             }
-
-                                        }
                                         catch(Exception e)
-                                        {
-                                            e.printStackTrace();
+                                            {
+                                                e.printStackTrace();
+                                            }
+
+
                                         }
+                                    } else{
+                                        Log.i("No Bookings ", "No Bookings for date " + tempDateString);
 
 
-
-
-
-
-
-
-
-
-
-//                                            //String check ="completed";
-//                                            String check = "pending approval";  //to be commented
-//                                            if (dbS.child("booking_status").getValue().toString().equalsIgnoreCase(check)) {
-//                                                //Check in completed bookings
-//
-//                                                Log.i("booking status check", "Condition true");
-//
-//                                                //DataSnapshot guestSnapshot = dataSnapshot.child("guests");
-//                                                for (DataSnapshot guests : dbS.getChildren()) {
-//                                                    //                                                Log.i("Loop Entered", "entered");
-//                                                    if (guests.getKey().equalsIgnoreCase("guests")) {
-//
-//
-//                                                        Log.i("Alloc check=>", guests.child("allocated_room").toString());
-//                                                        Log.i("====To Check==="," " + mDateAvailableRooms.toString() + "  == " + guests.child("allocated_room"));
-//                                                        if (mDateAvailableRooms.contains(guests.child("allocated_room").toString())) {
-//                                                            //Log.i("Room already exists", " in Booked Rooms List => " + mBookedRoomList.toString() + " room type=>" + guests.child("allocated_room").toString());
-//                                                            mDateAvailableRooms.remove(guests.child("allocated_room").toString());
-//                                                        } else {
-//                                                            //mBookedRoomList.add(guests.child("allocated_room").toString());
-//
-//                                                            // Log.i("Room Added", " to Booked Rooms List => " + mBookedRoomList.toString());
-//
-//
-//                                                        }
-//                                                    } else {
-//                                                        //                                                    Log.i("Loop Entered Else", "Else Condition Invoked");
-//
-//                                                    }
-//                                                }
-//
-//                                            }
-//
-//                                            mAllDateRoomsAvailabilityCount.put(tempDateString, mDateAvailableRooms.size());
-//                                            Log.i("Size of Rooms list", String.valueOf(mAllDateRoomsAvailabilityCount.toString()));
-//
-//
-//                                            for (Map.Entry<String, Integer> entry : mAllDateRoomsAvailabilityCount.entrySet()) {
-//                                                String d = entry.getKey();
-//                                                Integer val = entry.getValue();
-//                                                //if (mTotalRooms > val) {
-//                                                //disable below line and enable above one
-//                                                if (mTotalRooms > 2) {
-//                                                    Log.i("Total ROoms", String.valueOf(mTotalRooms));
-//                                                    exitFlag = true;
-//                                                    mProgDiag.dismiss();
-//                                                    Snackbar.make(mFacHomeAct.btnCheckAvailFaculty, "Specified number of rooms not available for given period.", Snackbar.LENGTH_LONG)
-//                                                            .setAction("Action", null).show();
-//                                                    myRef.removeEventListener(this);
-////
-//                                                   break;
-//
-//                                                }
-//                                            }
-//
-//                                            if (exitFlag) {
-//                                                Log.i("exitflag1", String.valueOf(exitFlag));
-//                                                //
-//                                                break;
-//                                            }
-//
-//
-//                                        } catch (NullPointerException e) {
-//                                            e.printStackTrace();
-//                                            continue;
-//                                        }
                                     }
-                                } else {
-                                    Log.i("No Bookings ", "No Bookings for date " + tempDateString);
-
 
                                 }
-                                Log.i("exitflag2", String.valueOf(exitFlag));
+
+
+
+
+
+                            }
+
+                            int count=0;
+                            for (Map.Entry<String,Boolean> entry : mAllDateRoomsAvailabilityCount.entrySet())
+                            {
+                                Boolean val =  entry.getValue();
+
+                                if (val)
+                                {
+                                    count+=1;
+                                }
+
+                            }
+
+                            if (count > mTotalRooms)
+                            {
+                                Log.i("YIPPIE", " ================Rooms can be booked now=======================");
+                                mProgDiag.dismiss();
+
+                                Intent mBookingDetail = new Intent(FacultyHomeActivity.this, BookingDetail.class);
+                                startActivity(mBookingDetail);
+                            }
+                            else
+                            {
+                                mProgDiag.dismiss();
                             }
 
 
 
-                            if (exitFlag) {
-                                Log.i("exitflag3", String.valueOf(exitFlag));
-                                //
-                                break;
-                            }
+
+
 
 
                         }
 
-
-                        if(!exitFlag)
-                        {
-                            mProgDiag.dismiss();
-
-                            Intent mBookingDetail = new Intent(FacultyHomeActivity.this, BookingDetail.class);
-                            startActivity(mBookingDetail);
-
-                        }
-
-
-
-                    }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
 
                     }
+
                 });
 
 
-
-
-
-
-            } catch (ParseException e) {
-                e.printStackTrace();
             }
-
-            Log.i("exitflagfinal",String.valueOf(exitFlag));
-
-
+            catch (ParseException e1)
+            {
+            e1.printStackTrace();
+            }
 
 
             return exitFlag;
