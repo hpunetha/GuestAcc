@@ -22,8 +22,10 @@ public class Booking  implements Serializable {
     public String purpose_of_visit;
     public String request_type_personal_or_official;
     public String timestamp;
-
     public String raised_on;
+    public String total_booking_price;
+    public ArrayList<Guest> guests = new ArrayList<Guest>();
+
 
     public String getFundedby_personalbooking() {
         return fundedby_personalbooking;
@@ -145,9 +147,6 @@ public class Booking  implements Serializable {
     public void setTotal_booking_price(String total_booking_price) {
         this.total_booking_price = total_booking_price;
     }
-
-    public String total_booking_price;
-    public ArrayList<Guest> guests = new ArrayList<Guest>();
 
     public String getRaised_on() {
         return raised_on;
