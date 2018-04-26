@@ -14,13 +14,42 @@ public class Booking  implements Serializable {
     public String fundedby_institute_details;
     public String fundedby_project_pinvestigator;
     public String fundedby_project_pname;
-    public String fundedby_self;
-    public String fundedby_visitor;
+    public String fundedby_personalbooking; //Self,Visitor
+    public String fundedby_personal_officialbooking; //True
+    public String paidby_personal_officialbooking;//Self,Visitor
     public String modification_reason;
     public String no_of_days;
     public String purpose_of_visit;
     public String request_type_personal_or_official;
     public String timestamp;
+    public String raised_on;
+    public String total_booking_price;
+    public ArrayList<Guest> guests = new ArrayList<Guest>();
+
+
+    public String getFundedby_personalbooking() {
+        return fundedby_personalbooking;
+    }
+
+    public void setFundedby_personalbooking(String fundedby_personalbooking) {
+        this.fundedby_personalbooking = fundedby_personalbooking;
+    }
+
+    public String getFundedby_personal_officialbooking() {
+        return fundedby_personal_officialbooking;
+    }
+
+    public void setFundedby_personal_officialbooking(String fundedby_personal_officialbooking) {
+        this.fundedby_personal_officialbooking = fundedby_personal_officialbooking;
+    }
+
+    public String getPaidby_personal_officialbooking() {
+        return paidby_personal_officialbooking;
+    }
+
+    public void setPaidby_personal_officialbooking(String paidby_personal_officialbooking) {
+        this.paidby_personal_officialbooking = paidby_personal_officialbooking;
+    }
 
     public String getBooking_status() {
         return booking_status;
@@ -70,21 +99,6 @@ public class Booking  implements Serializable {
         this.fundedby_project_pname = fundedby_project_pname;
     }
 
-    public String getFundedby_self() {
-        return fundedby_self;
-    }
-
-    public void setFundedby_self(String fundedby_self) {
-        this.fundedby_self = fundedby_self;
-    }
-
-    public String getFundedby_visitor() {
-        return fundedby_visitor;
-    }
-
-    public void setFundedby_visitor(String fundedby_visitor) {
-        this.fundedby_visitor = fundedby_visitor;
-    }
 
     public String getModification_reason() {
         return modification_reason;
@@ -134,6 +148,11 @@ public class Booking  implements Serializable {
         this.total_booking_price = total_booking_price;
     }
 
-    public String total_booking_price;
-    public ArrayList<Guest> guests = new ArrayList<Guest>();
+    public String getRaised_on() {
+        return raised_on;
+    }
+
+    public void setRaised_on(String raised_on) {
+        this.raised_on = raised_on;
+    }
 }
