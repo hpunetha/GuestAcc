@@ -1,5 +1,6 @@
 package in.ac.iiitd.guestacc;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,12 +27,20 @@ public class Admin_ValidatePayment extends AppCompatActivity implements Admin_Va
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_validate_payment);
 
+        ProgressDialog progress = new ProgressDialog(this);
+        progress.setMessage("Loading...Please Wait ");
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progress.setIndeterminate(true);
+        //progress.show();
+       // progress.dismiss();
+
         List<Admin_Data_ValidatePayment> data = new ArrayList<>();
 
         for(int i=0;i<20;i++)
         {
             data.add(new Admin_Data_ValidatePayment()) ;
         }
+
 
         recyclerView = (RecyclerView)findViewById(R.id.validate_payment_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -41,6 +50,8 @@ public class Admin_ValidatePayment extends AppCompatActivity implements Admin_Va
         adapter.setClickListener(this);
 
         recyclerView.setAdapter(adapter);
+
+
     }
 
     @Override
