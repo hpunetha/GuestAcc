@@ -17,6 +17,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import java.time.format.DateTimeFormatter;
@@ -46,8 +47,15 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
     public static int mFragGuestCountTag=0;
     public static int mNoOfGuests = 2;
     public static HashMap<String,Guest> hm_guestDetails = new HashMap<String, Guest>();
-    private DatabaseReference databaseReference_bookings_final,databaseReference_pending_approval;
+    private DatabaseReference databaseReference_bookings_final,databaseReference_pending_approval,databaseReference_user;
     Booking booking = null;
+
+
+    //Request Stages
+    String PENDING_APPROVAL = "pending_approval";
+    String PENDING_PAYMENT= "pending_payment";
+    String COMPLETED = "completed";
+    String CANCELLED = "cancelled";
 
 
     @Override
@@ -84,7 +92,9 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
 
         Button btnBook = (Button)findViewById(R.id.btnBook);
         databaseReference_bookings_final = FirebaseDatabase.getInstance().getReference("bookings_final_test/");
-        databaseReference_pending_approval = FirebaseDatabase.getInstance().getReference("pending_requests/pending_approval");
+        databaseReference_pending_approval = FirebaseDatabase.getInstance().getReference("pending_requests/pending_approval_test");
+        databaseReference_user = FirebaseDatabase.getInstance().getReference("user");
+
 
         btnBook.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,8 +106,8 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
                 if(editText_ROV.getText().toString().isEmpty())
                 {
                     flag_emptyEntry=true;
-                    Snackbar.make(view, "Please fill the reason of visit", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+//                    Snackbar.make(view, "Please fill the reason of visit", Snackbar.LENGTH_LONG)
+//                            .setAction("Action", null).show();
 
                 }
                 else if (spinner_purpose.getSelectedItem().toString()=="Official")
@@ -106,23 +116,23 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
                     {
                         if(editText_PName.getText().toString().isEmpty())
                         {
-                            Snackbar.make(view, "Please fill the name of project ", Snackbar.LENGTH_LONG)
-                                    .setAction("Action", null).show();
+//                            Snackbar.make(view, "Please fill the name of project ", Snackbar.LENGTH_LONG)
+//                                    .setAction("Action", null).show();
                             flag_emptyEntry=true;
                         }
                         else if(editText_PI.getText().toString().isEmpty())
                         {
                             flag_emptyEntry=true;
-                            Snackbar.make(view, "Please fill the name of the principal investigator", Snackbar.LENGTH_LONG)
-                                    .setAction("Action", null).show();
+//                            Snackbar.make(view, "Please fill the name of the principal investigator", Snackbar.LENGTH_LONG)
+//                                    .setAction("Action", null).show();
                         }
                     }
                     if(spinner_official_funding.getSelectedItem().toString() == "Institute")
                     {
                         if(editText_InstituteDesc.getText().toString().isEmpty())
                         {
-                            Snackbar.make(view, "Please fill the description regrading the institute funding", Snackbar.LENGTH_LONG)
-                                    .setAction("Action", null).show();
+//                            Snackbar.make(view, "Please fill the description regrading the institute funding", Snackbar.LENGTH_LONG)
+//                                    .setAction("Action", null).show();
                             flag_emptyEntry=true;
                         }
                     }
@@ -143,8 +153,8 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
                         }
                         if (firstName == "" || age == "") {
                             flag_emptyEntry = true;
-                            Snackbar.make(view, "Please fill all the names and ages of the guests", Snackbar.LENGTH_LONG)
-                                    .setAction("Action", null).show();
+                            //Snackbar.make(view, "Please fill all the names and ages of the guests", Snackbar.LENGTH_LONG)
+                            //        .setAction("Action", null).show();
                             break;
                         }
                     }
@@ -154,7 +164,7 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
                         System.out.println(hm_guestDetails);
                         System.out.println("show =================>fragments ");
                         booking = new Booking();
-                        booking.setBooking_status("pending_approval");
+                        booking.setBooking_status(PENDING_APPROVAL);
 
                         booking.setFrom_date(FacultyHomeActivity.mSendFromDate);
                         booking.setTo_date(FacultyHomeActivity.mSendToDate);
@@ -178,18 +188,39 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
                         }
                         if (spinner_purpose.getSelectedItem().toString() == "Official") {
 
-                            booking.setFundedby_institute_details(editText_InstituteDesc.getText().toString());
-                            booking.setFundedby_project_pinvestigator(editText_PI.getText().toString());
-                            booking.setFundedby_project_pname(editText_PName.getText().toString());
 
-                            if (spinner_official_personal_funding_payedby.getSelectedItem().toString() == "Personal") {
+
+                            if (spinner_official_funding.getSelectedItem().toString() == "Institute") {
+                                booking.setFundedby_personalbooking("");
+                                booking.setFundedby_project_pname("");
+                                booking.setFundedby_project_pinvestigator("");
+                                booking.setFundedby_personal_officialbooking("");
+                                booking.setPaidby_personal_officialbooking("");
+                                booking.setFundedby_institute_details(editText_InstituteDesc.getText().toString());
+                            }
+
+                            if (spinner_official_funding.getSelectedItem().toString() == "Project") {
+                                booking.setFundedby_personalbooking("");
+                                booking.setFundedby_personal_officialbooking("");
+                                booking.setFundedby_institute_details("");
+                                booking.setPaidby_personal_officialbooking("");
+                                booking.setFundedby_project_pinvestigator(editText_PI.getText().toString());
+                                booking.setFundedby_project_pname(editText_PName.getText().toString());
+                            }
+
+
+                            if (spinner_official_funding.getSelectedItem().toString() == "Personal") {
+                                booking.setFundedby_personalbooking("");
+                                booking.setFundedby_institute_details("");
+                                booking.setFundedby_project_pname("");
+                                booking.setFundedby_project_pinvestigator("");
+
                                 booking.setFundedby_personal_officialbooking("TRUE");
                                 if (spinner_official_personal_funding_payedby.getSelectedItem().toString() == "Self") {
-                                    booking.setFundedby_personalbooking("");
+
                                     booking.setPaidby_personal_officialbooking("Self");
                                 }
                                 if (spinner_official_personal_funding_payedby.getSelectedItem().toString() == "Visitor") {
-                                    booking.setFundedby_personalbooking("");
                                     booking.setPaidby_personal_officialbooking("Visitor");
                                 }
 
@@ -232,8 +263,8 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
                         booking.setTotal_booking_price(String.valueOf(FacultyHomeActivity.mTotalPrice));
 
                         SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                        Date date = new Date();
-                        booking.setRaised_on(formatter.format(date));
+                        Date todaydate = new Date();
+                        booking.setRaised_on(formatter.format(todaydate));
 
 
                         System.out.println(hm_guestDetails);
@@ -259,11 +290,40 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
                         Request request = new Request();
                         request.setFrom_date(FacultyHomeActivity.mSendFromDate);
                         databaseReference_pending_approval.child(mRequestId).setValue(request);
-                        //System.out.println("Your Request is submitted sucessfully");
-                        Toast.makeText(getApplicationContext(), "Your Request is submitted sucessfully", Toast.LENGTH_LONG).show();
-                        Intent mBookingDetail = new Intent(BookingDetail.this, FacultyHomeActivity.class);
-                        startActivity(mBookingDetail);
 
+
+                        UserBookingDetails userBookingDetails = new UserBookingDetails();
+                        userBookingDetails.setFrom_date(FacultyHomeActivity.mSendFromDate);
+                        userBookingDetails.setNumber_of_persons(String.valueOf(FacultyHomeActivity.mTotalGuests));
+                        userBookingDetails.setNumber_of_rooms(String.valueOf(FacultyHomeActivity.mTotalRooms));
+                        userBookingDetails.setRaised_on(formatter.format(todaydate));
+                        userBookingDetails.setStatus(PENDING_APPROVAL);
+                        userBookingDetails.setTotal_amount(String.valueOf(FacultyHomeActivity.mTotalPrice));
+                        String email="";
+                        try {
+                            email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+
+                        }
+                        catch (NullPointerException e)
+                        {
+                            e.printStackTrace();
+                        }
+                        databaseReference_user.child(email.replace("@iiitd.ac.in","")).child(mRequestId).setValue(userBookingDetails);
+
+                        //System.out.println("Your Request is submitted sucessfully");
+                        Toast.makeText(getApplicationContext(), "Your request is submitted sucessfully", Toast.LENGTH_LONG).show();
+                        //finish();
+                    System.out.println("============>>>>>Enter");
+                    //finish();
+                    //Intent mFacultyHomeActivity = new Intent(BookingDetail.this, FacultyHomeActivity.class);
+                    //startActivity(mFacultyHomeActivity);
+                    System.out.println("================>>>>>>>>>Completed");
+
+                    }
+                    else
+                    {
+                        Snackbar.make(view, "All are mandatory fields. Please fill all of them", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
                     }
             }
         });
@@ -422,5 +482,11 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    @Override
+    protected void onStop() {
+        System.out.println("Activity Stopped====================>");
+        super.onStop();
     }
 }
