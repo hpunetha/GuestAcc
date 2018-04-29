@@ -120,10 +120,11 @@
                     </RadioGroup>
 
                     <RelativeLayout
+                        android:id="@+id/prefRelativeLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_below="@id/radioGroupRoomFlat">
+                        android:layout_below="@id/radioGroupRoomFlat"
+                        android:layout_marginTop="5dp">
 
                         <TextView
                             android:id="@+id/textViewPreference"
@@ -133,12 +134,11 @@
                             android:layout_marginStart="15dp"
 
 
-
                             android:text="@string/preferences"
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                             android:textColor="#000000"
-                            android:textSize="15sp"
-                            />
+                            android:textSize="15sp" />
+
                         <Spinner
                             android:id="@+id/spinnerPreferences"
                             android:layout_width="wrap_content"

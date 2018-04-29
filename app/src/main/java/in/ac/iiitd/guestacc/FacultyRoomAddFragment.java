@@ -13,13 +13,16 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Created by hpunetha on 4/23/2018.
+ */
 public class FacultyRoomAddFragment extends Fragment implements View.OnClickListener{
 
     private static final String ARG_PARAM1 = "param1";
@@ -33,18 +36,31 @@ public class FacultyRoomAddFragment extends Fragment implements View.OnClickList
     public int mFemaleCount=0;
     public int mRoomType;       // 0-> Room , 1-> Flat
     public int mRoomPrice;
+    ArrayAdapter<String> mPrefAdapter;
 
+    public boolean mFacultyFlag=true;
+    public String mWhatCanBeBooked;
 
     private final String FACULTYRESIDENCE ="Faculty Residence";
     private final String BOYSHOSTEL="Boys Hostel";
     private final String GIRLSHOSTEL="Girls Hostel";
+
+    public final String CANBOOKALLLOCATIONS = "fbg";
+    public final String CANBOOKBOYSGIRLS = "bg";
+    public final String CANBOOKONLYGIRLS = "g";
+    public final String CANBOOKONLYBOYS = "b";
+    public final String CANBOOKONLYFACULTY = "f";
+    public final String CANBOOKFACULTYBOYS = "fb";
+    public final String CANBOOKFACULTYGIRLS = "fg";
+
     private String mStatusFragment;
     private  TextView mCounterMale;
     private TextView mCounterFemale;
     private TextView mRoomPriceTextView;
     private OnFragmentInteractionListener mListener;
     private TextView mRoomDet;
-
+    private Spinner mPref;
+    List<String> mCat;
     public FacultyRoomAddFragment() {
         // Required empty public constructor
     }
@@ -63,11 +79,22 @@ public class FacultyRoomAddFragment extends Fragment implements View.OnClickList
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mCat = new ArrayList<>();
         if (getArguments() != null) {
 
             mStatusFragment =(getArguments().getString(ARG_PARAM3));
             mRoomTag = getArguments().getString(ARG_PARAM1);
             mRoomName = getArguments().getString(ARG_PARAM2);
+
+            if (FacultyHomeActivity.mUserType ==TypeLoginActivity.STUDENT)
+            {
+                mFacultyFlag=false;
+            }
+            else
+            {
+                mFacultyFlag=true;
+            }
+
 
             if (mStatusFragment.equals("0")) {
                 RoomItem mNewRoom = new RoomItem();
@@ -84,7 +111,9 @@ public class FacultyRoomAddFragment extends Fragment implements View.OnClickList
             {
                 mRoomType = 0;
                 mRoomPrice = 1500;
+
             }
+
 
         }
     }
@@ -129,17 +158,49 @@ public class FacultyRoomAddFragment extends Fragment implements View.OnClickList
         mPlusMale.setOnClickListener(this);
 
 
+        mPref = (Spinner) vu1.findViewById(R.id.spinnerPreferences);
 
-        List<String> categories = new ArrayList<String>();
-        categories.add(FACULTYRESIDENCE);
-        categories.add(BOYSHOSTEL);
-        categories.add(GIRLSHOSTEL);
+        Log.i("FragmentType",mStatusFragment);
 
-        Spinner mPref = (Spinner) vu1.findViewById(R.id.spinnerPreferences);
-        ArrayAdapter<String> mPrefAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, categories);
-        mPrefAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        if (mStatusFragment.equals("0")) {
+            FacultyHomeActivity.mAllRoomsDetails.get(mRoomTag).mCanBook = mWhatCanBeBooked=  CANBOOKALLLOCATIONS;
+            FacultyHomeActivity.mAllRoomsDetails.get(mRoomTag).mMaleCount = mMaleCount = 0;
+            FacultyHomeActivity.mAllRoomsDetails.get(mRoomTag).mFemaleCount = mFemaleCount = 0;
 
-        mPref.setAdapter(mPrefAdapter);
+            addAll(CANBOOKALLLOCATIONS);
+
+//            List<String> categories = new ArrayList<String>();
+//            if (mFacultyFlag){categories.add(FACULTYRESIDENCE);}
+//            categories.add(BOYSHOSTEL);
+//            categories.add(GIRLSHOSTEL);
+//
+//            FacultyHomeActivity.mAllRoomsDetails.get(mRoomTag).mCategories = mCat = categories;
+//            mPrefAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, categories);
+//            mPrefAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//
+//            mPref.setAdapter(mPrefAdapter);
+        }
+        else if  (mStatusFragment.equals("1"))
+        {
+
+            addFuncOldFrag();
+
+            mMaleCount = 0;
+            mFemaleCount = 0;
+        }
+
+
+//
+//        List<String> categories = new ArrayList<String>();
+//        if (mFacultyFlag){categories.add(FACULTYRESIDENCE);}
+//        categories.add(BOYSHOSTEL);
+//        categories.add(GIRLSHOSTEL);
+//
+//
+//        ArrayAdapter<String> mPrefAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, categories);
+//        mPrefAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//
+//        mPref.setAdapter(mPrefAdapter);
 
 
 
@@ -150,6 +211,7 @@ public class FacultyRoomAddFragment extends Fragment implements View.OnClickList
                     FacultyHomeActivity.mAllRoomsDetails.get(mRoomTag).roomPref = mSelectedPreference = adapterView.getItemAtPosition(i).toString();
                     Log.i("Preference Room",mRoomName);
                     Log.i("Selected Preference",mSelectedPreference);
+                    FacultyHomeActivity.mAllRoomsDetails.get(mRoomTag).mRoomPrefInt=i;
 
             }
 
@@ -159,7 +221,7 @@ public class FacultyRoomAddFragment extends Fragment implements View.OnClickList
                 //Log.i("Nothing Selected Pref",mSelectedPreference);
             }
         });
-        //mPref.setSelection(0);
+
         mCloseBtn.setOnClickListener(this);
 
         if (mStatusFragment.equals("0")) {
@@ -173,6 +235,27 @@ public class FacultyRoomAddFragment extends Fragment implements View.OnClickList
         final RadioButton mRadioRoom =(RadioButton) vu1.findViewById(R.id.radioRoom);
         final RadioButton mRadioFlat =(RadioButton) vu1.findViewById(R.id.radioFlat);
         mRadioRoom.setChecked(true);
+
+        if (FacultyHomeActivity.mUserType ==TypeLoginActivity.STUDENT)
+        {
+            mFacultyFlag=false;
+            mRadioFlat.setEnabled(false);
+            mRG1.setVisibility(View.INVISIBLE);
+
+//            RelativeLayout mPrefLayout = (RelativeLayout) vu1.findViewById(R.id.prefRelativeLayout);
+//            ViewGroup.MarginLayoutParams mParams = (ViewGroup.MarginLayoutParams) mPrefLayout.getLayoutParams();
+//            mParams.setMargins(0,15,0,0);
+//            mPrefLayout.setLayoutParams(mParams);
+
+        }
+        else
+        {
+            mFacultyFlag=true;
+        }
+
+
+
+
         mRG1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
@@ -183,6 +266,17 @@ public class FacultyRoomAddFragment extends Fragment implements View.OnClickList
                     String mPdisplay = getResources().getString(R.string.price_rs) +" "+ String.valueOf(mRoomPrice);
                     mRoomPriceTextView.setText(mPdisplay);
                     ((FacultyRoomAddActivity)getActivity()).updateRoomsAndPrice();
+                    if (mMaleCount==1 || mMaleCount==2)
+                    {
+                        addAll(CANBOOKFACULTYBOYS);
+                    }
+                    else if((mMaleCount==0 && mFemaleCount==1) || (mMaleCount==0 && mFemaleCount==2))
+                    {
+                        addAll(CANBOOKFACULTYGIRLS);
+                    }
+                    else if (mMaleCount==0 && mFemaleCount==0) {
+                        addAll(CANBOOKALLLOCATIONS);
+                    }
 
                 }
                 else if (mRadioFlat.isChecked())
@@ -192,6 +286,7 @@ public class FacultyRoomAddFragment extends Fragment implements View.OnClickList
                     String mPdisplay = getResources().getString(R.string.price_rs) +" "+ String.valueOf(mRoomPrice);
                     mRoomPriceTextView.setText(mPdisplay);
                     ((FacultyRoomAddActivity)getActivity()).updateRoomsAndPrice();
+                    addAll(CANBOOKONLYFACULTY);
                 }
 
                 Log.i("Room Type changed for",mRoomName);
@@ -215,13 +310,14 @@ public class FacultyRoomAddFragment extends Fragment implements View.OnClickList
                 mMaleCount = FacultyHomeActivity.mAllRoomsDetails.get(mRoomTag).mMaleCount;
                 mSelectedPreference = FacultyHomeActivity.mAllRoomsDetails.get(mRoomTag).roomPref;
                 mRoomName = FacultyHomeActivity.mAllRoomsDetails.get(mRoomTag).roomName;
-
+//                mWhatCanBeBooked = FacultyHomeActivity.mAllRoomsDetails.get(mRoomTag).mCanBook;
+//                addAll(mWhatCanBeBooked);
                 Log.i("Price", String.valueOf(mRoomPrice));
                 mPdisplay = getResources().getString(R.string.price_rs) +" "+ String.valueOf(mRoomPrice);
                 mRoomPriceTextView.setText(String.valueOf(mPdisplay));
                 mCounterFemale.setText(String.valueOf(mFemaleCount));
                 mCounterMale.setText(String.valueOf(mMaleCount));
-                if (mRoomType==0)
+                 if (mRoomType==0)
                 {
                     mRadioRoom.setChecked(true);
                 }
@@ -230,19 +326,22 @@ public class FacultyRoomAddFragment extends Fragment implements View.OnClickList
                     mRadioFlat.setChecked(true);
                 }
 
-                if(mSelectedPreference.equals(FACULTYRESIDENCE))
-                {
-                    mPref.setSelection(0);
-                }
-                else if(mSelectedPreference.equals(BOYSHOSTEL))
-                {
-                    mPref.setSelection(1);
 
-                }
-                else if(mSelectedPreference.equals(GIRLSHOSTEL))
-                {
-                    mPref.setSelection(2);
-                }
+
+//
+//                if(mSelectedPreference.equals(FACULTYRESIDENCE))
+//                {
+//                    mPref.setSelection(0);
+//                }
+//                else if(mSelectedPreference.equals(BOYSHOSTEL))
+//                {
+//                    mPref.setSelection(1);
+//
+//                }
+//                else if(mSelectedPreference.equals(GIRLSHOSTEL))
+//                {
+//                    mPref.setSelection(2);
+//                }
 
 
 
@@ -253,6 +352,7 @@ public class FacultyRoomAddFragment extends Fragment implements View.OnClickList
             {
                 Log.i("TAG NOT FOUND",String.valueOf(mRoomTag));
             }
+
 
         }
 
@@ -287,6 +387,101 @@ public class FacultyRoomAddFragment extends Fragment implements View.OnClickList
         mListener = null;
     }
 
+
+    public void addAll(String type)
+    {
+        List<String> categories = new ArrayList<String>();
+
+        if (type.equalsIgnoreCase(CANBOOKALLLOCATIONS))
+        {
+            mWhatCanBeBooked = CANBOOKALLLOCATIONS;
+
+
+            if (mFacultyFlag) {categories.add(FACULTYRESIDENCE);}
+            categories.add(GIRLSHOSTEL);
+            categories.add(BOYSHOSTEL);
+            if (mStatusFragment.equals("0")) {
+                FacultyHomeActivity.mAllRoomsDetails.get(mRoomTag).mCanBook =mWhatCanBeBooked=  CANBOOKALLLOCATIONS;
+
+            }
+
+
+
+        }
+        else if (type.equalsIgnoreCase(CANBOOKFACULTYBOYS) )
+        {
+
+            if (mFacultyFlag){categories.add(FACULTYRESIDENCE);}
+            categories.add(BOYSHOSTEL);
+
+            mWhatCanBeBooked = CANBOOKFACULTYBOYS;
+            if (mStatusFragment.equals("0")) {
+                FacultyHomeActivity.mAllRoomsDetails.get(mRoomTag).mCanBook =mWhatCanBeBooked=  CANBOOKFACULTYBOYS;
+            }
+
+
+
+        }
+        else if(type.equalsIgnoreCase(CANBOOKFACULTYGIRLS))
+        {
+
+            if (mFacultyFlag) {categories.add(FACULTYRESIDENCE);}
+            categories.add(GIRLSHOSTEL);
+
+            mWhatCanBeBooked = CANBOOKFACULTYGIRLS;
+            if (mStatusFragment.equals("0")) {
+                FacultyHomeActivity.mAllRoomsDetails.get(mRoomTag).mCanBook =mWhatCanBeBooked=  CANBOOKFACULTYGIRLS;
+
+
+            }
+
+
+
+
+
+        }
+        else if(type.equalsIgnoreCase(CANBOOKONLYFACULTY))
+        {
+
+            if (mFacultyFlag) {categories.add(FACULTYRESIDENCE);}
+
+
+            mWhatCanBeBooked = CANBOOKONLYFACULTY;
+            if (mStatusFragment.equals("0")) {
+                FacultyHomeActivity.mAllRoomsDetails.get(mRoomTag).mCanBook =mWhatCanBeBooked=  CANBOOKONLYFACULTY;
+
+
+            }
+
+
+
+
+
+        }
+
+        mPrefAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, categories);
+        mPrefAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        FacultyHomeActivity.mAllRoomsDetails.get(mRoomTag).mCategories=mCat = categories;
+        mPref.setAdapter(mPrefAdapter);
+       // mSelectedPreference =
+    }
+
+
+
+    public void addFuncOldFrag()
+    {
+       // List<String> categories = new ArrayList<String>();
+
+        mWhatCanBeBooked = FacultyHomeActivity.mAllRoomsDetails.get(mRoomTag).mCanBook;
+        mCat = FacultyHomeActivity.mAllRoomsDetails.get(mRoomTag).mCategories;
+        Log.i("FragmentType",mCat.toString());
+        mPrefAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, mCat);
+        mPrefAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mPref.setAdapter(mPrefAdapter);
+        mPref.setSelection(FacultyHomeActivity.mAllRoomsDetails.get(mRoomTag).mRoomPrefInt);
+    }
+
+
     @Override
     public void onClick(View view) {
         if (view.getId()==R.id.buttonCloseFragment)
@@ -305,6 +500,31 @@ public class FacultyRoomAddFragment extends Fragment implements View.OnClickList
                 mFemaleCount--;
                 FacultyHomeActivity.mAllRoomsDetails.get(mRoomTag).mFemaleCount=mFemaleCount;
                 mCounterFemale.setText(String.valueOf(mFemaleCount));
+
+                if(mFemaleCount==0)
+                {
+                    if (mMaleCount==0) {
+                        addAll(CANBOOKALLLOCATIONS);
+                    }
+                    else
+                    {
+                        addAll(CANBOOKFACULTYBOYS);
+                    }
+
+                }
+                else if (mFemaleCount==1)
+                {
+                    if (mMaleCount==1)
+                    {
+
+                       addAll(CANBOOKFACULTYBOYS);
+
+                    }
+                    else if(mMaleCount==0)
+                    {
+                       addAll(CANBOOKFACULTYGIRLS);
+                    }
+                }
             }
             else
             {
@@ -326,6 +546,23 @@ public class FacultyRoomAddFragment extends Fragment implements View.OnClickList
             else
             {
                 mFemaleCount++;
+
+                if(mFemaleCount==2)
+                {
+                   addAll(CANBOOKFACULTYGIRLS);
+                }
+                else if (mFemaleCount==1)
+                {
+                    if(mMaleCount==1)
+                    {
+                        addAll(CANBOOKFACULTYBOYS);
+                    }
+                    else if(mMaleCount==0)
+                    {
+                        addAll(CANBOOKFACULTYGIRLS);
+                    }
+                }
+
                 FacultyHomeActivity.mAllRoomsDetails.get(mRoomTag).mFemaleCount=mFemaleCount;
                 mCounterFemale.setText(String.valueOf(mFemaleCount));
             }
@@ -336,6 +573,25 @@ public class FacultyRoomAddFragment extends Fragment implements View.OnClickList
             if (mMaleCount>0)
             {
                 mMaleCount--;
+
+                if(mMaleCount == 1)
+                {
+                   addAll(CANBOOKFACULTYBOYS);
+                }
+
+                if(mMaleCount==0)
+                {
+                    if(mFemaleCount==0) {
+                        addAll(CANBOOKALLLOCATIONS);
+                    }
+                    else if(mFemaleCount==1)
+                    {
+                        addAll(CANBOOKFACULTYGIRLS);
+                    }
+
+                }
+
+
                 FacultyHomeActivity.mAllRoomsDetails.get(mRoomTag).mMaleCount=mMaleCount;
                 mCounterMale.setText(String.valueOf(mMaleCount));
             }
@@ -357,9 +613,17 @@ public class FacultyRoomAddFragment extends Fragment implements View.OnClickList
             }
             else
             {
+
                 mMaleCount++;
                 FacultyHomeActivity.mAllRoomsDetails.get(mRoomTag).mMaleCount=mMaleCount;
                 mCounterMale.setText(String.valueOf(mMaleCount));
+                if (mMaleCount>=1)
+                {
+                    addAll(CANBOOKFACULTYBOYS);
+
+
+                }
+
             }
 
         }

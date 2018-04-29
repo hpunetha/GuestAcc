@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -23,17 +24,19 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.firebase.client.snapshot.BooleanNode;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import org.w3c.dom.Text;
+import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -59,14 +62,15 @@ public class FacultyHomeActivity extends AppCompatActivity
 
     public static int mTotalRooms=0,mTotalMales=0,mTotalFemales=0,mTotalGuests=0;
     public static int mTotalPrice=0;
-
+    int mBackCount=0;
     public static final String TOTALPRICE = "totalprice";
     public static final String TOTALROOMS = "totalrooms";
     public static final String TOTALMALES = "totalmales";
     public static final String TOTALFEMALES = "totalfemales";
     public static final String TOTALGUESTS = "totalguests";
 
-
+    public static String mCurrentUserEmail ,mCurrentUserName;
+    FirebaseUser mFirebaseUser;
     FirebaseDatabase mDatabase;
     CardView mContractedCardView,mExpandedCardView;
     TextView mTotalPriceTextView;
@@ -83,6 +87,7 @@ public class FacultyHomeActivity extends AppCompatActivity
     Date mToDate;
     int mDateVal =0;
     ProgressDialog mProgDiag;
+    public static int mUserType;  // 0-> Student , 1->Faculty  (getting intent value from TypeLoginActivity in this var)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +99,18 @@ public class FacultyHomeActivity extends AppCompatActivity
         mAllRoomsDetails =new HashMap<>();
 
 
+        Intent mGetTypeLogin = getIntent();
+        mUserType = mGetTypeLogin.getIntExtra(TypeLoginActivity.USERTYPE,TypeLoginActivity.STUDENT);  //Setting default login type as student
+
+        if (mUserType==TypeLoginActivity.STUDENT)
+        {
+            getSupportActionBar().setTitle("Student Home");
+
+        }
+        else
+        {
+            getSupportActionBar().setTitle("Faculty Home");
+        }
 
         try
         {
@@ -103,6 +120,29 @@ public class FacultyHomeActivity extends AppCompatActivity
         {
             e.printStackTrace();
         }
+
+
+        //Menu
+
+        try {
+           mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+            if (mFirebaseUser !=null) {
+                mCurrentUserName = mFirebaseUser.getDisplayName();
+                mCurrentUserEmail = mFirebaseUser.getEmail();
+
+            }
+
+        }
+        catch (NullPointerException e)
+        {
+            e.printStackTrace();
+        }
+
+        Log.i("Current User" ,mCurrentUserName +"  " + mCurrentUserEmail + " " + mFirebaseUser.getPhotoUrl().toString());
+
+
+        //
 
         btnCheckAvailFaculty = (Button) findViewById(R.id.btnCheckAvailFaculty);
         btnCheckAvailFaculty.setEnabled(false);
@@ -390,14 +430,43 @@ public class FacultyHomeActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
         }
+//      else {
+//            super.onBackPressed();
+//        }
+            mBackCount++;
+
+            if (mBackCount == 1) {
+                Toast.makeText(this, "Press again to_date sign-out", Toast.LENGTH_SHORT).show();
+
+
+            } else if (mBackCount > 1) {
+                FirebaseAuth.getInstance().signOut();
+                Intent mSignOut = new Intent(FacultyHomeActivity.this, MainActivity.class);
+                mSignOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(mSignOut);
+            }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+        ImageView mAvatarMenuImageView = (ImageView) findViewById(R.id.avatarMenuImageView);
+        TextView mTextViewMenuName =(TextView) findViewById(R.id.textViewMenuName);
+        TextView mTextViewMenuEmail = (TextView) findViewById(R.id.textViewMenuEmail);
+        if (mFirebaseUser!=null)
+        {
+            if (mCurrentUserName!=null) { mTextViewMenuName.setText(mCurrentUserName);}
+            if (mCurrentUserEmail!=null) { mTextViewMenuEmail.setText(mCurrentUserEmail);}
+
+            Uri ur =mFirebaseUser.getPhotoUrl();
+
+            String abc = ur.toString().replace("/s96-c/","/s300-c/");
+
+            Picasso.with(this).load(Uri.parse(abc)).into(mAvatarMenuImageView);
+
+        }
+
         getMenuInflater().inflate(R.menu.faculty_home, menu);
         return true;
     }
@@ -423,18 +492,8 @@ public class FacultyHomeActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_mybookings) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -443,7 +502,7 @@ public class FacultyHomeActivity extends AppCompatActivity
     }
 
 
-        class CheckAvailabilityTask extends AsyncTask<String,Void,Boolean>
+    class CheckAvailabilityTask extends AsyncTask<String,Void,Boolean>
     {
         Boolean exitFlag ;
         private FacultyHomeActivity mFacHomeAct;
@@ -681,6 +740,8 @@ public class FacultyHomeActivity extends AppCompatActivity
         }
 
     }
+
+
 
 
 }

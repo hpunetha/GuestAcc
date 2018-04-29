@@ -24,16 +24,11 @@
     <string name="cardVal">0</string>
     <string name="check_avail">Home</string>
     <string name="avail_rooms">Available Rooms</string>
+    <string name="title_activity_admin_home">AdminHomeActivity</string>
     <string name="avail">"Available : "</string>
     <string name="errormsg">"Error : "</string>
     <string name="title_activity_faculty_home">FacultyHomeActivity</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-
-    <string name="action_settings">Settings</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="add_room">+ Add Room</string>
     <string name="room_details">Room ID </string>
@@ -49,6 +44,25 @@
 2 - Only Female Guests can stay in Girls Hostel. \n\
 3- Students can book rooms only for their Parents and immediate siblings.\n\</string>
     <string name="i_agree_with_the_terms_and_conditions">I agree with the terms and conditions.</string>
+    <string name="notregistered_general_message">You are not currently registered as Faculty/Staff.</string>
+    <string name="not_registered">Do you want to send registration request to the Admin?</string>
+    <string name="reg_not_found">Faculty/Staff Not Found</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="year_of_joining">Year of Joining</string>
+    <string name="email_idreg">email-id</string>
+    <string name="request_for">Request for</string>
+    <string name="name">Name</string>
+    <string name="submit_request">Submit Request</string>
 
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <string name="action_settings">Settings</string>
+
+    <string-array name="adminRoomStatusSpinner">
+        <item>Available</item>
+        <item>Booked</item>
+        <item>Pending Payment</item>
+    </string-array>
 </resources>
