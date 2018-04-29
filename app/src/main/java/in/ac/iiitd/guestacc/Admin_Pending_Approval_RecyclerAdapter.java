@@ -122,6 +122,8 @@ public class Admin_Pending_Approval_RecyclerAdapter extends RecyclerView.Adapter
                     @Override
                     public void onClick(View v)
                     {
+
+                    mClickListener.onButtonClick(v,getAdapterPosition());
                         // getting context from main activity
                        // dialogSelect.show(((AppCompatActivity)context).getSupportFragmentManager(),"123");
                     }
@@ -156,6 +158,7 @@ public class Admin_Pending_Approval_RecyclerAdapter extends RecyclerView.Adapter
     public interface ItemClickListener
     {
         void onItemClick(View view, int position, List<Admin_Data_PendingApproval_RoomData> adminDataPendingApprovalRoomData) ;
+        void onButtonClick(View v,int position) ;
     }
 
 }

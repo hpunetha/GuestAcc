@@ -492,4 +492,10 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
         // Do when return from dialog
 
     }
+
+    @Override
+    public void onButtonClick(View v,int position)
+    {
+        Log.e("DATABASE",String.valueOf(position)) ;
+    }
 }
