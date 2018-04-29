@@ -1,6 +1,5 @@
 package in.ac.iiitd.guestacc;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -20,18 +19,14 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import java.time.format.DateTimeFormatter;
-import java.time.LocalDateTime;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -47,7 +42,7 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
     public static int mFragGuestCountTag=0;
     public static int mNoOfGuests = 2;
     public static HashMap<String,Guest> hm_guestDetails = new HashMap<String, Guest>();
-    private DatabaseReference databaseReference_bookings_final,databaseReference_pending_approval,databaseReference_user;
+    private DatabaseReference databaseReference_key_generator,databaseReference_bookings_final,databaseReference_pending_approval,databaseReference_user;
     Booking booking = null;
 
 
@@ -77,7 +72,7 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
         spinner_purpose.setAdapter(adapter);
 
-        String[] items_Official_FundedBy = new String[]{"Project", "Institute","Personal"};
+        String[] items_Official_FundedBy = new String[]{"Project", "Institute","Self","Visitor"};
         ArrayAdapter<String> adapter_Official_FundedBy = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items_Official_FundedBy);
         spinner_official_funding.setAdapter(adapter_Official_FundedBy);
 
@@ -85,13 +80,14 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
         ArrayAdapter<String> adapter_fundedBy = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items_FundedBy);
         spinner_personal_funding.setAdapter(adapter_fundedBy);
 
-        String[] items_official_personal_FundedBy = new String[]{"Self", "Visitor"};
-        ArrayAdapter<String> adapter_official_personal_Funding_paidby = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items_official_personal_FundedBy);
-        spinner_official_personal_funding_payedby.setAdapter(adapter_official_personal_Funding_paidby);
+//        String[] items_official_personal_FundedBy = new String[]{"Self", "Visitor"};
+//        ArrayAdapter<String> adapter_official_personal_Funding_paidby = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items_official_personal_FundedBy);
+//        spinner_official_personal_funding_payedby.setAdapter(adapter_official_personal_Funding_paidby);
 
 
         Button btnBook = (Button)findViewById(R.id.btnBook);
-        databaseReference_bookings_final = FirebaseDatabase.getInstance().getReference("bookings_final_test/");
+        databaseReference_key_generator = FirebaseDatabase.getInstance().getReference("bookings_final_testing_");
+        databaseReference_bookings_final = FirebaseDatabase.getInstance().getReference("bookings_final_testing_");
         databaseReference_pending_approval = FirebaseDatabase.getInstance().getReference("pending_requests/pending_approval_test");
         databaseReference_user = FirebaseDatabase.getInstance().getReference("user");
 
@@ -183,8 +179,8 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
                             booking.setFundedby_institute_details("");
                             booking.setFundedby_project_pinvestigator("");
                             booking.setFundedby_project_pname("");
-                            booking.setFundedby_personal_officialbooking("");
-                            booking.setPaidby_personal_officialbooking("");
+                            booking.setFundedby_self_officialbooking("");
+                            booking.setFundedby_visitor_officialbooking("");
                         }
                         if (spinner_purpose.getSelectedItem().toString() == "Official") {
 
@@ -194,36 +190,37 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
                                 booking.setFundedby_personalbooking("");
                                 booking.setFundedby_project_pname("");
                                 booking.setFundedby_project_pinvestigator("");
-                                booking.setFundedby_personal_officialbooking("");
-                                booking.setPaidby_personal_officialbooking("");
+                                booking.setFundedby_self_officialbooking("");
+                                booking.setFundedby_visitor_officialbooking("");
                                 booking.setFundedby_institute_details(editText_InstituteDesc.getText().toString());
                             }
 
                             if (spinner_official_funding.getSelectedItem().toString() == "Project") {
                                 booking.setFundedby_personalbooking("");
-                                booking.setFundedby_personal_officialbooking("");
+                                booking.setFundedby_self_officialbooking("");
                                 booking.setFundedby_institute_details("");
-                                booking.setPaidby_personal_officialbooking("");
+                                booking.setFundedby_visitor_officialbooking("");
                                 booking.setFundedby_project_pinvestigator(editText_PI.getText().toString());
                                 booking.setFundedby_project_pname(editText_PName.getText().toString());
                             }
 
 
-                            if (spinner_official_funding.getSelectedItem().toString() == "Personal") {
+                            if (spinner_official_funding.getSelectedItem().toString() == "Self") {
                                 booking.setFundedby_personalbooking("");
                                 booking.setFundedby_institute_details("");
                                 booking.setFundedby_project_pname("");
                                 booking.setFundedby_project_pinvestigator("");
+                                booking.setFundedby_visitor_officialbooking("");
+                                booking.setFundedby_self_officialbooking("true");
+                            }
 
-                                booking.setFundedby_personal_officialbooking("TRUE");
-                                if (spinner_official_personal_funding_payedby.getSelectedItem().toString() == "Self") {
-
-                                    booking.setPaidby_personal_officialbooking("Self");
-                                }
-                                if (spinner_official_personal_funding_payedby.getSelectedItem().toString() == "Visitor") {
-                                    booking.setPaidby_personal_officialbooking("Visitor");
-                                }
-
+                            if (spinner_official_funding.getSelectedItem().toString() == "Visitor") {
+                                booking.setFundedby_personalbooking("");
+                                booking.setFundedby_institute_details("");
+                                booking.setFundedby_project_pname("");
+                                booking.setFundedby_project_pinvestigator("");
+                                booking.setFundedby_self_officialbooking("");
+                                booking.setFundedby_visitor_officialbooking("true");
                             }
                         }
 
@@ -275,7 +272,7 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
                             guest.setName(hm_guestDetails.get(key).getName().toString());
                             guest.setAge(hm_guestDetails.get(key).getAge().toString());
                             guest.setGender(hm_guestDetails.get(key).getGender().toString());
-                            guest.setAssociated_room_id(hm_guestDetails.get(key).getAssociated_room_id().toString());
+                            guest.setAssociated_room_id(hm_guestDetails.get(key).getAssociated_room_id().toString().replace("Room Id: ",""));
                             guest.setAllocated_room(hm_guestDetails.get(key).getAllocated_room().toString());
                             guest.setRoom_type(hm_guestDetails.get(key).getRoom_type().toString());
                             guest.setPrefered_location(hm_guestDetails.get(key).getPrefered_location().toString());
@@ -314,7 +311,7 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
                         Toast.makeText(getApplicationContext(), "Your request is submitted sucessfully", Toast.LENGTH_LONG).show();
                         //finish();
                     System.out.println("============>>>>>Enter");
-                    //finish();
+                    finish();
                     //Intent mFacultyHomeActivity = new Intent(BookingDetail.this, FacultyHomeActivity.class);
                     //startActivity(mFacultyHomeActivity);
                     System.out.println("================>>>>>>>>>Completed");
@@ -342,9 +339,16 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
                     editText_InstituteDesc.setVisibility(View.VISIBLE);
                     editText_PName.setVisibility(View.GONE);
                     editText_PI.setVisibility(View.GONE);
+
                 }
                 if (i == 2) {
-                    spinner_official_personal_funding_payedby.setVisibility(View.VISIBLE);
+                    spinner_official_personal_funding_payedby.setVisibility(View.GONE);
+                    editText_InstituteDesc.setVisibility(View.GONE);
+                    editText_PName.setVisibility(View.GONE);
+                    editText_PI.setVisibility(View.GONE);
+                }
+                if (i == 3) {
+                    spinner_official_personal_funding_payedby.setVisibility(View.GONE);
                     editText_InstituteDesc.setVisibility(View.GONE);
                     editText_PName.setVisibility(View.GONE);
                     editText_PI.setVisibility(View.GONE);
