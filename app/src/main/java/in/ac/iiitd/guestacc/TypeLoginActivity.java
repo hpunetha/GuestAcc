@@ -1,5 +1,6 @@
 package in.ac.iiitd.guestacc;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,11 +25,18 @@ public class TypeLoginActivity extends AppCompatActivity {
     FirebaseDatabase mDatabase;
     Firebase mFbClient;
     String email ;
+    ProgressDialog mProgDiag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_type_login);
+
+        mProgDiag = new ProgressDialog(this);
+        mProgDiag.setMessage("Loading.... Please Wait");
+        mProgDiag.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mProgDiag.setIndeterminate(true);
+
 
 
 
@@ -63,11 +71,13 @@ public class TypeLoginActivity extends AppCompatActivity {
         Boolean mRadioStudentChecked = mRadioStudent.isChecked();
         Boolean mRadioFacultyChecked = mRadioFaculty.isChecked();
         Boolean mRadioAdminChecked = mRadioAdmin.isChecked();
+        mProgDiag.show();
 
         //mFbClient = new Firebase("https://guestacc-226e6.firebaseio.com/faculty_staff");
 
         if (mRadioStudentChecked)
         {
+            mProgDiag.dismiss();
 //            FirebaseUser User = FirebaseAuth.getInstance().getCurrentUser();
 //            Toast.makeText(TypeLoginActivity.this,User.getDisplayName(), Toast.LENGTH_SHORT).show();
 
@@ -115,6 +125,7 @@ public class TypeLoginActivity extends AppCompatActivity {
                                                     if (ab.getValue().equalsIgnoreCase(email))
                                                     {
                                                         Log.w("Faculty Found ", ab.getValue());
+                                                        mProgDiag.dismiss();
                                                         Intent mFacultyHome = new Intent(TypeLoginActivity.this, FacultyHomeActivity.class);
                                                         mFacultyHome.putExtra("UserType",1);
                                                         startActivity(mFacultyHome);
@@ -152,6 +163,7 @@ public class TypeLoginActivity extends AppCompatActivity {
 
                     if (!flag)
                     {
+                        mProgDiag.dismiss();
                         FirebaseAuth.getInstance().signOut();
                         Toast.makeText(TypeLoginActivity.this,"Not Permitted to Sign-in as Faculty", Toast.LENGTH_SHORT).show();
                         Intent mSignOut = new Intent(TypeLoginActivity.this, MainActivity.class);
@@ -234,6 +246,7 @@ public class TypeLoginActivity extends AppCompatActivity {
                                                     if (ab.getValue().equalsIgnoreCase(email))
                                                     {
                                                         Log.w("Admin Found ", ab.getValue());
+                                                        mProgDiag.dismiss();
                                                         Toast.makeText(TypeLoginActivity.this,"Authenticated as Admin", Toast.LENGTH_SHORT).show();
                                                         Intent mAdminHome = new Intent(TypeLoginActivity.this,Admin_HomeActivity.class);
                                                         startActivity(mAdminHome);
@@ -274,7 +287,9 @@ public class TypeLoginActivity extends AppCompatActivity {
 
                     if (!flag)
                     {
+                        mProgDiag.dismiss();
                         FirebaseAuth.getInstance().signOut();
+
                         Toast.makeText(TypeLoginActivity.this,"Not Permitted to Sign-in as Admin", Toast.LENGTH_SHORT).show();
                         Intent mSignOut = new Intent(TypeLoginActivity.this, MainActivity.class);
                         mSignOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
