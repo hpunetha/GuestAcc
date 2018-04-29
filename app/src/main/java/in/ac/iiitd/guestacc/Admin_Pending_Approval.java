@@ -37,6 +37,8 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
     RecyclerView recyclerView;
     Admin_Pending_Approval_RecyclerAdapter adapter;
     Admin_Pending_Approval context;
+    String fromDate;
+    String requestId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,14 +58,13 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
 //****************************************************************************************************
 
 
+        ArrayList<String> mBookingIds = new ArrayList<>();
         mFireBaseReference = FirebaseDatabase.getInstance().getReference("pending_requests/pending_approval");
         final ArrayList<Integer> mGuestRooms = new ArrayList<>(); //Store rooms
 
 
-
         mFireBaseReference.addValueEventListener(new ValueEventListener() {
-            String fromDate;
-            String requestId;
+
             DatabaseReference mFireBaseReferencePendingApproval;
 
             @SuppressLint("SetTextI18n")
@@ -75,6 +76,7 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
                 //To clear Pending data
                 //mAdminPendingApprovalData.clear();
                 for (DataSnapshot val : dataSnapshot.getChildren()) {
+                    Log.i("FinalClassDataAdapter", "Children Count "+String.valueOf(dataSnapshot.getChildrenCount()));
                     Log.i("request", val.getKey());
                     Log.i("request", val.child("from_date").getValue().toString());
                     //requestId = val.child("2018-04-27").getValue().toString();
@@ -82,6 +84,7 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
 
                     requestId = val.getKey();
                     fromDate = val.child("from_date").getValue().toString();
+                    Log.i("FromDate","Before Listener"+requestId+" "+fromDate);
 
                     //mFireBaseReferencePendingApproval = FirebaseDatabase.getInstance().getReference("bookings_final/" + fromDate + "/" + requestId);
                     mFireBaseReferencePendingApproval = FirebaseDatabase.getInstance().getReference("bookings_final/" + fromDate + "/" + requestId);
@@ -117,7 +120,10 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
                                         "Investigator: " + mAdminBooking.getFundedby_project_pinvestigator() + "\n" +
                                         "Project Name: " + mAdminBooking.getFundedby_project_pname());
                                 reqID = dataSnapshot.getKey();
-                                date = fromDate;
+                                date = mAdminBooking.getFrom_date()+"-"+mAdminBooking.getTo_date();
+
+                                Log.i("FromDate",dataSnapshot.getKey()+fromDate);
+                                Log.i("FromDate",dataSnapshot.getKey()+date);
                                 type = mAdminBooking.getRequest_type_personal_or_official();
                                 if (type.equals("Personal"))
                                     fundedBy = type;
@@ -168,12 +174,12 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
                                 }
                                 males = String.valueOf(intMales);
                                 females = String.valueOf(intFemales);
-                                //Log.i("insideTag",males + " " +females);
+                                Log.i("insideTag",males + " " +females);
                                 Log.i("Final Class Data",reqID);
                                 for (int i=0;i<mAdminPendingApprovalDataRoomData.size();i++){
-                                    Log.i("Final Class Data","requestr id :"+reqID+"\n"+mAdminPendingApprovalDataRoomData.get(i).guest1+"\n"
-                                    +mAdminPendingApprovalDataRoomData.get(i).guest2+"\n"+
-                                    mAdminPendingApprovalDataRoomData.get(i).preference);
+                                    Log.i("RoomData","requestr id :"+reqID+"\n"+mAdminPendingApprovalDataRoomData.get(i).guest1+"\n"
+                                            +mAdminPendingApprovalDataRoomData.get(i).guest2+"\n"+
+                                            mAdminPendingApprovalDataRoomData.get(i).preference);
                                 }
 
                                 Log.i("FinalClassData",reqID + "\n" + date + "\n" + type+"\n"+fundedBy+"\n"+reason+"\n"+males+"\n"+females);
@@ -182,7 +188,9 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
 
                                 //mAdminPendingApprovalDataRoomData.clear();
                             }
+
                             if(adapter!=null) {
+                                Log.i("FinalClassDataAdapter","SizeMain" + mAdminPendingApprovalData.size());
                                 for (int i=0;i<mAdminPendingApprovalData.size();i++){
                                     Log.i("FinalClassDataAdapter","Approval List data"+
                                             mAdminPendingApprovalData.get(i).getReqID()+"\n"
@@ -192,7 +200,15 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
                                             +mAdminPendingApprovalData.get(i).getReason()+"\n"
                                             +mAdminPendingApprovalData.get(i).getMales()+"\n"
                                             +mAdminPendingApprovalData.get(i).getFemales()+"\n"
-                                            +mAdminPendingApprovalData.get(i).getProjectName());
+                                            +mAdminPendingApprovalData.get(i).getProjectName()+"\n");
+
+                                    int size = mAdminPendingApprovalData.get(i).getRoomsData().size();
+                                    Log.i("FinalClassDataAdapter","SizeMainInner" +  String.valueOf(size));
+                                    for (int j=0;j<size;j++){
+                                        Log.i("FinalClassDataAdapter",mAdminPendingApprovalData.get(i).getRoomsData().get(j).guest1+"\n"+
+                                                mAdminPendingApprovalData.get(i).getRoomsData().get(j).guest2+"\n"+
+                                                mAdminPendingApprovalData.get(i).getRoomsData().get(j).preference);
+                                    }
                                 }
                                 adapter.notifyDataSetChanged();
                             }
