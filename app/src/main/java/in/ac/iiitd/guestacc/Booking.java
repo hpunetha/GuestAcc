@@ -148,6 +148,14 @@ public class Booking  implements Serializable {
         this.total_booking_price = total_booking_price;
     }
 
+    public ArrayList<Guest> getGuests() {
+        return guests;
+    }
+
+    public void setGuests(ArrayList<Guest> guests) {
+        this.guests = guests;
+    }
+
     public String getRaised_on() {
         return raised_on;
     }

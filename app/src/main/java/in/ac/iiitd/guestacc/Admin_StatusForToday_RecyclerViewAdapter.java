@@ -37,8 +37,8 @@ public class Admin_StatusForToday_RecyclerViewAdapter extends RecyclerView.Adapt
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.mTextViewRoom.setText(mData.get(position).getRoomNameStatusForToday());
-        holder.mAdminStatusForTodayCardView.setCardBackgroundColor(Color.GREEN);
-
+        //holder.mAdminStatusForTodayCardView.setCardBackgroundColor(Color.GREEN);
+        holder.mAdminStatusForTodayCardView.setCardBackgroundColor(mData.get(position).getRoomColor());
     }
 
     @Override
