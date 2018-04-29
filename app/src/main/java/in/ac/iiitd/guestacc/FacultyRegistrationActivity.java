@@ -21,7 +21,9 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Created by hpunetha on 4/28/2018.
+ */
 public class FacultyRegistrationActivity extends AppCompatActivity {
 
     EditText mNameF , mDOJ,mEmail;
