@@ -6,6 +6,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -47,7 +48,7 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
     public static int mFragGuestCountTag=0;
     public static int mNoOfGuests = 2;
     public static HashMap<String,Guest> hm_guestDetails = new HashMap<String, Guest>();
-    private DatabaseReference databaseReference_bookings_final,databaseReference_pending_approval,databaseReference_user;
+    private DatabaseReference databaseReference_key_generator,databaseReference_bookings_final,databaseReference_pending_approval,databaseReference_user;
     Booking booking = null;
 
 
@@ -91,7 +92,8 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
 
 
         Button btnBook = (Button)findViewById(R.id.btnBook);
-        databaseReference_bookings_final = FirebaseDatabase.getInstance().getReference("bookings_final_test/");
+        databaseReference_key_generator = FirebaseDatabase.getInstance().getReference("bookings_final_testing_");
+        databaseReference_bookings_final = FirebaseDatabase.getInstance().getReference("bookings_final_testing_");
         databaseReference_pending_approval = FirebaseDatabase.getInstance().getReference("pending_requests/pending_approval_test");
         databaseReference_user = FirebaseDatabase.getInstance().getReference("user");
 
@@ -314,7 +316,7 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
                         Toast.makeText(getApplicationContext(), "Your request is submitted sucessfully", Toast.LENGTH_LONG).show();
                         //finish();
                     System.out.println("============>>>>>Enter");
-                    //finish();
+                    finish();
                     //Intent mFacultyHomeActivity = new Intent(BookingDetail.this, FacultyHomeActivity.class);
                     //startActivity(mFacultyHomeActivity);
                     System.out.println("================>>>>>>>>>Completed");
