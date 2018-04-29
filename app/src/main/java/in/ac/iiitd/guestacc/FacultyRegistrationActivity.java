@@ -131,7 +131,8 @@ public class FacultyRegistrationActivity extends AppCompatActivity {
                     //mJoinReq.type =
                     Log.i("Timestamp", mTimeStamp.toString());
 
-                    mMyFirebaseRef.push().setValue(mJoinReq);
+                    //mMyFirebaseRef.push().setValue(mJoinReq);
+                    mMyFirebaseRef.child(emailToSet.replace("@iiitd.ac.in","")).setValue(mJoinReq);
                     Toast.makeText(FacultyRegistrationActivity.this,"Registration request submitted successfully", Toast.LENGTH_SHORT).show();
 
 
