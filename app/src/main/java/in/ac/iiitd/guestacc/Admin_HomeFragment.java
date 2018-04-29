@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -63,20 +64,21 @@ public class Admin_HomeFragment extends Fragment {
         progressDialog.show();
 
 
-        new getStatusForToday().execute();
+        //new getStatusForToday().execute();
         new getPendingApproval().execute();
         new getVerifyPayment().execute();
         new getFacultyRequest().execute();
 
         progressDialog.dismiss();
+        //TODO GetstatusforToday not working
 
         //Status for Today
         adminHomeCardView = (CardView) adminHomeView.findViewById(R.id.adminHomeCardView1);
         adminHomeCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent adminStatusForTodayIntent = new Intent(getActivity(), Admin_StatusForToday_MainScreen.class);
-                startActivity(adminStatusForTodayIntent);
+                //Intent adminStatusForTodayIntent = new Intent(getActivity(), Admin_StatusForToday_MainScreen.class);
+                //startActivity(adminStatusForTodayIntent);
             }
         });
 
@@ -367,12 +369,74 @@ public class Admin_HomeFragment extends Fragment {
 */
 
     private class getStatusForToday extends AsyncTask<String, String, String>{
+        DatabaseReference mDatabaseReference;
         ArrayList<String> mRoomName = new ArrayList<>();
         ArrayList<String> mRoomNameNotAvailable = new ArrayList<>();
+        Booking mStatusForTodayBooking;
+        int mRoomSize;
+        String PENDING_APPROVAL = "pending_approval";
+        String PENDING_PAYMENT= "pending_payment";
+        String COMPLETED = "completed";
+        String CANCELLED = "cancelled";
 
         @Override
         protected String doInBackground(String... strings) {
 
+            //https://stackoverflow.com/questions/8654990/how-can-i-get-current-date-in-android
+            String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+            mDatabaseReference = FirebaseDatabase.getInstance().getReference("room_details");
+            mRoomNameNotAvailable.clear();
+            mRoomName.clear();
+
+
+            mDatabaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot val:dataSnapshot.getChildren()){
+                        //Store list of all rooms
+                        mRoomName.add(String.valueOf(val.child("id").getValue()));
+                        Log.i("status",String.valueOf(val.child("id").getValue()));
+                    }
+                    mRoomSize = mRoomName.size();
+                    Log.i("Total Rooms", String.valueOf(mRoomSize));
+                    Log.i("Total Rooms",mRoomName.toString());
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+            Log.i("Date",date);
+            mDatabaseReference = FirebaseDatabase.getInstance().getReference("bookings_final/"+date);
+            mDatabaseReference.addValueEventListener(new ValueEventListener() {
+                @SuppressLint("SetTextI18n")
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Log.i("Date", String.valueOf(dataSnapshot.getChildrenCount()));
+                    if (dataSnapshot.getValue() != null) {
+                        mStatusForTodayBooking = dataSnapshot.getValue(Booking.class);
+
+                        if ( mStatusForTodayBooking != null && mStatusForTodayBooking.getBooking_status().equals(COMPLETED)) {
+                            for (int i = 0; i < mStatusForTodayBooking.getGuests().size(); i++) {
+                                if (mStatusForTodayBooking.getGuests().get(i).getAllocated_room() != null) {
+                                    Log.i("Check","reached till here");
+                                    mRoomName.remove(mStatusForTodayBooking.getGuests().get(i).getAllocated_room());
+                                    //mRoomNameNotAvailable.add(mStatusForTodayBooking.getGuests().get(i).getAssociated_room_id());
+                                }
+                            }
+                        }
+                    }
+                    mTextViewBookedRooms.setText("Booked Rooms: " + (mRoomSize-mRoomName.size()));
+                    mTextViewAvailableRooms.setText("Available Rooms: " + mRoomName.size());
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
             return null;
         }
     }
