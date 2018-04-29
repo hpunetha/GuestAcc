@@ -21,7 +21,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-
+/**
+ * Created by hpunetha on 2/20/2018.
+ */
 public class MainActivity extends AppCompatActivity {
 
     private int mBackCount=0;
@@ -140,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (mBackCount==1)
         {
-            Toast.makeText(this,"Press again to_date exit",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Press again to exit",Toast.LENGTH_SHORT).show();
 
 
         } else if (mBackCount>1)

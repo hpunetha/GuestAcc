@@ -17,7 +17,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+/**
+ * Created by hpunetha on 4/23/2018.
+ */
 public class FacultyRoomAddActivity extends AppCompatActivity implements FacultyRoomAddFragment.OnFragmentInteractionListener {
 
     public final String NEW="0",OLD="1";   //Whether there are old rooms
@@ -45,6 +47,7 @@ public class FacultyRoomAddActivity extends AppCompatActivity implements Faculty
         setContentView(R.layout.activity_faculty_room_add);
         //mAllRoomFragments = new ArrayList<>();
 
+        getSupportActionBar().setTitle("Room Details");
 
         mTotalRoomsTextView = (TextView) findViewById(R.id.textViewTotalRooms);
         mTotalPriceTextView = (TextView) findViewById(R.id.textViewTotalPrice);

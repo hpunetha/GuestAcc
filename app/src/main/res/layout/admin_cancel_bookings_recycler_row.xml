@@ -10,7 +10,7 @@
         android:layout_margin="1dp"
         card_view:cardUseCompatPadding="true"
         card_view:cardElevation="4dp"
-        card_view:cardCornerRadius="3dp">
+        card_view:cardCornerRadius="12dp">
 
 
         <LinearLayout
@@ -116,6 +116,7 @@
                     android:layout_alignStart="@+id/textView10"
                     android:layout_below="@+id/textView10"
                     android:layout_marginTop="14dp"
+                    android:layout_marginBottom="10dp"
                     android:text="Booked for "
                     android:textStyle="bold" />
 

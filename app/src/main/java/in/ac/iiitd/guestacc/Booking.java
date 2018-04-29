@@ -15,8 +15,8 @@ public class Booking  implements Serializable {
     public String fundedby_project_pinvestigator;
     public String fundedby_project_pname;
     public String fundedby_personalbooking; //Self,Visitor
-    public String fundedby_personal_officialbooking; //True
-    public String paidby_personal_officialbooking;//Self,Visitor
+    public String fundedby_self_officialbooking; //True
+    public String fundedby_visitor_officialbooking;//Self,Visitor
     public String modification_reason;
     public String no_of_days;
     public String purpose_of_visit;
@@ -35,20 +35,20 @@ public class Booking  implements Serializable {
         this.fundedby_personalbooking = fundedby_personalbooking;
     }
 
-    public String getFundedby_personal_officialbooking() {
-        return fundedby_personal_officialbooking;
+    public String getFundedby_self_officialbooking() {
+        return fundedby_self_officialbooking;
     }
 
-    public void setFundedby_personal_officialbooking(String fundedby_personal_officialbooking) {
-        this.fundedby_personal_officialbooking = fundedby_personal_officialbooking;
+    public void setFundedby_self_officialbooking(String fundedby_self_officialbooking) {
+        this.fundedby_self_officialbooking = fundedby_self_officialbooking;
     }
 
-    public String getPaidby_personal_officialbooking() {
-        return paidby_personal_officialbooking;
+    public String getFundedby_visitor_officialbooking() {
+        return fundedby_visitor_officialbooking;
     }
 
-    public void setPaidby_personal_officialbooking(String paidby_personal_officialbooking) {
-        this.paidby_personal_officialbooking = paidby_personal_officialbooking;
+    public void setFundedby_visitor_officialbooking(String fundedby_visitor_officialbooking) {
+        this.fundedby_visitor_officialbooking = fundedby_visitor_officialbooking;
     }
 
     public String getBooking_status() {
