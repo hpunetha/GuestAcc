@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -123,5 +124,11 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
 
         // Do when return from dialog
 
+    }
+
+    @Override
+    public void onButtonClick(View v,int position)
+    {
+        Log.e("DATABASE",String.valueOf(position)) ;
     }
 }

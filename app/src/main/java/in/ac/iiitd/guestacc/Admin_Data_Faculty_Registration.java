@@ -9,6 +9,7 @@ public class Admin_Data_Faculty_Registration
     String name ;
     String type ;
     String email ;
+    String key ;
 
 
     public String getName() {
@@ -35,10 +36,16 @@ public class Admin_Data_Faculty_Registration
         this.email = email;
     }
 
-    Admin_Data_Faculty_Registration(String name , String type , String email)
+    public String getKey() {
+        return key;
+    }
+
+    Admin_Data_Faculty_Registration(String name , String type , String email, String key)
+
     {
         this.name = name ;
         this.type = type ;
         this.email = email ;
+        this.key = key ;
     }
 }

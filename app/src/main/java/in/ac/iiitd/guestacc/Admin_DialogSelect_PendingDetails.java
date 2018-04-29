@@ -7,6 +7,7 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioButton;
 
 ;
 
@@ -34,6 +35,14 @@ public class Admin_DialogSelect_PendingDetails extends DialogFragment implements
     {
         View v = LayoutInflater.from(getActivity()).inflate(R.layout.admin_dialog_layout_pending_details,null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+
+        RadioButton one = (RadioButton)v.findViewById(R.id.one_room) ;
+        RadioButton two = (RadioButton)v.findViewById(R.id.two_room) ;
+
+        one.setChecked(true);
+
+
 
         builder.setView(v)
                 .setMessage("Allocate Room")

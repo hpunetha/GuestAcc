@@ -2,11 +2,13 @@ package in.ac.iiitd.guestacc;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -18,7 +20,7 @@ public class Admin_FacultyRegistration_RecyclerAdapter extends RecyclerView.Adap
 {
     View v;
     private LayoutInflater inflater ;
-    private FacultyRegistrationItemClickListener mClickListener ;
+    public FacultyRegistrationItemClickListener mClickListener ;
     private List<Admin_Data_Faculty_Registration> data ;
     private Button cancelButton ;
     private Button acceptButton ;
@@ -55,7 +57,7 @@ public class Admin_FacultyRegistration_RecyclerAdapter extends RecyclerView.Adap
     {
         //TODO : change position
 
-        Admin_Data_Faculty_Registration dataRow = data.get(0) ;
+        Admin_Data_Faculty_Registration dataRow = data.get(position) ;
 
         holder.name.setText(dataRow.getName()) ;
         holder.email.setText(dataRow.getEmail()) ;
@@ -83,6 +85,7 @@ public class Admin_FacultyRegistration_RecyclerAdapter extends RecyclerView.Adap
             acceptButton = itemView.findViewById(R.id.reject_faculty2) ;
 
 
+            //itemView.setOnClickListener(this);
 
             cancelButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -97,6 +100,9 @@ public class Admin_FacultyRegistration_RecyclerAdapter extends RecyclerView.Adap
                 @Override
                 public void onClick(View view)
                 {
+                    // TODO : Listen
+                    Log.e("RECYCLER","INSIDE");
+                      mClickListener.onButtonClick(view,getAdapterPosition());
 
                 }
             });
@@ -107,7 +113,17 @@ public class Admin_FacultyRegistration_RecyclerAdapter extends RecyclerView.Adap
         @Override
         public void onClick(View v)
         {
-            if(mClickListener!=null)  mClickListener.onItemClick(v,getAdapterPosition());
+
+            //if(v.findViewById(R.id.accept_faculty))
+
+            if(v.getId()==acceptButton.getId())
+            {
+                mClickListener.onButtonClick(v,getAdapterPosition());
+            }
+            else
+            {
+                if(mClickListener!=null)  mClickListener.onItemClick(v,getAdapterPosition());
+            }
         }
     }
 
@@ -120,6 +136,7 @@ public class Admin_FacultyRegistration_RecyclerAdapter extends RecyclerView.Adap
     public interface FacultyRegistrationItemClickListener
     {
         void onItemClick(View view, int position) ;
+        void onButtonClick(View view,int position) ;
     }
 
 }
