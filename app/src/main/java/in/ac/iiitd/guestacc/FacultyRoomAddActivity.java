@@ -17,7 +17,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+/**
+ * Created by hpunetha on 4/23/2018.
+ */
 public class FacultyRoomAddActivity extends AppCompatActivity implements FacultyRoomAddFragment.OnFragmentInteractionListener {
 
     public final String NEW="0",OLD="1";   //Whether there are old rooms
@@ -45,6 +47,7 @@ public class FacultyRoomAddActivity extends AppCompatActivity implements Faculty
         setContentView(R.layout.activity_faculty_room_add);
         //mAllRoomFragments = new ArrayList<>();
 
+        getSupportActionBar().setTitle("Room Details");
 
         mTotalRoomsTextView = (TextView) findViewById(R.id.textViewTotalRooms);
         mTotalPriceTextView = (TextView) findViewById(R.id.textViewTotalPrice);
@@ -207,8 +210,10 @@ public class FacultyRoomAddActivity extends AppCompatActivity implements Faculty
 //
             String totalprice = getResources().getString(R.string.total_price) + " " + String.valueOf(mTotalPrice);
             String totalroom = getResources().getString(R.string.total_rooms) + " " + String.valueOf(mTotalRooms);
-            mTotalPriceTextView.setText(totalprice);
-            mTotalRoomsTextView.setText(totalroom);
+            if(totalprice!=null && totalroom!=null) {
+                mTotalPriceTextView.setText(totalprice);
+                mTotalRoomsTextView.setText(totalroom);
+            }
 
 
 
@@ -260,6 +265,59 @@ public class FacultyRoomAddActivity extends AppCompatActivity implements Faculty
 
     }
 
+
+    @Override
+    public void onBackPressed() {
+        HashMap<String,RoomItem> mTempHashMap = new HashMap<>();
+        for (Map.Entry<String,RoomItem> entry : FacultyHomeActivity.mAllRoomsDetails.entrySet())
+        {
+            int roomMale=0,roomfemale=0;
+            String roomTagKey = entry.getKey();
+            RoomItem roomDetails = entry.getValue();
+
+
+            roomMale=roomDetails.mMaleCount;
+            roomfemale=roomDetails.mFemaleCount;
+
+            if (roomMale + roomfemale ==0)
+            {
+                mTempHashMap.put(roomTagKey,roomDetails);
+
+            }
+        }
+
+        for (Map.Entry<String,RoomItem> entry : mTempHashMap.entrySet()) {
+            FacultyHomeActivity.mAllRoomsDetails.remove(entry.getKey());
+        }
+
+        updateRoomsAndPrice();
+
+        if (FacultyHomeActivity.mAllRoomsDetails.size()>0) {
+
+            Intent resultInt = new Intent();
+            resultInt.putExtra(FacultyHomeActivity.TOTALPRICE, mTotalPrice);
+            resultInt.putExtra(FacultyHomeActivity.TOTALROOMS, mTotalRooms);
+            resultInt.putExtra(FacultyHomeActivity.TOTALMALES, mTotalMale);
+            resultInt.putExtra(FacultyHomeActivity.TOTALFEMALES, mTotalFemale);
+            resultInt.putExtra(FacultyHomeActivity.TOTALGUESTS, mTotalGuests);
+
+
+            Log.i("totalprice", String.valueOf(mTotalPrice));
+            Log.i("totalrooms", String.valueOf(mTotalRooms));
+            setResult(Activity.RESULT_OK, resultInt);
+            finish();
+
+        }
+        else
+        {
+            Intent resultInt = new Intent();
+            setResult(Activity.RESULT_CANCELED, resultInt);
+
+        }
+
+
+        super.onBackPressed();
+    }
 
     @Override
     public void onFragmentDelete(String roomTag) {

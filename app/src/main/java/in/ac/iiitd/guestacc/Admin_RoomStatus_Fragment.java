@@ -37,7 +37,7 @@ import java.util.Locale;
  * Created by kd on 22/4/18.
  */
 
-public class AdminRoomStatusFragment extends Fragment {
+public class Admin_RoomStatus_Fragment extends Fragment {
     Date mToDate;
     int mDateVal;
     String mSendFromDate, mSendToDate;

@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="in.ac.iiitd.guestacc">
 
+    <!-- To access Google+ APIs: -->
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -12,8 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Admin_Pending_Approval"
-            android:label="@string/app_name">
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,28 +25,49 @@
         </activity>
         <activity
             android:name=".TypeLoginActivity"
-            android:label="@string/app_name" />
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".UserHomeActivity"
-            android:label="@string/check_avail" />
+            android:label="@string/check_avail"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ViewAvailability"
-            android:label="@string/avail_rooms" />
+            android:label="@string/avail_rooms"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".FacultyHomeActivity"
-            android:label="@string/title_activity_faculty_home"
+            android:label="Home"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".FacultyRoomAddActivity" />
-        <activity android:name=".BookingDetail" />
         <activity
-            android:name=".AdminHomeActivity"
-            android:label="@string/title_activity_admin_home"
+            android:name=".FacultyRoomAddActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".BookingDetail"
+            android:label="@string/bookingdetails"
+            android:screenOrientation="portrait">
+
+        </activity>
+        <activity
+            android:name=".FacultyRegistrationActivity"
+            android:label="Registration"
+            android:screenOrientation="portrait">
+
+        </activity>
+        <activity
+            android:name=".Admin_HomeActivity"
+            android:label="@string/admhome"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".AdminTodayRoomCheck"
-            android:theme="@android:style/Theme.NoTitleBar"/>
-        <activity android:name=".Admin_CancelBookings"/>
-      <!-- <activity android:name=".Admin_Pending_Approval"/>-->
-        <activity android:name=".Admin_ValidatePayment"/>
+        <activity android:name=".Admin_CancelBookings"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Admin_Pending_Approval"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Admin_ValidatePayment"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Admin_StatusForToday_MainScreen"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

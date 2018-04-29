@@ -1,9 +1,10 @@
 package in.ac.iiitd.guestacc;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -23,19 +24,35 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+
+/**
+ * Created by hpunetha on 4/20/2018.
+ */
 
 public class FacultyHomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -43,16 +60,17 @@ public class FacultyHomeActivity extends AppCompatActivity
     //public static HashMap<String,RoomItem> mAllRoomsDetails;
     public static HashMap<String,RoomItem> mAllRoomsDetails;
 
-    private int mTotalRooms=0,mTotalMales=0,mTotalFemales=0,mTotalGuests=0;
-    private int mTotalPrice=0;
-
+    public static int mTotalRooms=0,mTotalMales=0,mTotalFemales=0,mTotalGuests=0;
+    public static int mTotalPrice=0;
+    int mBackCount=0;
     public static final String TOTALPRICE = "totalprice";
     public static final String TOTALROOMS = "totalrooms";
     public static final String TOTALMALES = "totalmales";
     public static final String TOTALFEMALES = "totalfemales";
     public static final String TOTALGUESTS = "totalguests";
 
-
+    public static String mCurrentUserEmail ,mCurrentUserName;
+    FirebaseUser mFirebaseUser;
     FirebaseDatabase mDatabase;
     CardView mContractedCardView,mExpandedCardView;
     TextView mTotalPriceTextView;
@@ -63,11 +81,13 @@ public class FacultyHomeActivity extends AppCompatActivity
     TextView mAgreeTextView;
     CheckBox mAgreeTermsCheckBox;
     RelativeLayout mAgreeTermsRelativeLayout;
-    String mSendToDate,mSendFromDate;
+    public static String mSendToDate,mSendFromDate;
     CheckAvailabilityTask mCheckAvailTask;
     Button btnCheckAvailFaculty;
     Date mToDate;
     int mDateVal =0;
+    ProgressDialog mProgDiag;
+    public static int mUserType;  // 0-> Student , 1->Faculty  (getting intent value from TypeLoginActivity in this var)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +98,20 @@ public class FacultyHomeActivity extends AppCompatActivity
 
         mAllRoomsDetails =new HashMap<>();
 
+
+        Intent mGetTypeLogin = getIntent();
+        mUserType = mGetTypeLogin.getIntExtra(TypeLoginActivity.USERTYPE,TypeLoginActivity.STUDENT);  //Setting default login type as student
+
+        if (mUserType==TypeLoginActivity.STUDENT)
+        {
+            getSupportActionBar().setTitle("Student Home");
+
+        }
+        else
+        {
+            getSupportActionBar().setTitle("Faculty Home");
+        }
+
         try
         {
             mDatabase = FirebaseDatabase.getInstance();
@@ -86,6 +120,29 @@ public class FacultyHomeActivity extends AppCompatActivity
         {
             e.printStackTrace();
         }
+
+
+        //Menu
+
+        try {
+           mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+            if (mFirebaseUser !=null) {
+                mCurrentUserName = mFirebaseUser.getDisplayName();
+                mCurrentUserEmail = mFirebaseUser.getEmail();
+
+            }
+
+        }
+        catch (NullPointerException e)
+        {
+            e.printStackTrace();
+        }
+
+        Log.i("Current User" ,mCurrentUserName +"  " + mCurrentUserEmail + " " + mFirebaseUser.getPhotoUrl().toString());
+
+
+        //
 
         btnCheckAvailFaculty = (Button) findViewById(R.id.btnCheckAvailFaculty);
         btnCheckAvailFaculty.setEnabled(false);
@@ -101,6 +158,21 @@ public class FacultyHomeActivity extends AppCompatActivity
         mAgreeTermsCheckBox =(CheckBox) findViewById(R.id.agreeTermsCheckBox);
         mAgreeTextView= (TextView) findViewById(R.id.agreeTermsTextView);
 
+        mAgreeTermsCheckBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mAgreeTermsCheckBox.isChecked())
+                {
+                    btnCheckAvailFaculty.setEnabled(true);
+
+                }
+                else
+                {
+                    btnCheckAvailFaculty.setEnabled(false);
+                }
+
+            }
+        });
 
         mAgreeTermsRelativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,14 +195,27 @@ public class FacultyHomeActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
 
-                Intent mBookingDetail = new Intent(FacultyHomeActivity.this, BookingDetail.class);
+                if (mAllRoomsDetails.size()>0)
+                {
 
-                startActivity(mBookingDetail);
+                    new CheckAvailabilityTask(FacultyHomeActivity.this).execute();
+
+
+//                Intent mBookingDetail = new Intent(FacultyHomeActivity.this, BookingDetail.class);
+//                startActivity(mBookingDetail);
+
+                }
+                else
+                {
+
+                    Snackbar.make(view, "No Rooms are added. Please add rooms first", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
 
 
 
-                mCheckAvailTask = new CheckAvailabilityTask(FacultyHomeActivity.this);
-                mCheckAvailTask.execute();
+
+
 
             }
         });
@@ -329,13 +414,14 @@ public class FacultyHomeActivity extends AppCompatActivity
                     mTotalPriceTextView.setText(String.valueOf(mTotalPrice));
                 }
             }
+            else if (resultCode == Activity.RESULT_CANCELED)
+            {
+                    mEditTextRoomDetailsFaculty.setText(getResources().getString(R.string.add_room));
+            }
 
 
-//            if (resultCode == Activity.RESULT_CANCELED) {
-//                //Write your code if there's no result
-//            }
         }
-    }//onActivityResult
+    }
 
 
 
@@ -344,14 +430,43 @@ public class FacultyHomeActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
         }
+//      else {
+//            super.onBackPressed();
+//        }
+            mBackCount++;
+
+            if (mBackCount == 1) {
+                Toast.makeText(this, "Press again tosign-out", Toast.LENGTH_SHORT).show();
+
+
+            } else if (mBackCount > 1) {
+                FirebaseAuth.getInstance().signOut();
+                Intent mSignOut = new Intent(FacultyHomeActivity.this, MainActivity.class);
+                mSignOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(mSignOut);
+            }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+        ImageView mAvatarMenuImageView = (ImageView) findViewById(R.id.avatarMenuImageView);
+        TextView mTextViewMenuName =(TextView) findViewById(R.id.textViewMenuName);
+        TextView mTextViewMenuEmail = (TextView) findViewById(R.id.textViewMenuEmail);
+        if (mFirebaseUser!=null)
+        {
+            if (mCurrentUserName!=null) { mTextViewMenuName.setText(mCurrentUserName);}
+            if (mCurrentUserEmail!=null) { mTextViewMenuEmail.setText(mCurrentUserEmail);}
+
+            Uri ur =mFirebaseUser.getPhotoUrl();
+
+            String abc = ur.toString().replace("/s96-c/","/s300-c/");
+
+            Picasso.with(this).load(Uri.parse(abc)).into(mAvatarMenuImageView);
+
+        }
+
         getMenuInflater().inflate(R.menu.faculty_home, menu);
         return true;
     }
@@ -377,14 +492,8 @@ public class FacultyHomeActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_mybookings) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -393,45 +502,248 @@ public class FacultyHomeActivity extends AppCompatActivity
     }
 
 
-    @SuppressLint("StaticFieldLeak")
-    class CheckAvailabilityTask extends AsyncTask<String,String,String>
+    class CheckAvailabilityTask extends AsyncTask<String,Void,Boolean>
     {
+        Boolean exitFlag ;
         private FacultyHomeActivity mFacHomeAct;
+        List<String> mDateList,mFirebaseDateList;
+
+        HashMap<String,Boolean> mAllDateRoomsAvailabilityCount;
+
 
         public CheckAvailabilityTask(FacultyHomeActivity activ)
         {
             this.mFacHomeAct = activ;
+            this.exitFlag=false;
+
+
+            mAllDateRoomsAvailabilityCount = new HashMap<>();
+            mAllDateRoomsAvailabilityCount.put("bh1",true);
+            mAllDateRoomsAvailabilityCount.put("bh2",true);
+            mAllDateRoomsAvailabilityCount.put("gh1",true);
+            mAllDateRoomsAvailabilityCount.put("gh2",true);
+            mAllDateRoomsAvailabilityCount.put("frr1",true);
+            mAllDateRoomsAvailabilityCount.put("frr2",true);
+            mAllDateRoomsAvailabilityCount.put("frr3",true);
+            mAllDateRoomsAvailabilityCount.put("frf1",true);
+            mAllDateRoomsAvailabilityCount.put("frf2",true);
+
+
 
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            mProgDiag = new ProgressDialog(mFacHomeAct);
+            mProgDiag.setMessage("Loading.... Please Wait");
+            mProgDiag.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            mProgDiag.setIndeterminate(true);
+            mProgDiag.show();
+        }
+
+         @Override
+        protected Boolean doInBackground(String... strings)
+        {
+            Date mFromDate,mToDate1;
+
+            final List<String> mBookedRoomList;
+
+            mDateList= new ArrayList<>();
+            Calendar mCalender;
+            mFromDate=mToDate;
+
+            mFirebaseDateList = new ArrayList<>();
+            Log.i("sendToDate",mSendToDate);
+            Log.i("fromDate",mSendFromDate);
+
+            //Reference=> https://stackoverflow.com/questions/4216745/java-string-to-date-conversion
+            DateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH);
+            try
+            {
+                mFromDate = mDateFormat.parse(mSendFromDate);
+                mToDate1 = mDateFormat.parse(mSendToDate);
+                // Reference=>   https://stackoverflow.com/questions/2689379/how-to-get-a-list-of-dates-between-two-dates-in-java
+
+
+                mCalender= new GregorianCalendar();
+                mBookedRoomList = new ArrayList<String>();
+                mCalender.setTime(mFromDate);
+                while (mCalender.getTime().before(mToDate1))
+                {
+                    Date result = mCalender.getTime();
+                    String resultString = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH).format(result);
+
+                    mDateList.add(resultString);
+                    mCalender.add(Calendar.DATE, 1);
+                }
+
+                Log.i("Date List",mDateList.toString());
+
+                final DatabaseReference myRef;
+               // String basetable ="bookings_final";
+                String basetable ="bookings_final_test";
+
+
+
+
+
+                //
+                String strDBAccess = basetable;
+                Log.i("date access",strDBAccess);
+                myRef = mDatabase.getReference(strDBAccess);
+
+                myRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+//                        for(DataSnapshot child : dataSnapshot.getChildren() )
+//                        {
+//
+//
+//                        }
+
+                        Log.i("DATA SNAP START", dataSnapshot.toString());
+
+
+                        for (DataSnapshot child : dataSnapshot.getChildren()) {
+                            exitFlag = false;
+
+                            Log.i("Retrieving child", " child key => " + child.getKey() + " and mDateList" + mDateList);
+                            if (mDateList.contains(child.getKey()))
+                            {
+                                final String tempDateString = child.getKey();
+
+                                if (child.getChildrenCount() != 0) {
+                                    Log.i("Bookings", "Bookings for " + tempDateString + " children " + dataSnapshot.getChildren().toString());
+
+                                    for (DataSnapshot dbS : child.getChildren()) {
+                                        try {
+
+                                            Log.i("id booking", "id ->" + dbS.getKey() + " booking status->" + dbS.child("booking_status").getValue());
+
+                                            if (dbS.getValue() != null) {}
+
+                                                Booking mAdminBooking = dbS.getValue(Booking.class);
+                                                // if (mAdminBooking.guests.size()>0)
+                                                Log.i("INSIDETAG", mAdminBooking.booking_status);
+
+                                                // pending_approval change to completed
+                                                if (mAdminBooking.booking_status.equalsIgnoreCase("completed"))
+                                                {
+
+
+                                                    if (mAdminBooking.guests.size() > 0) {
+                                                        for (Guest guest1 : mAdminBooking.guests) {
+
+                                                            Log.i("Check Keys",mAllDateRoomsAvailabilityCount.keySet().toString() + "  =? " + guest1.allocated_room);
+
+                                                            if (mAllDateRoomsAvailabilityCount.keySet().contains(guest1.allocated_room)) {
+                                                                mAllDateRoomsAvailabilityCount.put(guest1.allocated_room,false);
+
+
+                                                            }
+                                                        }
+
+                                                        Log.i("Final Hashmap",mAllDateRoomsAvailabilityCount.toString());
+
+
+                                                    }
+
+
+//                                                    Log.i("INSIDETAG", mAdminBooking.guests.get(0).associated_room_id);
+
+                                                }
+
+                                            }
+                                        catch(Exception e)
+                                            {
+                                                e.printStackTrace();
+                                            }
+
+
+                                        }
+                                    } else{
+                                        Log.i("No Bookings ", "No Bookings for date " + tempDateString);
+
+
+                                    }
+
+                                }
+
+
+
+
+
+                            }
+
+                            int count=0;
+                            for (Map.Entry<String,Boolean> entry : mAllDateRoomsAvailabilityCount.entrySet())
+                            {
+                                Boolean val =  entry.getValue();
+
+                                if (val)
+                                {
+                                    count+=1;
+                                }
+
+                            }
+
+                            if (count > mTotalRooms)
+                            {
+                                Log.i("YIPPIE", " ================Rooms can be booked now=======================");
+                                mProgDiag.dismiss();
+
+                                Intent mBookingDetail = new Intent(FacultyHomeActivity.this, BookingDetail.class);
+                                startActivity(mBookingDetail);
+                            }
+                            else
+                            {
+                                mProgDiag.dismiss();
+                                Toast.makeText(FacultyHomeActivity.this, "Specified number of rooms not available for given dates.", Toast.LENGTH_SHORT).show();
+
+                            }
+
+
+
+
+
+
+
+                        }
+
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+
+                });
+
+
+            }
+            catch (ParseException e1)
+            {
+            e1.printStackTrace();
+            }
+
+
+            return exitFlag;
         }
 
         @Override
-        protected void onProgressUpdate(String... values) {
-            super.onProgressUpdate(values);
-        }
-
-        @Override
-        protected String doInBackground(String... strings) {
-                Log.i("sendToDate",mSendToDate);
-                Log.i("fromDate",mSendFromDate);
-                DatabaseReference myRef = mDatabase.getReference("bookings_final");
-
-
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
+        protected void onPostExecute(Boolean s) {
             super.onPostExecute(s);
+            Log.i("exitFlagPOST",String.valueOf(exitFlag));
+
+
+
+
 
         }
 
     }
+
+
 
 
 }

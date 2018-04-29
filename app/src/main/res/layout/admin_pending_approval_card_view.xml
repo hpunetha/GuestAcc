@@ -11,9 +11,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="1dp"
+
         card_view:cardUseCompatPadding="true"
         card_view:cardElevation="4dp"
-        card_view:cardCornerRadius="3dp">
+        card_view:cardCornerRadius="12dp">
     <RelativeLayout
         android:id = "@+id/relativeExpnadable"
         android:layout_width="match_parent"
@@ -92,6 +93,7 @@
             android:layout_alignStart="@+id/guest"
             android:layout_below="@+id/guest"
             android:layout_marginTop="14dp"
+            android:layout_marginBottom="12dp"
             android:text="Guest 2" />
 
         <TextView

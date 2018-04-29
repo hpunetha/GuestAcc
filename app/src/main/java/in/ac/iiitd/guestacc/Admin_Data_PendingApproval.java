@@ -19,7 +19,7 @@ public class Admin_Data_PendingApproval
     String males ;
     String females ;
     String projectName ;
-    List<Admin_Data_PendingApproval_RoomData> roomsData ;
+    List<Admin_Data_PendingApproval_RoomData> roomsData;
 
 
     public String getReqID() {
@@ -94,12 +94,25 @@ public class Admin_Data_PendingApproval
         this.roomsData = roomsData;
     }
 
+    public Admin_Data_PendingApproval(String reqID, String date, String type, String fundedBy, String reason, String males, String females, String projectName, List<Admin_Data_PendingApproval_RoomData> roomsData) {
+        this.roomsData = new ArrayList<>();
+        this.reqID = reqID;
+        this.date = date;
+        this.type = type;
+        this.fundedBy = fundedBy;
+        this.reason = reason;
+        this.males = males;
+        this.females = females;
+        this.projectName = projectName;
+        this.roomsData = roomsData;
+    }
+
     Admin_Data_PendingApproval()
     {
-        roomsData = new ArrayList<>() ;
 
        /* Add two dummy rooms   */
 
+       roomsData = new ArrayList<>();
         roomsData.add(new Admin_Data_PendingApproval_RoomData()) ;
         roomsData.add(new Admin_Data_PendingApproval_RoomData()) ;
 
