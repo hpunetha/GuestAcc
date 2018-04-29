@@ -45,6 +45,7 @@ public class FacultyRoomAddActivity extends AppCompatActivity implements Faculty
         setContentView(R.layout.activity_faculty_room_add);
         //mAllRoomFragments = new ArrayList<>();
 
+        getSupportActionBar().setTitle("Room Details");
 
         mTotalRoomsTextView = (TextView) findViewById(R.id.textViewTotalRooms);
         mTotalPriceTextView = (TextView) findViewById(R.id.textViewTotalPrice);

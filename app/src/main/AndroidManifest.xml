@@ -37,7 +37,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".FacultyHomeActivity"
-            android:label="@string/title_activity_faculty_home"
+            android:label="Home"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

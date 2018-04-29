@@ -83,6 +83,7 @@ public class FacultyHomeActivity extends AppCompatActivity
     Date mToDate;
     int mDateVal =0;
     ProgressDialog mProgDiag;
+    public static int mUserType;  // 0-> Student , 1->Faculty  (getting intent value from TypeLoginActivity in this var)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +95,18 @@ public class FacultyHomeActivity extends AppCompatActivity
         mAllRoomsDetails =new HashMap<>();
 
 
+        Intent mGetTypeLogin = getIntent();
+        mUserType = mGetTypeLogin.getIntExtra(TypeLoginActivity.USERTYPE,TypeLoginActivity.STUDENT);  //Setting default login type as student
+
+        if (mUserType==TypeLoginActivity.STUDENT)
+        {
+            getSupportActionBar().setTitle("Student Home");
+
+        }
+        else
+        {
+            getSupportActionBar().setTitle("Faculty Home");
+        }
 
         try
         {

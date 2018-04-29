@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -81,6 +82,16 @@ public class FacultyRoomAddFragment extends Fragment implements View.OnClickList
             mStatusFragment =(getArguments().getString(ARG_PARAM3));
             mRoomTag = getArguments().getString(ARG_PARAM1);
             mRoomName = getArguments().getString(ARG_PARAM2);
+
+            if (FacultyHomeActivity.mUserType ==TypeLoginActivity.STUDENT)
+            {
+                mFacultyFlag=false;
+            }
+            else
+            {
+                mFacultyFlag=true;
+            }
+
 
             if (mStatusFragment.equals("0")) {
                 RoomItem mNewRoom = new RoomItem();
@@ -221,6 +232,27 @@ public class FacultyRoomAddFragment extends Fragment implements View.OnClickList
         final RadioButton mRadioRoom =(RadioButton) vu1.findViewById(R.id.radioRoom);
         final RadioButton mRadioFlat =(RadioButton) vu1.findViewById(R.id.radioFlat);
         mRadioRoom.setChecked(true);
+
+        if (FacultyHomeActivity.mUserType ==TypeLoginActivity.STUDENT)
+        {
+            mFacultyFlag=false;
+            mRadioFlat.setEnabled(false);
+            mRG1.setVisibility(View.INVISIBLE);
+
+//            RelativeLayout mPrefLayout = (RelativeLayout) vu1.findViewById(R.id.prefRelativeLayout);
+//            ViewGroup.MarginLayoutParams mParams = (ViewGroup.MarginLayoutParams) mPrefLayout.getLayoutParams();
+//            mParams.setMargins(0,15,0,0);
+//            mPrefLayout.setLayoutParams(mParams);
+
+        }
+        else
+        {
+            mFacultyFlag=true;
+        }
+
+
+
+
         mRG1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {

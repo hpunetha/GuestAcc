@@ -32,6 +32,10 @@ public class TypeLoginActivity extends AppCompatActivity {
     String email ;
     ProgressDialog mProgDiag;
 
+    public static final String USERTYPE = "user";
+    public static final int STUDENT=0;
+    public static final int FACULTY=1;
+
     boolean mStaffFlag=false;
     boolean mFacultyFlag=false;
     boolean mBothFlag=false;
@@ -90,8 +94,8 @@ public class TypeLoginActivity extends AppCompatActivity {
 //            FirebaseUser User = FirebaseAuth.getInstance().getCurrentUser();
 //            Toast.makeText(TypeLoginActivity.this,User.getDisplayName(), Toast.LENGTH_SHORT).show();
 
-            Intent mUserHome = new Intent(this, UserHomeActivity.class);
-            mUserHome.putExtra("UserType",0);
+            Intent mUserHome = new Intent(this, FacultyHomeActivity.class);
+            mUserHome.putExtra(USERTYPE,STUDENT);
             startActivity(mUserHome);
 
 
@@ -104,7 +108,7 @@ public class TypeLoginActivity extends AppCompatActivity {
 
 
             DatabaseReference myRef = mDatabase.getReference("faculty_staff/faculty");
-
+//********************OLD CODE COMMENTED BELOW************************
 //            myRef.addValueEventListener(new ValueEventListener() {
 //                @Override
 //                public void onDataChange(DataSnapshot dataSnapshot) {
@@ -191,6 +195,7 @@ public class TypeLoginActivity extends AppCompatActivity {
 //
 //                }
 //            });
+// ********************END OLD CODE************************
 
             myRef.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -224,7 +229,7 @@ public class TypeLoginActivity extends AppCompatActivity {
                                         Log.w("Faculty Found ", mToCheckEmail);
                                         mProgDiag.dismiss();
                                         Intent mFacultyHome = new Intent(TypeLoginActivity.this, FacultyHomeActivity.class);
-                                        mFacultyHome.putExtra("UserType", 1);
+                                        mFacultyHome.putExtra(USERTYPE, FACULTY);
                                         startActivity(mFacultyHome);
 
                                         mFacultyFlag = true;
@@ -409,7 +414,7 @@ public class TypeLoginActivity extends AppCompatActivity {
                                     Log.w("Staff Found ", mToCheckEmail);
                                     mProgDiag.dismiss();
                                     Intent mFacultyHome = new Intent(TypeLoginActivity.this, FacultyHomeActivity.class);
-                                    mFacultyHome.putExtra("UserType", 1);
+                                    mFacultyHome.putExtra(USERTYPE, FACULTY);
                                     startActivity(mFacultyHome);
 
                                     mStaffFlag = true;
