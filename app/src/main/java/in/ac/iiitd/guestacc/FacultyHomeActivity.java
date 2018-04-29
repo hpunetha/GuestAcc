@@ -443,7 +443,7 @@ public class FacultyHomeActivity extends AppCompatActivity
     }
 
 
-        class CheckAvailabilityTask extends AsyncTask<String,Void,Boolean>
+    class CheckAvailabilityTask extends AsyncTask<String,Void,Boolean>
     {
         Boolean exitFlag ;
         private FacultyHomeActivity mFacHomeAct;

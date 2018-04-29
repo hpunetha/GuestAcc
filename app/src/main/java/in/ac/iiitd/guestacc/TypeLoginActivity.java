@@ -1,10 +1,15 @@
 package in.ac.iiitd.guestacc;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -26,6 +31,10 @@ public class TypeLoginActivity extends AppCompatActivity {
     Firebase mFbClient;
     String email ;
     ProgressDialog mProgDiag;
+
+    boolean mStaffFlag=false;
+    boolean mFacultyFlag=false;
+    boolean mBothFlag=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +94,9 @@ public class TypeLoginActivity extends AppCompatActivity {
             mUserHome.putExtra("UserType",0);
             startActivity(mUserHome);
 
+
+
+
         }
         else if (mRadioFacultyChecked)
         {
@@ -93,64 +105,137 @@ public class TypeLoginActivity extends AppCompatActivity {
 
             DatabaseReference myRef = mDatabase.getReference("faculty_staff/faculty");
 
+//            myRef.addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(DataSnapshot dataSnapshot) {
+//                    boolean flag = false;
+//                    ArrayList<Map<String,String>> val = (ArrayList<Map<String, String>>) dataSnapshot.getValue();
+//
+//                    try
+//                    {
+//                        if (val != null)
+//                        {
+//                            Log.w("Initial HashMap Val=",val.toString());
+//
+//                            for (Map <String,String> abc:val)
+//                            {
+//                                if (abc!=null) {
+////                                    for (String ab: abc.values()) {
+////                                        Log.w("Last HashMap Val=", ab);
+////
+////                                    }
+//                                    for (Map.Entry<String,String> ab: abc.entrySet()) {
+//
+//                                        if (ab!=null)
+//                                        {
+//                                            if (ab.getKey().equalsIgnoreCase("emailid"))
+//                                            {
+//                                                String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+//
+//                                                if (email!=null)
+//                                                {
+//                                                    if (ab.getValue().equalsIgnoreCase(email))
+//                                                    {
+//                                                        Log.w("Faculty Found ", ab.getValue());
+//                                                        mProgDiag.dismiss();
+//                                                        Intent mFacultyHome = new Intent(TypeLoginActivity.this, FacultyHomeActivity.class);
+//                                                        mFacultyHome.putExtra("UserType",1);
+//                                                        startActivity(mFacultyHome);
+//
+//                                                        flag=true;
+//                                                    }
+//
+//                                                }
+//                                                Log.w("Last HashMap Val=", ab.getValue());
+//                                            }
+//
+//                                        }
+//
+//
+//
+//                                    }
+//                                }
+//                            }
+//
+//
+//
+//                            }
+//                        else
+//                        {
+//                            Log.w("HashMap Value is => ", "NULL");
+//                        }
+//
+//
+//
+//                    }
+//                    catch(NullPointerException e)
+//                    {
+//                        e.printStackTrace();
+//                    }
+//
+//                    if (!flag)
+//                    {
+//                        mProgDiag.dismiss();
+//                        FirebaseAuth.getInstance().signOut();
+//                        Toast.makeText(TypeLoginActivity.this,"Not Permitted to Sign-in as Faculty", Toast.LENGTH_SHORT).show();
+//                        Intent mSignOut = new Intent(TypeLoginActivity.this, MainActivity.class);
+//                        mSignOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                        startActivity(mSignOut);
+//
+//                    }
+//
+//                }
+//
+//                @Override
+//                public void onCancelled(DatabaseError databaseError) {
+//
+//                }
+//            });
+
             myRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    boolean flag = false;
-                    ArrayList<Map<String,String>> val = (ArrayList<Map<String, String>>) dataSnapshot.getValue();
 
+                    mFacultyFlag = false;
+                    //ArrayList<Map<String,String>> val = (ArrayList<Map<String, String>>) dataSnapshot.getValue();
+                    //Log.i("")
                     try
                     {
-                        if (val != null)
-                        {
-                            Log.w("Initial HashMap Val=",val.toString());
+                        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+                        Log.i("snapshot",dataSnapshot.getChildren().toString());
 
-                            for (Map <String,String> abc:val)
+                        for (DataSnapshot db1 : dataSnapshot.getChildren()) {
+
+                            //  Log.i("Email Values",db1.child("emailid").getValue().toString() +"   =? "+ email);
+
+
+                            String mToCheckEmail = db1.child("emailid").getValue().toString();
+                            if (mToCheckEmail != null)
                             {
-                                if (abc!=null) {
-//                                    for (String ab: abc.values()) {
-//                                        Log.w("Last HashMap Val=", ab);
-//
-//                                    }
-                                    for (Map.Entry<String,String> ab: abc.entrySet()) {
+                                if (mToCheckEmail.equalsIgnoreCase(email)){
 
-                                        if (ab!=null)
-                                        {
-                                            if (ab.getKey().equalsIgnoreCase("emailid"))
-                                            {
-                                                String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-
-                                                if (email!=null)
-                                                {
-                                                    if (ab.getValue().equalsIgnoreCase(email))
-                                                    {
-                                                        Log.w("Faculty Found ", ab.getValue());
-                                                        mProgDiag.dismiss();
-                                                        Intent mFacultyHome = new Intent(TypeLoginActivity.this, FacultyHomeActivity.class);
-                                                        mFacultyHome.putExtra("UserType",1);
-                                                        startActivity(mFacultyHome);
-
-                                                        flag=true;
-                                                    }
-
-                                                }
-                                                Log.w("Last HashMap Val=", ab.getValue());
-                                            }
-
-                                        }
+                                    if (email != null)
+                                    {
 
 
+                                        Log.i("Email Found", mToCheckEmail + "   =? " + email);
 
+
+                                        Log.w("Faculty Found ", mToCheckEmail);
+                                        mProgDiag.dismiss();
+                                        Intent mFacultyHome = new Intent(TypeLoginActivity.this, FacultyHomeActivity.class);
+                                        mFacultyHome.putExtra("UserType", 1);
+                                        startActivity(mFacultyHome);
+
+                                        mFacultyFlag = true;
+
+
+                                        Log.w("Last HashMap Val=", mToCheckEmail);
+                                        break;
                                     }
                                 }
-                            }
-
-
 
                             }
-                        else
-                        {
-                            Log.w("HashMap Value is => ", "NULL");
                         }
 
 
@@ -161,14 +246,15 @@ public class TypeLoginActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-                    if (!flag)
+                    if (!mFacultyFlag)
                     {
-                        mProgDiag.dismiss();
-                        FirebaseAuth.getInstance().signOut();
-                        Toast.makeText(TypeLoginActivity.this,"Not Permitted to Sign-in as Faculty", Toast.LENGTH_SHORT).show();
-                        Intent mSignOut = new Intent(TypeLoginActivity.this, MainActivity.class);
-                        mSignOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(mSignOut);
+//                        mProgDiag.dismiss();
+
+                       // Toast.makeText(TypeLoginActivity.this,"Not Permitted to Sign-in as Faculty", Toast.LENGTH_SHORT).show();
+
+
+                        checkStaff();
+
 
                     }
 
@@ -179,15 +265,6 @@ public class TypeLoginActivity extends AppCompatActivity {
 
                 }
             });
-
-
-            // flag=true;
-
-
-//
-
-            //
-
 
 
         }
@@ -293,4 +370,127 @@ public class TypeLoginActivity extends AppCompatActivity {
 
         }
     }
+
+
+    private void checkStaff()
+    {
+        DatabaseReference myRef = mDatabase.getReference("faculty_staff/staff");
+        myRef.addValueEventListener(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                mStaffFlag = false;
+                //ArrayList<Map<String,String>> val = (ArrayList<Map<String, String>>) dataSnapshot.getValue();
+                //Log.i("")
+                try
+                {
+                    String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+                    Log.i("snapshot",dataSnapshot.getChildren().toString());
+
+                    for (DataSnapshot db1 : dataSnapshot.getChildren())
+                    {
+
+                        //  Log.i("Email Values",db1.child("emailid").getValue().toString() +"   =? "+ email);
+
+
+                        String mToCheckEmail = db1.child("emailid").getValue().toString();
+                        if (mToCheckEmail != null)
+                        {
+                            if (mToCheckEmail.equalsIgnoreCase(email)){
+
+                                if (email != null)
+                                {
+
+
+                                    Log.i("Email Found", mToCheckEmail + "   =? " + email);
+
+
+                                    Log.w("Staff Found ", mToCheckEmail);
+                                    mProgDiag.dismiss();
+                                    Intent mFacultyHome = new Intent(TypeLoginActivity.this, FacultyHomeActivity.class);
+                                    mFacultyHome.putExtra("UserType", 1);
+                                    startActivity(mFacultyHome);
+
+                                    mStaffFlag = true;
+
+
+                                    Log.w("Last HashMap Val=", mToCheckEmail);
+                                    break;
+                                }
+                            }
+
+                        }
+                    }
+
+
+
+                }
+                catch(NullPointerException e)
+                {
+                    e.printStackTrace();
+                }
+
+                if (!mStaffFlag)
+                {
+                    mProgDiag.dismiss();
+                    //FirebaseAuth.getInstance().signOut();
+                    //Toast.makeText(TypeLoginActivity.this,"Not Permitted to Sign-in as Staff", Toast.LENGTH_SHORT).show();
+                    openRegPromptDialog();
+
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void openRegPromptDialog()
+    {
+        AlertDialog.Builder mBuild = new AlertDialog.Builder(TypeLoginActivity.this);
+        View mView = getLayoutInflater().inflate(R.layout.activity_faculty_registration_prompt_dialog,null);
+
+
+        final Button mYes = (Button) mView.findViewById(R.id.btnYesRegister);
+        final Button mNo = (Button) mView.findViewById(R.id.btnNoRegister);
+
+
+        mBuild.setView(mView);
+        final AlertDialog mAlertDialog = mBuild.create();
+        mAlertDialog.show();
+
+        mYes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mAlertDialog.hide();
+                Intent mRegIntent = new Intent(TypeLoginActivity.this, FacultyRegistrationActivity.class);
+
+                startActivity(mRegIntent);
+
+            }
+        });
+
+        mNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mAlertDialog.hide();
+
+                FirebaseAuth.getInstance().signOut();
+//                Toast.makeText(TypeLoginActivity.this,"Not Permitted to Sign-in as Faculty", Toast.LENGTH_SHORT).show();
+                Intent mSignOut = new Intent(TypeLoginActivity.this, MainActivity.class);
+                mSignOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(mSignOut);
+
+            }
+        });
+
+
+    }
+
+
 }

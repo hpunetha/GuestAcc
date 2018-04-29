@@ -14,9 +14,9 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
+            android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
-            android:label="@string/app_name">
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,28 +25,31 @@
         </activity>
         <activity
             android:name=".TypeLoginActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/app_name" />
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".UserHomeActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/check_avail" />
+            android:label="@string/check_avail"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ViewAvailability"
             android:label="@string/avail_rooms"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".FacultyHomeActivity"
             android:label="@string/title_activity_faculty_home"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".FacultyRoomAddActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".BookingDetail"
-            android:screenOrientation="portrait">
+        <activity
+            android:name=".FacultyRoomAddActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".BookingDetail"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".FacultyRegistrationActivity"
+            android:label="Registration">
 
         </activity>
-
     </application>
 
 </manifest>
