@@ -45,11 +45,21 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".BookingDetail"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait">
+
+        </activity>
         <activity android:name=".FacultyRegistrationActivity"
             android:label="Registration">
 
         </activity>
+        <activity
+            android:name=".Admin_HomeActivity"
+            android:label="@string/title_activity_admin_home"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Admin_CancelBookings"/>
+       <activity android:name=".Admin_Pending_Approval"/>
+        <activity android:name=".Admin_ValidatePayment"/>
+        <activity android:name=".Admin_StatusForToday_MainScreen"/>
     </application>
 
 </manifest>

@@ -24,16 +24,11 @@
     <string name="cardVal">0</string>
     <string name="check_avail">Home</string>
     <string name="avail_rooms">Available Rooms</string>
+    <string name="title_activity_admin_home">AdminHomeActivity</string>
     <string name="avail">"Available : "</string>
     <string name="errormsg">"Error : "</string>
     <string name="title_activity_faculty_home">FacultyHomeActivity</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-
-    <string name="action_settings">Settings</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="add_room">+ Add Room</string>
     <string name="room_details">Room ID </string>
@@ -60,5 +55,14 @@
     <string name="name">Name</string>
     <string name="submit_request">Submit Request</string>
 
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <string name="action_settings">Settings</string>
+
+    <string-array name="adminRoomStatusSpinner">
+        <item>Available</item>
+        <item>Booked</item>
+        <item>Pending Payment</item>
+    </string-array>
 </resources>
