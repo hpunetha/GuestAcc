@@ -5,6 +5,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -65,7 +66,6 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
         final EditText editText_PI = (EditText)findViewById(R.id.editText_PI);
         final EditText editText_InstituteDesc = (EditText)findViewById(R.id.editText_InstituteDesc);
         final EditText editText_ROV = (EditText)findViewById(R.id.editText_ROV);
-
 
 
         String[] items = new String[]{"Personal", "Official"};

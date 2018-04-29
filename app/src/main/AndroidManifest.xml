@@ -45,6 +45,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".BookingDetail"
+            android:label="@string/bookingdetails"
             android:screenOrientation="portrait">
 
         </activity>
