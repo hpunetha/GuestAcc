@@ -27,6 +27,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -61,7 +62,7 @@ public class FacultyHomeActivity extends AppCompatActivity
 
     public static int mTotalRooms=0,mTotalMales=0,mTotalFemales=0,mTotalGuests=0;
     public static int mTotalPrice=0;
-
+    int mBackCount=0;
     public static final String TOTALPRICE = "totalprice";
     public static final String TOTALROOMS = "totalrooms";
     public static final String TOTALMALES = "totalmales";
@@ -429,9 +430,22 @@ public class FacultyHomeActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
         }
+//      else {
+//            super.onBackPressed();
+//        }
+            mBackCount++;
+
+            if (mBackCount == 1) {
+                Toast.makeText(this, "Press again to_date sign-out", Toast.LENGTH_SHORT).show();
+
+
+            } else if (mBackCount > 1) {
+                FirebaseAuth.getInstance().signOut();
+                Intent mSignOut = new Intent(FacultyHomeActivity.this, MainActivity.class);
+                mSignOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(mSignOut);
+            }
     }
 
     @Override
@@ -726,6 +740,8 @@ public class FacultyHomeActivity extends AppCompatActivity
         }
 
     }
+
+
 
 
 }
