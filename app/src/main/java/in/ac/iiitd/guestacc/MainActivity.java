@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (mBackCount==1)
         {
-            Toast.makeText(this,"Press again to_date exit",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Press again to exit",Toast.LENGTH_SHORT).show();
 
 
         } else if (mBackCount>1)

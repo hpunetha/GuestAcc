@@ -437,7 +437,7 @@ public class FacultyHomeActivity extends AppCompatActivity
             mBackCount++;
 
             if (mBackCount == 1) {
-                Toast.makeText(this, "Press again to_date sign-out", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Press again tosign-out", Toast.LENGTH_SHORT).show();
 
 
             } else if (mBackCount > 1) {
@@ -628,7 +628,7 @@ public class FacultyHomeActivity extends AppCompatActivity
                                                 Log.i("INSIDETAG", mAdminBooking.booking_status);
 
                                                 // pending_approval change to completed
-                                                if (mAdminBooking.booking_status.equalsIgnoreCase("pending_approval"))
+                                                if (mAdminBooking.booking_status.equalsIgnoreCase("completed"))
                                                 {
 
 
@@ -699,6 +699,8 @@ public class FacultyHomeActivity extends AppCompatActivity
                             else
                             {
                                 mProgDiag.dismiss();
+                                Toast.makeText(FacultyHomeActivity.this, "Specified number of rooms not available for given dates.", Toast.LENGTH_SHORT).show();
+
                             }
 
 

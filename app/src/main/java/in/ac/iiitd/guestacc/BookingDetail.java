@@ -5,6 +5,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -71,30 +72,6 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
         final EditText editText_ROV = (EditText)findViewById(R.id.editText_ROV);
 
 
-        if(FacultyHomeActivity.mUserType==TypeLoginActivity.STUDENT)
-        {
-            spinner_purpose.setEnabled(false);
-        }
-        else if(FacultyHomeActivity.mUserType==TypeLoginActivity.FACULTY)
-        {
-
-        }
-
-        try {
-            mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
-            if (mFirebaseUser !=null) {
-                mCurrentUserName = mFirebaseUser.getDisplayName();
-                mCurrentUserEmail = mFirebaseUser.getEmail();
-            }
-
-        }
-        catch (NullPointerException e)
-        {
-            e.printStackTrace();
-        }
-
-
 
         String[] items = new String[]{"Personal", "Official"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
@@ -107,6 +84,11 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
         String[] items_FundedBy = new String[]{"Self", "Visitor"};
         ArrayAdapter<String> adapter_fundedBy = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items_FundedBy);
         spinner_personal_funding.setAdapter(adapter_fundedBy);
+
+//        String[] items_official_personal_FundedBy = new String[]{"Self", "Visitor"};
+//        ArrayAdapter<String> adapter_official_personal_Funding_paidby = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items_official_personal_FundedBy);
+//        spinner_official_personal_funding_payedby.setAdapter(adapter_official_personal_Funding_paidby);
+
 
         Button btnBook = (Button)findViewById(R.id.btnBook);
         databaseReference_key_generator = FirebaseDatabase.getInstance().getReference("bookings_final_testing_");
@@ -323,10 +305,25 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
                         userBookingDetails.setStatus(PENDING_APPROVAL);
                         userBookingDetails.setTotal_amount(String.valueOf(FacultyHomeActivity.mTotalPrice));
                         String email="";
+                        try {
+                            email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
 
-                    databaseReference_user.child(mCurrentUserEmail.replace("@iiitd.ac.in","")).child(mRequestId).setValue(userBookingDetails);
+                        }
+                        catch (NullPointerException e)
+                        {
+                            e.printStackTrace();
+                        }
+                        databaseReference_user.child(email.replace("@iiitd.ac.in","")).child(mRequestId).setValue(userBookingDetails);
+
+                        //System.out.println("Your Request is submitted sucessfully");
                         Toast.makeText(getApplicationContext(), "Your request is submitted sucessfully", Toast.LENGTH_LONG).show();
+                        //finish();
+                    System.out.println("============>>>>>Enter");
                     finish();
+                    //Intent mFacultyHomeActivity = new Intent(BookingDetail.this, FacultyHomeActivity.class);
+                    //startActivity(mFacultyHomeActivity);
+                    System.out.println("================>>>>>>>>>Completed");
+
                     }
                     else
                     {
@@ -370,6 +367,15 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
 
             }
         });
+
+
+
+
+
+
+
+
+
 
 
 

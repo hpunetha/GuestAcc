@@ -65,4 +65,7 @@
         <item>Booked</item>
         <item>Pending Payment</item>
     </string-array>
+    <string name="title_activity_test">TestAct</string>
+    <string name="admhome">Admin Home</string>
+    <string name="bookingdetails">Booking Details</string>
 </resources>
