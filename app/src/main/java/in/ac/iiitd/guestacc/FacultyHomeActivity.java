@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -23,17 +24,18 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.firebase.client.snapshot.BooleanNode;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import org.w3c.dom.Text;
+import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -66,7 +68,8 @@ public class FacultyHomeActivity extends AppCompatActivity
     public static final String TOTALFEMALES = "totalfemales";
     public static final String TOTALGUESTS = "totalguests";
 
-
+    public static String mCurrentUserEmail ,mCurrentUserName;
+    FirebaseUser mFirebaseUser;
     FirebaseDatabase mDatabase;
     CardView mContractedCardView,mExpandedCardView;
     TextView mTotalPriceTextView;
@@ -116,6 +119,29 @@ public class FacultyHomeActivity extends AppCompatActivity
         {
             e.printStackTrace();
         }
+
+
+        //Menu
+
+        try {
+           mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+            if (mFirebaseUser !=null) {
+                mCurrentUserName = mFirebaseUser.getDisplayName();
+                mCurrentUserEmail = mFirebaseUser.getEmail();
+
+            }
+
+        }
+        catch (NullPointerException e)
+        {
+            e.printStackTrace();
+        }
+
+        Log.i("Current User" ,mCurrentUserName +"  " + mCurrentUserEmail + " " + mFirebaseUser.getPhotoUrl().toString());
+
+
+        //
 
         btnCheckAvailFaculty = (Button) findViewById(R.id.btnCheckAvailFaculty);
         btnCheckAvailFaculty.setEnabled(false);
@@ -411,6 +437,22 @@ public class FacultyHomeActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+        ImageView mAvatarMenuImageView = (ImageView) findViewById(R.id.avatarMenuImageView);
+        TextView mTextViewMenuName =(TextView) findViewById(R.id.textViewMenuName);
+        TextView mTextViewMenuEmail = (TextView) findViewById(R.id.textViewMenuEmail);
+        if (mFirebaseUser!=null)
+        {
+            if (mCurrentUserName!=null) { mTextViewMenuName.setText(mCurrentUserName);}
+            if (mCurrentUserEmail!=null) { mTextViewMenuEmail.setText(mCurrentUserEmail);}
+
+            Uri ur =mFirebaseUser.getPhotoUrl();
+
+            String abc = ur.toString().replace("/s96-c/","/s300-c/");
+
+            Picasso.with(this).load(Uri.parse(abc)).into(mAvatarMenuImageView);
+
+        }
+
         getMenuInflater().inflate(R.menu.faculty_home, menu);
         return true;
     }
@@ -436,18 +478,8 @@ public class FacultyHomeActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_mybookings) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
