@@ -20,8 +20,11 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class Admin_StatusForToday_MainScreen extends AppCompatActivity {
 
@@ -31,6 +34,10 @@ public class Admin_StatusForToday_MainScreen extends AppCompatActivity {
     ArrayList<String> mRoomNameNotAvailable = new ArrayList<>();
     Booking mStatusForTodayBooking;
     Admin_StatusForToday_RecyclerViewAdapter mAdapter;
+    String PENDING_APPROVAL = "pending_approval";
+    String PENDING_PAYMENT= "pending_payment";
+    String COMPLETED = "completed";
+    String CANCELLED = "cancelled";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,15 +74,16 @@ public class Admin_StatusForToday_MainScreen extends AppCompatActivity {
                 Log.i("Date", String.valueOf(dataSnapshot.getChildrenCount()));
                 if (dataSnapshot.getValue() != null) {
                     mStatusForTodayBooking = dataSnapshot.getValue(Booking.class);
-                    if (mStatusForTodayBooking.getGuests().size() > 0 && mStatusForTodayBooking != null) {
+                    if (mStatusForTodayBooking != null && mStatusForTodayBooking.getBooking_status().equals(COMPLETED)) {
                         for (int i = 0; i < mStatusForTodayBooking.getGuests().size(); i++) {
-                            if (mStatusForTodayBooking.getGuests().get(i).getAssociated_room_id() != null)
-                                mRoomNameNotAvailable.add(mStatusForTodayBooking.getGuests().get(i).getAssociated_room_id());
+                            if (mStatusForTodayBooking.getGuests().get(i).getAllocated_room() != null)
+                                mRoomNameNotAvailable.add(mStatusForTodayBooking.getGuests().get(i).getAllocated_room());
                         }
                     }
                 }
                 //Add values to Rooms
                 for (int i=0;i<mRoomName.size();i++){
+
                     if (mRoomNameNotAvailable.contains(mRoomName.get(i)))
                         mData.add(new Admin_StatusForToday_Data(mRoomName.get(i),Color.RED));
                     else
@@ -89,18 +97,6 @@ public class Admin_StatusForToday_MainScreen extends AppCompatActivity {
 
             }
         });
-
-        /*
-        int color = Color.GREEN;
-        mData.add(new Admin_StatusForToday_Data("BH1",color));
-        mData.add(new Admin_StatusForToday_Data("BH2",color));
-        mData.add(new Admin_StatusForToday_Data("GH1",color));
-        mData.add(new Admin_StatusForToday_Data("GH2",color));
-        mData.add(new Admin_StatusForToday_Data("FR1",color));
-        mData.add(new Admin_StatusForToday_Data("FR2",color));
-        mData.add(new Admin_StatusForToday_Data("FF1",color));
-
-        */
 
         Log.i("Date",mData.toString());
         RecyclerView myrv = (RecyclerView)findViewById(R.id.admin_statusfortoday_recyclerView);
