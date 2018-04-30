@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.google.firebase.database.DataSnapshot;
@@ -43,6 +44,7 @@ public class Admin_RoomStatus_Fragment extends Fragment {
     String mSendFromDate, mSendToDate;
     Button mAdminRoomAvailability;
     EditText mEditTextFromDate, mEditTextToDate;
+    ListView mListViewAdminRoomStatus;
     Spinner mSpinnerAvailabilityStatus;
     ArrayAdapter<CharSequence> spinnerStatusAdapter;
 
@@ -51,6 +53,7 @@ public class Admin_RoomStatus_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View adminRoomStatus = inflater.inflate(R.layout.fragment_admin_room_status, container, false);
 
+        mListViewAdminRoomStatus = (ListView)adminRoomStatus.findViewById(R.id.list_adminRoomStatus);
         mEditTextFromDate = (EditText) adminRoomStatus.findViewById(R.id.editTextAdminRoomFrom);
         mEditTextToDate = (EditText) adminRoomStatus.findViewById(R.id.editTextAdminRoomTo);
         mAdminRoomAvailability = (Button) adminRoomStatus.findViewById(R.id.button_adminRoomCheckAvailability);
