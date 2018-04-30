@@ -1,11 +1,13 @@
 package in.ac.iiitd.guestacc;
 
 import android.net.Uri;
+import android.os.StrictMode;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,6 +20,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -45,6 +48,9 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
     public static HashMap<String,Guest> hm_guestDetails = new HashMap<String, Guest>();
     private DatabaseReference databaseReference_key_generator,databaseReference_bookings_final,databaseReference_pending_approval,databaseReference_user;
     Booking booking = null;
+    FirebaseUser mFirebaseUser;
+    String mCurrentUserName;
+    String mCurrentUserEmail;
 
 
     //Request Stages
@@ -67,6 +73,7 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
         final EditText editText_InstituteDesc = (EditText)findViewById(R.id.editText_InstituteDesc);
         final EditText editText_ROV = (EditText)findViewById(R.id.editText_ROV);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         String[] items = new String[]{"Personal", "Official"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
@@ -80,18 +87,16 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
         ArrayAdapter<String> adapter_fundedBy = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items_FundedBy);
         spinner_personal_funding.setAdapter(adapter_fundedBy);
 
-//        String[] items_official_personal_FundedBy = new String[]{"Self", "Visitor"};
-//        ArrayAdapter<String> adapter_official_personal_Funding_paidby = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items_official_personal_FundedBy);
-//        spinner_official_personal_funding_payedby.setAdapter(adapter_official_personal_Funding_paidby);
-
-
         Button btnBook = (Button)findViewById(R.id.btnBook);
-        databaseReference_key_generator = FirebaseDatabase.getInstance().getReference("bookings_final_testing_");
-        databaseReference_bookings_final = FirebaseDatabase.getInstance().getReference("bookings_final_testing_");
-        databaseReference_pending_approval = FirebaseDatabase.getInstance().getReference("pending_requests/pending_approval_test");
+        databaseReference_key_generator = FirebaseDatabase.getInstance().getReference("bookings_final_");
+        databaseReference_bookings_final = FirebaseDatabase.getInstance().getReference("bookings_final_");
+        databaseReference_pending_approval = FirebaseDatabase.getInstance().getReference("pending_requests/pending_approval");
         databaseReference_user = FirebaseDatabase.getInstance().getReference("user");
 
-
+        if(mFirebaseUser!=null)
+        {
+            editText_PI.setText(mCurrentUserName);
+        }
         btnBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -322,6 +327,9 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
                         Snackbar.make(view, "All are mandatory fields. Please fill all of them", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
                     }
+
+
+                //sendMessage();
             }
         });
 
@@ -480,6 +488,27 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
 
             }
         });
+    }
+
+
+    //https://www.mindstick.com/Articles/1673/sending-mail-without-user-interaction-in-android
+
+    private void sendMessage() {
+        Thread sender = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    GMailSender sender = new GMailSender("youremail", "yourpassword");
+                    sender.sendMail("EmailSender App",
+                            "This is the message body",
+                            "priyavssut@gmail.com",
+                            "priyabrate17043@iiitd.ac.in");
+                } catch (Exception e) {
+                    Log.e("mylog", "Error: " + e.getMessage());
+                }
+            }
+        });
+        sender.start();
     }
 
 

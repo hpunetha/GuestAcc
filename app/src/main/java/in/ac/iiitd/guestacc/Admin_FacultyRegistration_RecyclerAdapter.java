@@ -10,6 +10,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.List;
 
 /**
@@ -23,8 +26,11 @@ public class Admin_FacultyRegistration_RecyclerAdapter extends RecyclerView.Adap
     public FacultyRegistrationItemClickListener mClickListener ;
     private List<Admin_Data_Faculty_Registration> data ;
     private Button cancelButton ;
-    private Button acceptButton ;
+    private Button acceptButton;
     Context context ;
+    DatabaseReference pending = FirebaseDatabase.getInstance().getReference("join_requests");
+
+
 
 
     Admin_FacultyRegistration_RecyclerAdapter(Context con , List<Admin_Data_Faculty_Registration> data)
@@ -55,7 +61,6 @@ public class Admin_FacultyRegistration_RecyclerAdapter extends RecyclerView.Adap
     //binds data to textview in each row
     public void onBindViewHolder(ViewHolder holder , int position)
     {
-        //TODO : change position
 
         Admin_Data_Faculty_Registration dataRow = data.get(position) ;
 
@@ -66,7 +71,7 @@ public class Admin_FacultyRegistration_RecyclerAdapter extends RecyclerView.Adap
 
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
+    public class ViewHolder extends RecyclerView.ViewHolder
     {
         private TextView name ;
         private TextView email ;
@@ -81,8 +86,8 @@ public class Admin_FacultyRegistration_RecyclerAdapter extends RecyclerView.Adap
             email = itemView.findViewById(R.id.faculty_email) ;
             type = itemView.findViewById(R.id.faculty_type) ;
 
-            cancelButton = itemView.findViewById(R.id.accept_faculty);
-            acceptButton = itemView.findViewById(R.id.reject_faculty2) ;
+            cancelButton = itemView.findViewById(R.id.reject_faculty2);
+            acceptButton = itemView.findViewById(R.id.accept_faculty) ;
 
 
             //itemView.setOnClickListener(this);
@@ -90,6 +95,8 @@ public class Admin_FacultyRegistration_RecyclerAdapter extends RecyclerView.Adap
             cancelButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Log.e("RECYCLER","Cancel clicked");
+
 
                 }
             });
@@ -101,30 +108,16 @@ public class Admin_FacultyRegistration_RecyclerAdapter extends RecyclerView.Adap
                 public void onClick(View view)
                 {
                     // TODO : Listen
-                    Log.e("RECYCLER","INSIDE");
+                    Log.e("RECYCLER in accept",pending.getKey());
+
                       mClickListener.onButtonClick(view,getAdapterPosition());
+
 
                 }
             });
         }
 
 
-
-        @Override
-        public void onClick(View v)
-        {
-
-            //if(v.findViewById(R.id.accept_faculty))
-
-            if(v.getId()==acceptButton.getId())
-            {
-                mClickListener.onButtonClick(v,getAdapterPosition());
-            }
-            else
-            {
-                if(mClickListener!=null)  mClickListener.onItemClick(v,getAdapterPosition());
-            }
-        }
     }
 
     void setClickListener(FacultyRegistrationItemClickListener itemClickListener)
