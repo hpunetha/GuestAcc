@@ -437,7 +437,7 @@ public class FacultyHomeActivity extends AppCompatActivity
             mBackCount++;
 
             if (mBackCount == 1) {
-                Toast.makeText(this, "Press again tosign-out", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Press again to sign-out", Toast.LENGTH_SHORT).show();
 
 
             } else if (mBackCount > 1) {
