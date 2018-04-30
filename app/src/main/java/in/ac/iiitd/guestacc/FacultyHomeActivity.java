@@ -493,7 +493,9 @@ public class FacultyHomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_mybookings) {
-            // Handle the camera action
+            /////
+            Intent myBookings = new Intent(this, FacultyMyBookings.class);
+            startActivity(myBookings);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

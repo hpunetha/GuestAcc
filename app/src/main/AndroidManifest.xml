@@ -67,6 +67,8 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".Admin_StatusForToday_MainScreen"
             android:screenOrientation="portrait"/>
+        <activity android:name=".FacultyMyBookings"
+            android:screenOrientation="portrait"/>
 
     </application>
 

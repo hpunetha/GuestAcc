@@ -7,6 +7,7 @@ public class FacultyMyBookings_Data
     String persons ;
     String rooms;
     String total ;
+    String roomStatus;
 
 
     public String getReqId() {
@@ -41,12 +42,15 @@ public class FacultyMyBookings_Data
         this.total = total;
     }
 
-    FacultyMyBookings_Data(String reqId, String persons, String rooms, String total)
+    public void setRoomStatus (String roomStatus){this.roomStatus=roomStatus;}
+
+    FacultyMyBookings_Data(String reqId, String persons, String rooms, String total,String roomStatus)
     {
         this.persons = persons ;
         this.reqId = reqId ;
         this.rooms = rooms ;
         this.total = total ;
+        this.roomStatus=roomStatus;
     }
 
     FacultyMyBookings_Data()
@@ -55,8 +59,11 @@ public class FacultyMyBookings_Data
         this.reqId = "1" ;
         this.rooms = "2";
         this.total = "4500" ;
+        this.roomStatus="pending_approval";
     }
 
 
-
+    public String getRoomStatus() {
+        return roomStatus;
+    }
 }
