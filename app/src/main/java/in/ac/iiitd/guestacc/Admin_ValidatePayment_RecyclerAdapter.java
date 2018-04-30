@@ -56,7 +56,7 @@ public class Admin_ValidatePayment_RecyclerAdapter extends RecyclerView.Adapter<
     {
         //TODO : change position
 
-        Admin_Data_ValidatePayment dataRow = data.get(0) ;
+        Admin_Data_ValidatePayment dataRow = data.get(position) ;
         holder.reqID.setText(dataRow.reqId);
         holder.persons.setText(dataRow.getPersons());
         holder.rooms.setText(dataRow.getRooms());
