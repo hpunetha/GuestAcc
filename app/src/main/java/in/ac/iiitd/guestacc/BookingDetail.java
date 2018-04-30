@@ -91,9 +91,9 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
 
 
         Button btnBook = (Button)findViewById(R.id.btnBook);
-        databaseReference_key_generator = FirebaseDatabase.getInstance().getReference("bookings_final_testing_");
-        databaseReference_bookings_final = FirebaseDatabase.getInstance().getReference("bookings_final_testing_");
-        databaseReference_pending_approval = FirebaseDatabase.getInstance().getReference("pending_requests/pending_approval_test");
+        databaseReference_key_generator = FirebaseDatabase.getInstance().getReference("bookings_final");
+        databaseReference_bookings_final = FirebaseDatabase.getInstance().getReference("bookings_final");
+        databaseReference_pending_approval = FirebaseDatabase.getInstance().getReference("pending_requests/pending_approval");
         databaseReference_user = FirebaseDatabase.getInstance().getReference("user");
 
         if(mFirebaseUser!=null)
