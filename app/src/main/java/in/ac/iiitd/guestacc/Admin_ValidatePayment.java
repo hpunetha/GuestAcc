@@ -45,7 +45,7 @@ public class Admin_ValidatePayment extends AppCompatActivity implements Admin_Va
 
         data = new ArrayList<>();
         mFireBaseReference = FirebaseDatabase.getInstance().getReference("pending_requests/verify_payment/");
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mFireBaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @SuppressLint("SetTextI18n")

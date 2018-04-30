@@ -40,6 +40,7 @@ public class Admin_FacultyRegistration extends AppCompatActivity implements Admi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_faculty_registration);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         /*------------------------   Database Access ---------------------------------*/
 

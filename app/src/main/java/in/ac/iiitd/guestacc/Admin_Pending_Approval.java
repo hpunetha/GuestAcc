@@ -56,7 +56,7 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
         setContentView(R.layout.admin_pending_approval);
 
         context = this;
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading..... Please Wait");

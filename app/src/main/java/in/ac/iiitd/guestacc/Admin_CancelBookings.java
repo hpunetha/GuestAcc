@@ -25,6 +25,7 @@ public class Admin_CancelBookings extends AppCompatActivity implements Admin_Can
 
 
         // TODO : make layout expandable
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         List<Admin_Data_CancelBookings> data = new ArrayList<>();
 

@@ -49,6 +49,7 @@ public class Admin_StatusForToday_MainScreen extends AppCompatActivity {
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("room_details");
         mRoomNameNotAvailable.clear();
         mRoomName.clear();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
