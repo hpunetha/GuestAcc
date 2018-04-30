@@ -68,4 +68,7 @@
     <string name="title_activity_test">TestAct</string>
     <string name="admhome">Admin Home</string>
     <string name="bookingdetails">Booking Details</string>
+    <string name="total">Total ₹</string>
+    <string name="sppersons"> Persons</string>
+    <string name="sprooms"> Rooms</string>
 </resources>
