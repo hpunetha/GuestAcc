@@ -153,7 +153,7 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
                                             String date; //Done
                                             String type; //Done
                                             String fundedBy = null; //Done
-                                            String reason; //Done
+                                            String purpose_of_visit; //Done
                                             String males;  //Done
                                             String females;  //Done
                                             String projectName; //Done
@@ -184,7 +184,7 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
                                                         fundedBy = mAdminBooking.getFundedby_institute_details();
                                                 }
 
-                                                reason = mAdminBooking.getPurpose_of_visit();
+                                                purpose_of_visit = mAdminBooking.getPurpose_of_visit();
                                                 projectName = mAdminBooking.getFundedby_project_pname();
                                                 // mAdminPendingApprovalDataRoomData.clear();
                                                 mGuestRooms.clear();
@@ -244,9 +244,9 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
                                                             mAdminPendingApprovalDataRoomData.get(i).preference);
                                                 }
 
-                                                Log.i("Tag 7 FinalClassData", reqID + "\n" + date + "\n" + type + "\n" + fundedBy + "\n" + reason + "\n" + males + "\n" + females);
+                                                Log.i("Tag 7 FinalClassData", reqID + "\n" + date + "\n" + type + "\n" + fundedBy + "\n" + purpose_of_visit + "\n" + males + "\n" + females);
                                                 Log.i("Tag 8 FinalClassData", "Pending approval" + requestId + " " + mAdminPendingApprovalDataRoomData.toString());
-                                                mAdminPendingApprovalData.add(new Admin_Data_PendingApproval(reqID, date, type, fundedBy, reason, males, females, projectName, mAdminPendingApprovalDataRoomData));
+                                                mAdminPendingApprovalData.add(new Admin_Data_PendingApproval(reqID, date, type, fundedBy, purpose_of_visit, males, females, projectName, mAdminPendingApprovalDataRoomData));
 
                                             }
 
