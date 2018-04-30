@@ -104,12 +104,12 @@ public class FacultyHomeActivity extends AppCompatActivity
 
         if (mUserType==TypeLoginActivity.STUDENT)
         {
-            getSupportActionBar().setTitle("Student Home");
+            getSupportActionBar().setTitle("Home");
 
         }
         else
         {
-            getSupportActionBar().setTitle("Faculty Home");
+            getSupportActionBar().setTitle("Home");
         }
 
         try

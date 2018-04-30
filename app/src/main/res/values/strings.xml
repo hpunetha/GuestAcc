@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Login</string>
+    <string name="app_name">GuestApp</string>
     <string name="student">Student</string>
     <string name="faculty_staff">Faculty/Staff</string>
     <string name="admin">Admin</string>
