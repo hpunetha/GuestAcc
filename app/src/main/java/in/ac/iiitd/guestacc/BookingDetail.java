@@ -491,27 +491,6 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
     }
 
 
-    //https://www.mindstick.com/Articles/1673/sending-mail-without-user-interaction-in-android
-
-    private void sendMessage() {
-        Thread sender = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    GMailSender sender = new GMailSender("youremail", "yourpassword");
-                    sender.sendMail("EmailSender App",
-                            "This is the message body",
-                            "priyavssut@gmail.com",
-                            "priyabrate17043@iiitd.ac.in");
-                } catch (Exception e) {
-                    Log.e("mylog", "Error: " + e.getMessage());
-                }
-            }
-        });
-        sender.start();
-    }
-
-
     @Override
     public void onFragmentInteraction(Uri uri) {
 
