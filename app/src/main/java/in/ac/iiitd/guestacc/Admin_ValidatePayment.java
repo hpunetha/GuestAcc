@@ -1,5 +1,6 @@
 package in.ac.iiitd.guestacc;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -27,15 +28,13 @@ public class Admin_ValidatePayment extends AppCompatActivity implements Admin_Va
 
     RecyclerView recyclerView ;
     Admin_ValidatePayment_RecyclerAdapter adapter ;
-    private DatabaseReference mDatabase;
-    ValueEventListener mListener ;
-    List<Admin_Data_ValidatePayment> data ;
-
-
+    DatabaseReference mFireBaseReference;
+    List<Admin_Data_ValidatePayment> data;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_validate_payment);
+
 
         ProgressDialog progress = new ProgressDialog(this);
         progress.setMessage("Loading...Please Wait ");
@@ -45,61 +44,46 @@ public class Admin_ValidatePayment extends AppCompatActivity implements Admin_Va
        // progress.dismiss();
 
         data = new ArrayList<>();
+        mFireBaseReference = FirebaseDatabase.getInstance().getReference("pending_requests/verify_payment/");
 
-        for(int i=0;i<20;i++)
-        {
-            data.add(new Admin_Data_ValidatePayment()) ;
-        }
+        mFireBaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
 
-
-
-
-        //*********************************************************//
-
-        mDatabase = FirebaseDatabase.getInstance().getReference("user");
-
-
-        mListener = new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    //  Log.e("DATA",dataSnapshot.getValue()) ;
-                    for(DataSnapshot db : dataSnapshot.getChildren())
-                    {
-                        // Log.e("DATA",db.child("email_id"));
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                Admin_Data_ValidatePayment mAdminData ;
 
-                       // db.child()
+                for (DataSnapshot ds2: dataSnapshot.getChildren())
+                {
+                    if (ds2!=null) {
 
-                        //db.child("email_id").toString();
-                       // String key  = db.getKey().toString();
-                      //  String Name = db.child("name").getValue().toString() ;
-                     //   String email =  db.child("email_id").getValue().toString();
-                     //   String type  = db.child("type").getValue().toString();
-
-                       // db.getValue().
-                       // Log.e("DATA2--",db.getKey().toString()) ;
-
-                       // data.add(new Admin_Data_Faculty_Registration(Name,type,email,key)) ;
-//
-//
+                        mAdminData = new Admin_Data_ValidatePayment();
+                        mAdminData.setReqId(ds2.getKey());
+                        mAdminData.setPersons(ds2.child("no_of_persons").getValue().toString());
+                        mAdminData.setRooms(ds2.child("no_of_rooms").getValue().toString());
+                        mAdminData.setTotal(ds2.child("total_price").getValue().toString());
+                        Log.i("madmindata", mAdminData.getPersons() + " " + mAdminData.getReqId() +" " + mAdminData.getRooms() + " " + mAdminData.getTotal());
+                        data.add(mAdminData);
                     }
                 }
 
-                if(adapter!=null)
-                {
-                    adapter.notifyDataSetChanged();
-                }
+                if(adapter!=null) { adapter.notifyDataSetChanged();}
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // Failed to read value
+
             }
-        };
+        });
 
 
+//
+//        for(int i=0;i<20;i++)
+//        {
+//            data.add(new Admin_Data_ValidatePayment()) ;
+//        }
 
-        mDatabase.addValueEventListener(mListener) ;
 
         recyclerView = (RecyclerView)findViewById(R.id.validate_payment_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -118,4 +102,5 @@ public class Admin_ValidatePayment extends AppCompatActivity implements Admin_Va
     {
 
     }
+
 }
