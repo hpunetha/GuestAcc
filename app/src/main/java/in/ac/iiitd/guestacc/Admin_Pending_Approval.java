@@ -129,8 +129,9 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
                         countcount++;
                         Log.i("count","booking's final"+ countcount);
 
+                        //Variables for "AdminDataPendingApproval"
                         Character gender;
-                        int intMales = 0;
+                        int intMales = 0; //Count total males and females
                         int intFemales = 0;
                         String reqID; //Done
                         String date; //Done
@@ -146,6 +147,7 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
                         boolean flagRoomtest = true;
                         //Entry found
                         //Log.i("reqId",dataSnapshot.child(entry.getValue()).child(entry.getKey()).getKey());
+                        //mAdminBooking = dataSnapshot.child(entry.getValue()).child(entry.getKey()).getValue(Booking.class);
                         mAdminBooking = dataSnapshot.child(entry.getValue()).child(entry.getKey()).getValue(Booking.class);
                         //Log.i("datestemp",mAdminBooking.from_date); //Working
 

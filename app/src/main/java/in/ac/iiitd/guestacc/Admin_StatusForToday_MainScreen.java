@@ -29,13 +29,13 @@ import java.util.Objects;
 public class Admin_StatusForToday_MainScreen extends AppCompatActivity {
 
     List<Admin_StatusForToday_Data> mData = new ArrayList<>();
-    DatabaseReference mDatabaseReference;
+    DatabaseReference mDatabaseReference, mDataBaseBookingReference;
     ArrayList<String> mRoomName = new ArrayList<>();
     ArrayList<String> mRoomNameNotAvailable = new ArrayList<>();
     Booking mStatusForTodayBooking;
     Admin_StatusForToday_RecyclerViewAdapter mAdapter;
     String PENDING_APPROVAL = "pending_approval";
-    String PENDING_PAYMENT= "pending_payment";
+    String PENDING_PAYMENT = "pending_payment";
     String COMPLETED = "completed";
     String CANCELLED = "cancelled";
 
@@ -53,10 +53,12 @@ public class Admin_StatusForToday_MainScreen extends AppCompatActivity {
         mDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot val:dataSnapshot.getChildren()){
-                    //Store list of all rooms
-                    mRoomName.add(String.valueOf(val.child("id").getValue()));
-                    Log.i("status",String.valueOf(val.child("id").getValue()));
+                for (DataSnapshot val : dataSnapshot.getChildren()) {
+                    if (dataSnapshot.getValue() != null) {
+                        //Store list of all rooms
+                        mRoomName.add(String.valueOf(val.child("id").getValue()));
+                        Log.i("status", String.valueOf(val.child("id").getValue()));
+                    }
                 }
             }
 
@@ -66,42 +68,42 @@ public class Admin_StatusForToday_MainScreen extends AppCompatActivity {
             }
         });
 
-        Log.i("Date",date);
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference("bookings_final/"+date);
-        mDatabaseReference.addValueEventListener(new ValueEventListener() {
+        Log.i("Date", date);
+        mDataBaseBookingReference = FirebaseDatabase.getInstance().getReference("bookings_final/" + date);
+        mDataBaseBookingReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.i("Date", String.valueOf(dataSnapshot.getChildrenCount()));
-                if (dataSnapshot.getValue() != null) {
-                    mStatusForTodayBooking = dataSnapshot.getValue(Booking.class);
-                    if (mStatusForTodayBooking != null && mStatusForTodayBooking.getBooking_status().equals(COMPLETED)) {
-                        for (int i = 0; i < mStatusForTodayBooking.getGuests().size(); i++) {
-                            if (mStatusForTodayBooking.getGuests().get(i).getAllocated_room() != null)
-                                mRoomNameNotAvailable.add(mStatusForTodayBooking.getGuests().get(i).getAllocated_room());
+                for (DataSnapshot val : dataSnapshot.getChildren()) {
+                    if (val.getValue() != null) {
+                        mStatusForTodayBooking = val.getValue(Booking.class);
+                        if (mStatusForTodayBooking != null && mStatusForTodayBooking.getBooking_status().equals(COMPLETED)) {
+                            for (int i = 0; i < mStatusForTodayBooking.getGuests().size(); i++) {
+                                if (mStatusForTodayBooking.getGuests().get(i).getAllocated_room() != null)
+                                    mRoomNameNotAvailable.add(mStatusForTodayBooking.getGuests().get(i).getAllocated_room());
+                            }
                         }
                     }
                 }
-                //Add values to Rooms
-                for (int i=0;i<mRoomName.size();i++){
+                for (int i = 0; i < mRoomName.size(); i++) {
 
                     if (mRoomNameNotAvailable.contains(mRoomName.get(i)))
-                        mData.add(new Admin_StatusForToday_Data(mRoomName.get(i),Color.RED));
+                        mData.add(new Admin_StatusForToday_Data(mRoomName.get(i), Color.RED));
                     else
-                        mData.add(new Admin_StatusForToday_Data(mRoomName.get(i),Color.GREEN));
-                }
-                if (mAdapter!=null){mAdapter.notifyDataSetChanged();}
+                        mData.add(new Admin_StatusForToday_Data(mRoomName.get(i), Color.GREEN));
+                }//Add values to Rooms
+                if (mAdapter != null) { mAdapter.notifyDataSetChanged(); }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
 
-        Log.i("Date",mData.toString());
-        RecyclerView myrv = (RecyclerView)findViewById(R.id.admin_statusfortoday_recyclerView);
-        mAdapter = new Admin_StatusForToday_RecyclerViewAdapter(this,mData);
-        myrv.setLayoutManager(new GridLayoutManager(this,3));
+        Log.i("Date", mData.toString());
+        RecyclerView myrv = (RecyclerView) findViewById(R.id.admin_statusfortoday_recyclerView);
+        mAdapter = new Admin_StatusForToday_RecyclerViewAdapter(this, mData);
+        myrv.setLayoutManager(new GridLayoutManager(this, 3));
         myrv.setAdapter(mAdapter);
     }
 }
