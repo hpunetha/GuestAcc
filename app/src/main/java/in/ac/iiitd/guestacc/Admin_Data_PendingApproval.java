@@ -19,8 +19,16 @@ public class Admin_Data_PendingApproval
     String males ;
     String females ;
     String projectName ;
+    String TotalPrice;
     List<Admin_Data_PendingApproval_RoomData> roomsData;
 
+    public String getTotalPrice() {
+        return TotalPrice;
+    }
+
+    public void setTotalPrice(String totalPrice) {
+        TotalPrice = totalPrice;
+    }
 
     public String getReqID() {
         return reqID;
@@ -94,7 +102,7 @@ public class Admin_Data_PendingApproval
         this.roomsData = roomsData;
     }
 
-    public Admin_Data_PendingApproval(String reqID, String date, String type, String fundedBy, String reason, String males, String females, String projectName, List<Admin_Data_PendingApproval_RoomData> roomsData) {
+    public Admin_Data_PendingApproval(String reqID, String date, String type, String fundedBy, String reason, String males, String females, String projectName, String TotalPrice, List<Admin_Data_PendingApproval_RoomData> roomsData) {
         this.roomsData = new ArrayList<>();
         this.reqID = reqID;
         this.date = date;
@@ -105,6 +113,7 @@ public class Admin_Data_PendingApproval
         this.females = females;
         this.projectName = projectName;
         this.roomsData = roomsData;
+        this.TotalPrice = TotalPrice;
     }
 
     Admin_Data_PendingApproval()

@@ -13,11 +13,8 @@ import com.google.firebase.database.DatabaseReference;
 
 import java.util.List;
 
-/**
- * Created by rakesh on 22/4/18.
- */
 
-public class Admin_ValidatePayment_RecyclerAdapter extends RecyclerView.Adapter<Admin_ValidatePayment_RecyclerAdapter.ViewHolder>
+public class FacultyMyBookings_RecyclerAdapter extends RecyclerView.Adapter<FacultyMyBookings_RecyclerAdapter.ViewHolder>
 {
     View v;
     private LayoutInflater inflater ;
@@ -30,7 +27,7 @@ public class Admin_ValidatePayment_RecyclerAdapter extends RecyclerView.Adapter<
 
     DatabaseReference mFireBaseReference;
 
-    Admin_ValidatePayment_RecyclerAdapter(Context con, List<Admin_Data_ValidatePayment> data)
+    FacultyMyBookings_RecyclerAdapter(Context con, List<Admin_Data_ValidatePayment> data)
     {
         this.inflater = LayoutInflater.from(con);
         this.data = data ;

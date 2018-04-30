@@ -203,11 +203,10 @@ public class Admin_HomeFragment extends Fragment {
             String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
             mDatabaseReference = FirebaseDatabase.getInstance().getReference("room_details");
 
-
             mDatabaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    mRoomName.clear();
+
                     for (DataSnapshot val : dataSnapshot.getChildren()) {
                         //Store list of all rooms
                         mRoomName.add(String.valueOf(val.child("id").getValue()));
@@ -258,7 +257,7 @@ public class Admin_HomeFragment extends Fragment {
                     Log.i("Checked", "Checking");
                     Log.i("TodayData", mRoomSize + "\t" + mRoomName.size());
                     mTextViewBookedRooms.setText("Booked Rooms: " + mRoomNameNotAvailable.size());
-                    mTextViewAvailableRooms.setText("Available Rooms: " + (mRoomSize - mRoomNameNotAvailable.size()));
+                    mTextViewAvailableRooms.setText("Available Rooms: " + (mRoomName.size() - mRoomNameNotAvailable.size()));
                 }
 
                 @Override
