@@ -157,6 +157,7 @@
                     android:layout_alignEnd="@+id/roomname_cancel_bookings"
 
                     android:backgroundTint="@color/colorPrimary"
+                    android:textColor="@color/white"
                     android:minHeight="0dp"
                     android:minWidth="0dp"
                     android:text="Cancel"

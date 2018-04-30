@@ -13,16 +13,13 @@ import com.google.firebase.database.DatabaseReference;
 
 import java.util.List;
 
-/**
- * Created by rakesh on 22/4/18.
- */
 
-public class Admin_ValidatePayment_RecyclerAdapter extends RecyclerView.Adapter<Admin_ValidatePayment_RecyclerAdapter.ViewHolder>
+public class FacultyMyBookings_RecyclerAdapter extends RecyclerView.Adapter<FacultyMyBookings_RecyclerAdapter.ViewHolder>
 {
     View v;
     private LayoutInflater inflater ;
     private ValidateItemClickListener mClickListener ;
-    private List<Admin_Data_ValidatePayment> data ;
+    private List<FacultyMyBookings_Data> data ;
     private Button approveMainButton ;
     private Button cancelMainButton ;
     RelativeLayout relativeLayout ;
@@ -30,7 +27,7 @@ public class Admin_ValidatePayment_RecyclerAdapter extends RecyclerView.Adapter<
 
     DatabaseReference mFireBaseReference;
 
-    Admin_ValidatePayment_RecyclerAdapter(Context con, List<Admin_Data_ValidatePayment> data)
+    FacultyMyBookings_RecyclerAdapter(Context con, List<FacultyMyBookings_Data> data)
     {
         this.inflater = LayoutInflater.from(con);
         this.data = data ;
@@ -48,7 +45,7 @@ public class Admin_ValidatePayment_RecyclerAdapter extends RecyclerView.Adapter<
     // inflates row layout from xml
     public ViewHolder onCreateViewHolder(ViewGroup parent, int type)
     {
-        v = inflater.inflate(R.layout.admin_validate_payment_recycler_row,parent,false) ;
+        v = inflater.inflate(R.layout.activity_faculty_my_bookings_recycler_row,parent,false) ;
         return new ViewHolder(v) ;
     }
 
@@ -59,11 +56,12 @@ public class Admin_ValidatePayment_RecyclerAdapter extends RecyclerView.Adapter<
     {
         //TODO : change position
 
-        Admin_Data_ValidatePayment dataRow = data.get(position) ;
+        FacultyMyBookings_Data dataRow = data.get(position) ;
         holder.reqID.setText(dataRow.reqId);
         holder.persons.setText(dataRow.getPersons());
         holder.rooms.setText(dataRow.getRooms());
         holder.total.setText(dataRow.getTotal());
+        holder.roomstatus.setText(dataRow.getRoomStatus());
 
 
 
@@ -80,50 +78,24 @@ public class Admin_ValidatePayment_RecyclerAdapter extends RecyclerView.Adapter<
         private TextView persons ;
         private TextView rooms ;
         private TextView total ;
-
+        private TextView roomstatus;
 
 
         ViewHolder(View itemView)
         {
             super(itemView) ;
 
-            reqID = itemView.findViewById(R.id.reqid_text) ;
-            persons =  itemView.findViewById(R.id.npersons) ;
-            rooms = itemView.findViewById(R.id.roomname_cancel_bookings) ;
-            total = itemView.findViewById(R.id.total) ;
+            reqID = itemView.findViewById(R.id.reqid_textfaculty) ;
+            persons =  itemView.findViewById(R.id.npersonsfaculty) ;
+            rooms = itemView.findViewById(R.id.roomname_cancel_bookingsfaculty) ;
+            total = itemView.findViewById(R.id.totalPrice) ;
+            roomstatus = itemView.findViewById(R.id.textViewStatus);
 
 
-            approveMainButton = itemView.findViewById(R.id.approve_validate) ;
-            cancelMainButton = itemView.findViewById(R.id.cancel_validate) ;
 
             // make recycler row clickable
             itemView.setOnClickListener(this);
 
-
-            // listen to the accept button
-            approveMainButton.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-
-                    // getting context from main activity
-                    // dialogSelect.show(((AppCompatActivity)context).getSupportFragmentManager(),"123");
-
-
-
-                }
-            });
-
-            cancelMainButton.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    // getting context from main activity
-                    // dialogSelect.show(((AppCompatActivity)context).getSupportFragmentManager(),"123");
-                }
-            });
 
 
         }

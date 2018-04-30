@@ -82,6 +82,8 @@
             android:parentActivityName=".Admin_HomeActivity"
             android:label="Registration"
             android:screenOrientation="portrait"/>
+        <activity android:name=".FacultyMyBookings"
+            android:screenOrientation="portrait"/>
 
 
     </application>

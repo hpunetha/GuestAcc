@@ -9,10 +9,16 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+
+
 
 public class Admin_HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    int mBackCount=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +47,22 @@ public class Admin_HomeActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.admin_drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+        }
+// else {
+//            super.onBackPressed();
+//        }
+
+        mBackCount++;
+
+        if (mBackCount == 1) {
+            Toast.makeText(this, "Press again to sign-out", Toast.LENGTH_SHORT).show();
+
+
+        } else if (mBackCount > 1) {
+            FirebaseAuth.getInstance().signOut();
+            Intent mSignOut = new Intent(Admin_HomeActivity.this, MainActivity.class);
+            mSignOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(mSignOut);
         }
     }
 
