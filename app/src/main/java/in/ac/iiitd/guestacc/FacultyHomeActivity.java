@@ -585,9 +585,6 @@ public class FacultyHomeActivity extends AppCompatActivity
                 String basetable ="bookings_final";
 
 
-
-
-
                 //
                 String strDBAccess = basetable;
                 Log.i("date access",strDBAccess);

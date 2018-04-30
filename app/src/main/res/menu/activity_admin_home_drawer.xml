@@ -6,6 +6,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/adminHome"
+            android:visible="false"
             android:title="Home"/>
         <item
             android:id="@+id/adminRoomStatus"
@@ -21,6 +22,7 @@
             android:title="Add Admin" />
         <item
             android:id="@+id/adminLogout"
+            android:visible="false"
             android:title="Logout"/>
     </group>
 
