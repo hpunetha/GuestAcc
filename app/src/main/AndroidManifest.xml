@@ -53,6 +53,7 @@
         <activity
             android:name=".FacultyRegistrationActivity"
             android:label="Registration"
+            android:parentActivityName=".Admin_HomeActivity"
             android:screenOrientation="portrait">
 
         </activity>
@@ -62,14 +63,20 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Admin_CancelBookings"
+            android:parentActivityName=".Admin_HomeActivity"
+            android:label="@string/AdminCancelBookings"
             android:screenOrientation="portrait"/>
         <activity android:name=".Admin_Pending_Approval"
+            android:parentActivityName=".Admin_HomeActivity"
             android:label="@string/AdminPendingApproval"
             android:screenOrientation="portrait"/>
         <activity android:name=".Admin_ValidatePayment"
+            android:parentActivityName=".Admin_HomeActivity"
             android:label="@string/Admin_ValidatePayment"
             android:screenOrientation="portrait"/>
         <activity android:name=".Admin_StatusForToday_MainScreen"
+            android:parentActivityName=".Admin_HomeActivity"
+            android:label="@string/AdminStatusForToday"
             android:screenOrientation="portrait"/>
 
     </application>
