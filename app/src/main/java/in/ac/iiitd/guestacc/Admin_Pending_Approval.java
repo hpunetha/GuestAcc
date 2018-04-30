@@ -644,11 +644,11 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
         LinearLayout midLinearLayout = (LinearLayout) row.findViewById(R.id.midlayout);
 
         // if the view is already clicked, then hide it and remove all the views attached to it
-        if (midLinearLayout.getVisibility() == View.VISIBLE) {
+      //  if (midLinearLayout.getVisibility() == View.VISIBLE) {
             midLinearLayout.setVisibility(View.GONE);
             midLinearLayout.removeAllViews();
-            return;
-        }
+       //     return;
+      //  }
 
 
         final View[] cardview = new View[adminDataPendingApprovalRoomData.size()];
@@ -692,10 +692,11 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
             midLinearLayout.addView(cardview[i]);
         }
 
-        midLinearLayout.setVisibility(View.VISIBLE);
+       // midLinearLayout.setVisibility(View.VISIBLE);
         //midLinearLayout.animate().translationY(midLinearLayout.getHeight());
         //rel.setVisibility(View.VISIBLE);
         // notifyDatasetChanged() ;
+
     }
 
     @Override

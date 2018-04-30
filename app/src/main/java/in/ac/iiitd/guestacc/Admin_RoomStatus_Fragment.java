@@ -3,9 +3,12 @@ package in.ac.iiitd.guestacc;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +20,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,16 +35,18 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * Created by kd on 22/4/18.
  */
 
-public class Admin_RoomStatus_Fragment extends Fragment {
+public class Admin_RoomStatus_Fragment extends Fragment implements Admin_RoomStatus_RecyclerAdapter.ItemClickListener {
     Date mToDate;
-    int mDateVal;
+    int mDateVal, mTotalRooms;
     String mSendFromDate, mSendToDate;
     Button mAdminRoomAvailability;
     EditText mEditTextFromDate, mEditTextToDate;
@@ -48,17 +54,32 @@ public class Admin_RoomStatus_Fragment extends Fragment {
     Spinner mSpinnerAvailabilityStatus;
     ArrayAdapter<CharSequence> spinnerStatusAdapter;
 
+    Boolean exitFlag;
+
+    List<String> mDateList, mFirebaseDateList;
+    FirebaseDatabase mDatabase;
+    List<Admin_Data_RoomStatus> data;
+    HashMap<String, Boolean> mAllDateRoomsAvailabilityCount;
+
+
+    RecyclerView recyclerView;
+    Admin_RoomStatus_RecyclerAdapter adapter;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View adminRoomStatus = inflater.inflate(R.layout.fragment_admin_room_status, container, false);
 
-        mListViewAdminRoomStatus = (ListView)adminRoomStatus.findViewById(R.id.list_adminRoomStatus);
+
+     /*#################################### RETRIEVE DATA END ############################################*/
+
+       // mListViewAdminRoomStatus = (ListView) adminRoomStatus.findViewById(R.id.list_adminRoomStatus);
         mEditTextFromDate = (EditText) adminRoomStatus.findViewById(R.id.editTextAdminRoomFrom);
         mEditTextToDate = (EditText) adminRoomStatus.findViewById(R.id.editTextAdminRoomTo);
         mAdminRoomAvailability = (Button) adminRoomStatus.findViewById(R.id.button_adminRoomCheckAvailability);
         //Reference : https://www.youtube.com/watch?v=28jA5-mO8K8
         mSpinnerAvailabilityStatus = (Spinner) adminRoomStatus.findViewById(R.id.spinner_adminAvailabilityStatus);
+        mSpinnerAvailabilityStatus.setVisibility(View.GONE);
         spinnerStatusAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.adminRoomStatusSpinner, android.R.layout.simple_spinner_item);
         spinnerStatusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinnerAvailabilityStatus.setAdapter(spinnerStatusAdapter);
@@ -164,12 +185,12 @@ public class Admin_RoomStatus_Fragment extends Fragment {
                     }
                 });
 
-                mAdminRoomAvailability.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        new checkRoomAvailabilityStatus().execute("");
-                    }
-                });
+//                mAdminRoomAvailability.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        new checkRoomAvailabilityStatus().execute("");
+//                    }
+//                });
 
             }
 
@@ -180,73 +201,286 @@ public class Admin_RoomStatus_Fragment extends Fragment {
         });
 
         //*********************************************************************************************************************
-        return adminRoomStatus;
-    }
 
-    @SuppressLint("StaticFieldLeak")
-    private class checkRoomAvailabilityStatus extends AsyncTask<String, String, String> {
 
-        @Override
-        protected String doInBackground(String... strings) {
-            Date mFromDate, mToDate1;
-            List<Date> mDateList;
-            Calendar mCalender;
-            mFromDate = mToDate;
+        /*################################    RETRIEVE DATA #####################################################*/
 
-            Log.i("sendToDate", mSendToDate);
-            Log.i("fromDate", mSendFromDate);
 
-            //Reference=> https://stackoverflow.com/questions/4216745/java-string-to-date-conversion
-            DateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-            try {
+
+
+        try
+        {
+            mDatabase = FirebaseDatabase.getInstance();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+
+
+        mAllDateRoomsAvailabilityCount = new HashMap<>();
+        mAllDateRoomsAvailabilityCount.put("bh1",true);
+        mAllDateRoomsAvailabilityCount.put("bh2",true);
+        mAllDateRoomsAvailabilityCount.put("gh1",true);
+        mAllDateRoomsAvailabilityCount.put("gh2",true);
+        mAllDateRoomsAvailabilityCount.put("frr1",true);
+        mAllDateRoomsAvailabilityCount.put("frr2",true);
+        mAllDateRoomsAvailabilityCount.put("frr3",true);
+        mAllDateRoomsAvailabilityCount.put("frf1",true);
+        mAllDateRoomsAvailabilityCount.put("frf2",true);
+
+        Date mFromDate,mToDate1;
+
+        final List<String> mBookedRoomList;
+
+        mDateList= new ArrayList<>();
+        Calendar mCalender;
+        mFromDate=mToDate;
+
+        mFirebaseDateList = new ArrayList<>();
+//        Log.i("sendToDate",mSendToDate);
+//        Log.i("fromDate",mSendFromDate);
+
+        //Reference=> https://stackoverflow.com/questions/4216745/java-string-to-date-conversion
+        DateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH);
+        try
+        {
+            if (mDatabase!=null) {
                 mFromDate = mDateFormat.parse(mSendFromDate);
                 mToDate1 = mDateFormat.parse(mSendToDate);
                 // Reference=>   https://stackoverflow.com/questions/2689379/how-to-get-a-list-of-dates-between-two-dates-in-java
 
-                mDateList = new ArrayList<Date>();
+
                 mCalender = new GregorianCalendar();
+                mBookedRoomList = new ArrayList<String>();
                 mCalender.setTime(mFromDate);
                 while (mCalender.getTime().before(mToDate1)) {
                     Date result = mCalender.getTime();
-                    mDateList.add(result);
+                    String resultString = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(result);
+
+                    mDateList.add(resultString);
                     mCalender.add(Calendar.DATE, 1);
                 }
 
                 Log.i("Date List", mDateList.toString());
-                Log.i("Date list", String.valueOf(mDateList.size()));
 
-                DatabaseReference myRef;
+                final DatabaseReference myRef;
+                // String basetable ="bookings_final";
                 String basetable = "bookings_final";
 
-                for (Date tempdate : mDateList) {
-                    final String tempDateString = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(tempdate);
-                    String strDBAccess = basetable + '/' + tempDateString;
-                    Log.i("date access", strDBAccess);
-                    myRef = FirebaseDatabase.getInstance().getReference(strDBAccess);
+                //
+                String strDBAccess = basetable;
+                Log.i("date access", strDBAccess);
+                myRef = mDatabase.getReference(strDBAccess);
 
-                    myRef.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.getChildrenCount() != 0) {
-                                Log.i("Bookings", "Bookings for " + tempDateString + " children " + dataSnapshot.getChildren().toString());
-                                for (DataSnapshot dbS : dataSnapshot.getChildren()) {
-                                    Log.i("id booking", "id ->" + dbS.getKey() + " booking status->" + dbS.child("booking_status").getValue());
+                myRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        //                        for(DataSnapshot child : dataSnapshot.getChildren() )
+                        //                        {
+                        //
+                        //
+                        //                        }
+
+                        Log.i("DATA SNAP START", dataSnapshot.toString());
+
+
+                        for (DataSnapshot child : dataSnapshot.getChildren()) {
+                            exitFlag = false;
+
+                            Log.i("Retrieving child", " child key => " + child.getKey() + " and mDateList" + mDateList);
+                            if (mDateList.contains(child.getKey())) {
+                                final String tempDateString = child.getKey();
+
+                                if (child.getChildrenCount() != 0) {
+                                    Log.i("Bookings", "Bookings for " + tempDateString + " children " + dataSnapshot.getChildren().toString());
+
+                                    for (DataSnapshot dbS : child.getChildren()) {
+                                        try {
+
+                                            Log.i("id booking", "id ->" + dbS.getKey() + " booking status->" + dbS.child("booking_status").getValue());
+
+                                            if (dbS.getValue() != null) {
+                                            }
+
+                                            Booking mAdminBooking = dbS.getValue(Booking.class);
+                                            // if (mAdminBooking.guests.size()>0)
+                                            Log.i("INSIDETAG", mAdminBooking.booking_status);
+
+                                            // pending_approval change to completed
+                                            if (mAdminBooking.booking_status.equalsIgnoreCase("completed")) {
+
+
+                                                if (mAdminBooking.guests.size() > 0) {
+                                                    for (Guest guest1 : mAdminBooking.guests) {
+
+                                                        Log.i("Check Keys", mAllDateRoomsAvailabilityCount.keySet().toString() + "  =? " + guest1.allocated_room);
+
+                                                        if (mAllDateRoomsAvailabilityCount.keySet().contains(guest1.allocated_room)) {
+                                                            mAllDateRoomsAvailabilityCount.put(guest1.allocated_room, false);
+
+
+                                                        }
+                                                    }
+
+                                                    Log.i("Final Hashmap", mAllDateRoomsAvailabilityCount.toString());
+
+
+                                                }
+
+
+                                                //                                                    Log.i("INSIDETAG", mAdminBooking.guests.get(0).associated_room_id);
+
+                                            }
+
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+
+
+                                    }
+                                } else {
+                                    Log.i("No Bookings ", "No Bookings for date " + tempDateString);
+
+
                                 }
-                            } else {
-                                Log.i("No Bookings ", "No Bookings for date " + tempDateString);
+
                             }
-                        }
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
 
                         }
-                    });
-                }
-            } catch (ParseException e) {
-                e.printStackTrace();
+
+                        int count = 0;
+                        for (Map.Entry<String, Boolean> entry : mAllDateRoomsAvailabilityCount.entrySet()) {
+                            Boolean val = entry.getValue();
+
+                            if (val) {
+                                count += 1;
+                            }
+
+                        }
+
+                        if (count > mTotalRooms) {
+                            Log.i("YIPPIE", " ================Rooms can be booked now=======================");
+
+                        } else {
+
+                            Toast.makeText(getActivity(), "Specified number of rooms not available for given dates.", Toast.LENGTH_SHORT).show();
+
+                        }
+
+
+                    }
+
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+
+                });
             }
-            return null;
+
         }
+        catch (ParseException e1)
+        {
+            e1.printStackTrace();
+        }
+
+
+
+
+
+
+
+/*************************   RECYCLER VIEW  ***************************************/
+        data = new ArrayList<>();
+        recyclerView = (RecyclerView) adminRoomStatus.findViewById(R.id.admin_room_status_recycler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
+
+        adapter = new Admin_RoomStatus_RecyclerAdapter(this.getActivity(), data);
+
+        adapter.setClickListener(this);
+
+        recyclerView.setAdapter(adapter);
+
+
+/****************************END RECYCLERVIEW******************************************/
+        return adminRoomStatus;
+    }
+
+//    @SuppressLint("StaticFieldLeak")
+//    private class checkRoomAvailabilityStatus extends AsyncTask<String, String, String> {
+//
+//        @Override
+//        protected String doInBackground(String... strings) {
+//            Date mFromDate, mToDate1;
+//            List<Date> mDateList;
+//            Calendar mCalender;
+//            mFromDate = mToDate;
+//
+//            Log.i("sendToDate", mSendToDate);
+//            Log.i("fromDate", mSendFromDate);
+//
+//            //Reference=> https://stackoverflow.com/questions/4216745/java-string-to-date-conversion
+//            DateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+//            try {
+//                mFromDate = mDateFormat.parse(mSendFromDate);
+//                mToDate1 = mDateFormat.parse(mSendToDate);
+//                // Reference=>   https://stackoverflow.com/questions/2689379/how-to-get-a-list-of-dates-between-two-dates-in-java
+//
+//                mDateList = new ArrayList<Date>();
+//                mCalender = new GregorianCalendar();
+//                mCalender.setTime(mFromDate);
+//                while (mCalender.getTime().before(mToDate1)) {
+//                    Date result = mCalender.getTime();
+//                    mDateList.add(result);
+//                    mCalender.add(Calendar.DATE, 1);
+//                }
+//
+//                Log.i("Date List", mDateList.toString());
+//                Log.i("Date list", String.valueOf(mDateList.size()));
+//
+//                DatabaseReference myRef;
+//                String basetable = "bookings_final";
+//
+//                for (Date tempdate : mDateList) {
+//                    final String tempDateString = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(tempdate);
+//                    String strDBAccess = basetable + '/' + tempDateString;
+//                    Log.i("date access", strDBAccess);
+//                    myRef = FirebaseDatabase.getInstance().getReference(strDBAccess);
+//
+//                    myRef.addValueEventListener(new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(DataSnapshot dataSnapshot) {
+//                            if (dataSnapshot.getChildrenCount() != 0) {
+//                                Log.i("Bookings", "Bookings for " + tempDateString + " children " + dataSnapshot.getChildren().toString());
+//                                for (DataSnapshot dbS : dataSnapshot.getChildren()) {
+//                                    Log.i("id booking", "id ->" + dbS.getKey() + " booking status->" + dbS.child("booking_status").getValue());
+//                                }
+//                            } else {
+//                                Log.i("No Bookings ", "No Bookings for date " + tempDateString);
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onCancelled(DatabaseError databaseError) {
+//
+//                        }
+//                    });
+//                }
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//            return null;
+//        }
+//    }
+
+
+    @Override
+
+    public void onItemClick(View v, int position) {
+
     }
 }

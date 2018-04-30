@@ -91,25 +91,17 @@
             android:text="Search" />
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-<!--
-        <TextView
-            android:visibility="gone"
-            android:layout_margin="10sp"
-            android:textSize="18sp"
-            android:id="@+id/text_adminroomstatusdisplay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Rooms: " />-->
 
-        <ListView
-            android:id="@+id/list_adminRoomStatus"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/admin_room_status_recycler"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true" />
+    </RelativeLayout>
 
 
 </LinearLayout>
