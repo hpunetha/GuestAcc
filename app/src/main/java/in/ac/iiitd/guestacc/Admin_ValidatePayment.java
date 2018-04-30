@@ -56,10 +56,16 @@ public class Admin_ValidatePayment extends AppCompatActivity implements Admin_Va
 
                 for (DataSnapshot ds2: dataSnapshot.getChildren())
                 {
+                    if (ds2!=null) {
 
-                    mAdminData = ds2.getValue(Admin_Data_ValidatePayment.class);
-                    Log.i("madmindata",mAdminData.getPersons() + " "+ mAdminData.getReqId());
-                    data.add(mAdminData);
+                        mAdminData = new Admin_Data_ValidatePayment();
+                        mAdminData.setReqId(ds2.getKey());
+                        mAdminData.setPersons(ds2.child("no_of_persons").getValue().toString());
+                        mAdminData.setRooms(ds2.child("no_of_rooms").getValue().toString());
+                        mAdminData.setTotal(ds2.child("total_price").getValue().toString());
+                        Log.i("madmindata", mAdminData.getPersons() + " " + mAdminData.getReqId() +" " + mAdminData.getRooms() + " " + mAdminData.getTotal());
+                        data.add(mAdminData);
+                    }
                 }
 
                 if(adapter!=null) { adapter.notifyDataSetChanged();}
