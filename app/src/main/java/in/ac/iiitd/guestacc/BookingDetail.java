@@ -71,7 +71,7 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
         final EditText editText_InstituteDesc = (EditText)findViewById(R.id.editText_InstituteDesc);
         final EditText editText_ROV = (EditText)findViewById(R.id.editText_ROV);
 
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         String[] items = new String[]{"Personal", "Official"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
