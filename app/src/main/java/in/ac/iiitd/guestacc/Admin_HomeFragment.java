@@ -105,8 +105,8 @@ public class Admin_HomeFragment extends Fragment {
         adminHomeCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent = new Intent(Admin_HomeActivity.this, Item1.class);
-                //startActivity(intent);
+                Intent intent = new Intent(getActivity(), Admin_FacultyRegistration.class);
+                startActivity(intent);
             }
         });
         return adminHomeView;

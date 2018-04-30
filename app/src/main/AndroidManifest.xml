@@ -78,6 +78,11 @@
             android:parentActivityName=".Admin_HomeActivity"
             android:label="@string/AdminStatusForToday"
             android:screenOrientation="portrait"/>
+        <activity android:name=".Admin_FacultyRegistration"
+            android:parentActivityName=".Admin_HomeActivity"
+            android:label="Registration"
+            android:screenOrientation="portrait"/>
+
 
     </application>
 
