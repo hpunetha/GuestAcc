@@ -582,7 +582,7 @@ public class FacultyHomeActivity extends AppCompatActivity
 
                 final DatabaseReference myRef;
                // String basetable ="bookings_final";
-                String basetable ="bookings_final_test";
+                String basetable ="bookings_final";
 
 
 
