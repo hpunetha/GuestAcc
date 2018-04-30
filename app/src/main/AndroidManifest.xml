@@ -72,7 +72,7 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".Admin_ValidatePayment"
             android:parentActivityName=".Admin_HomeActivity"
-            android:label="@string/Admin_ValidatePayment"
+            android:label="@string/Admin_ValidatePayment"/>
 
         <activity android:name=".Admin_StatusForToday_MainScreen"
             android:parentActivityName=".Admin_HomeActivity"
