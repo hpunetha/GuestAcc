@@ -43,6 +43,7 @@ public class Admin_FacultyRegistration extends AppCompatActivity implements Admi
 
         /*------------------------   Database Access ---------------------------------*/
 
+
         mDatabase = FirebaseDatabase.getInstance().getReference("join_requests");
 
         existingFaculties = FirebaseDatabase.getInstance().getReference("faculty_staff/faculty");

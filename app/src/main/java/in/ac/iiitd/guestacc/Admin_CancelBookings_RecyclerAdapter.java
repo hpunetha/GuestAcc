@@ -133,7 +133,11 @@ public class Admin_CancelBookings_RecyclerAdapter extends RecyclerView.Adapter<A
                 @Override
                 public void onClick(View v)
                 {
-                    // getting context from main activity
+
+                   EditText t = (EditText) v.findViewById(R.id.edit_text_cancel_bookings);
+
+                   String reason = t.getText().toString() ;
+                   // getting context from main activity
                     // dialogSelect.show(((AppCompatActivity)context).getSupportFragmentManager(),"123");
                 }
             });
