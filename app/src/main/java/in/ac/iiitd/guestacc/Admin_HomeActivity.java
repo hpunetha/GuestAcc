@@ -1,6 +1,7 @@
 package in.ac.iiitd.guestacc;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -8,22 +9,43 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-
+import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
 
 
 public class Admin_HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     int mBackCount=0;
+    FirebaseUser mFirebaseUser;
+    String mCurrentUserName,mCurrentUserEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_home);
+
+        try {
+            mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+            if (mFirebaseUser !=null) {
+                mCurrentUserName = mFirebaseUser.getDisplayName();
+                mCurrentUserEmail = mFirebaseUser.getEmail();
+
+            }
+
+        }
+        catch (NullPointerException e)
+        {
+            e.printStackTrace();
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.adminToolbar);
         setSupportActionBar(toolbar);
@@ -74,7 +96,7 @@ public class Admin_HomeActivity extends AppCompatActivity
         if (id == R.id.adminHome) {
             getFragmentManager().beginTransaction().replace(R.id.adminHomeFrame, new Admin_HomeFragment()).commit();
         } else if (id == R.id.adminRoomStatus) {
-            getFragmentManager().beginTransaction().replace(R.id.adminHomeFrame, new Admin_RoomStatus_Fragment()).commit();
+            //getFragmentManager().beginTransaction().replace(R.id.adminHomeFrame, new Admin_RoomStatus_Fragment()).commit();
         } else if (id == R.id.adminCancelBooking) {
             Intent adminCancelBookingIntent = new Intent(Admin_HomeActivity.this,Admin_CancelBookings.class);
             startActivity(adminCancelBookingIntent);
@@ -89,6 +111,31 @@ public class Admin_HomeActivity extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.admin_drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        ImageView mAvatarMenuImageView = (ImageView) findViewById(R.id.imageViewAdmin);
+        TextView mTextViewMenuName =(TextView) findViewById(R.id.nameAdmin);
+        TextView mTextViewMenuEmail = (TextView) findViewById(R.id.emailAdmin);
+
+
+        if (mFirebaseUser!=null)
+        {
+            if (mCurrentUserName!=null) { mTextViewMenuName.setText(mCurrentUserName);}
+            if (mCurrentUserEmail!=null) { mTextViewMenuEmail.setText(mCurrentUserEmail);}
+
+            Uri ur =mFirebaseUser.getPhotoUrl();
+
+            String abc = ur.toString().replace("/s96-c/","/s300-c/");
+
+            Picasso.with(this).load(Uri.parse(abc)).into(mAvatarMenuImageView);
+
+        }
+
+        getMenuInflater().inflate(R.menu.faculty_home, menu);
         return true;
     }
 }
