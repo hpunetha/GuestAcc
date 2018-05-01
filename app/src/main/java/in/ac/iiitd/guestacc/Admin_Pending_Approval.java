@@ -681,6 +681,8 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
 
     }
 
+//*****************************************************  Accept button Click ******************************************************
+
     @Override
     public void onAcceptButtonClick(View v, int position) {
 
@@ -746,6 +748,9 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
 
     }
 
+//***********************************************  Accept button click end  *******************************************************
+
+//****************************************************  Reject button click ************************************************************
 
     @Override
     public void onRejectButtonClick(View v, int position) {
@@ -789,12 +794,17 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
         //if (pending.child(mAdminPendingApprovalData.get(position).getReqID()));
     }
 
+//**********************************************   Reject button click end   ********************************************************SSS
     /***********       DIALOG BOX OPERATIONS   ************************/
 
     @Override
 
     public void onRadioGroupClicked(RadioGroup r , RadioButton one , RadioButton two ,Spinner spinnerOne , Spinner spinnerTwo , int position)
     {
+
+        //TODO Receive rooms with price in hashmap
+        //TODO range query between dates
+        //TODO write operations in database
         String from_date;
         String to_date;
         if(one.isChecked()) {
@@ -802,28 +812,21 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
             from_date = mAdminPendingApprovalData.get(position).getDate().split(" ")[0];
             to_date = mAdminPendingApprovalData.get(position).getDate().split(" ")[1];
 
- //***********************************   Range Query *****************************************************
+ //***********************************   Range Query inside One room Dialog group *****************************************************
 
 
- //********************************* Range query end  ****************************************************
+ //********************************* Range query end inside One room Dialog Group ****************************************************
 
         }
         else {
 
-            //***********************************   Range Query *****************************************************
+            //**********************************   Range Query inside Two room Group  *****************************************************
 
 
-            //********************************* Range query end  ****************************************************
+            //*********************************  Range query inside Two room group end  ****************************************************
 
         }
     }
-
-
-
-
-
-
-
 
 
     public static class UpdateVerifyPayment implements Serializable {
