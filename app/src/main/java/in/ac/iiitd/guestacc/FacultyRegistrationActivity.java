@@ -1,6 +1,7 @@
 package in.ac.iiitd.guestacc;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -120,11 +124,17 @@ public class FacultyRegistrationActivity extends AppCompatActivity {
                             .setAction("Action", null).show();
 
                 }
+                else if(!emailToSet.trim().contains("@iiitd.ac.in"))
+                {
+                    Snackbar.make(view, "Only IIITD email ids are allowed. Please type the complete email id", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
                 else {
 
                     Timestamp mTimeStamp = new Timestamp(System.currentTimeMillis());
                     mJoinReq.timestamp = mTimeStamp.toString();
                     mJoinReq.emailid = emailToSet;
+
                     mJoinReq.name = name;
                     mJoinReq.type = mSelectedType.toLowerCase();
                     mJoinReq.year_of_joining = yoj;
@@ -135,9 +145,20 @@ public class FacultyRegistrationActivity extends AppCompatActivity {
                     mMyFirebaseRef.child(emailToSet.replace("@iiitd.ac.in","")).setValue(mJoinReq);
                     Toast.makeText(FacultyRegistrationActivity.this,"Registration request submitted successfully", Toast.LENGTH_SHORT).show();
 
+                    LoginClient_Singleton mClient = LoginClient_Singleton.getInstance(null);
+                    GoogleSignInClient mGSClient = mClient.getClient();
+                    mGSClient.signOut()
+                            .addOnCompleteListener(FacultyRegistrationActivity.this, new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    // Signing out Gmail as well
+                                }
+                            });
+                    FirebaseAuth.getInstance().signOut();
 
-                    Intent mMainActIntent = new Intent(FacultyRegistrationActivity.this, MainActivity.class);
-                    startActivity(mMainActIntent);
+                    Intent mSignOut = new Intent(FacultyRegistrationActivity.this, MainActivity.class);
+                    mSignOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(mSignOut);
                     finish();
                 }
 

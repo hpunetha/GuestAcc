@@ -92,7 +92,7 @@
                     <RadioGroup
                         android:id="@+id/radioGroupRoomFlat"
                         android:layout_marginTop="10dp"
-                        android:layout_marginStart="15dp"
+                        android:layout_marginStart="11dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
@@ -156,6 +156,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignStart="@+id/relativeLayout"
                         android:layout_alignTop="@+id/textViewMaleNew"
+                        android:layout_marginStart="0dp"
                         android:layout_gravity="right">
 
 
@@ -204,7 +205,7 @@
 
                         android:layout_alignTop="@+id/textViewFemaleNew"
                         android:layout_gravity="right"
-                        android:layout_marginStart="25dp"
+                        android:layout_marginStart="40dp"
                         android:layout_toEndOf="@+id/textViewFemaleNew"
                         android:id="@+id/relativeLayout">
 
