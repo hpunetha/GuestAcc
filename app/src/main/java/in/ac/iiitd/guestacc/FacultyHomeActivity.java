@@ -437,14 +437,15 @@ public class FacultyHomeActivity extends AppCompatActivity
             mBackCount++;
 
             if (mBackCount == 1) {
-                Toast.makeText(this, "Press again to sign-out", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Press again 2 times to exit", Toast.LENGTH_SHORT).show();
 
 
-            } else if (mBackCount > 1) {
-                FirebaseAuth.getInstance().signOut();
-                Intent mSignOut = new Intent(FacultyHomeActivity.this, MainActivity.class);
-                mSignOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(mSignOut);
+            } else if (mBackCount > 2) {
+//                FirebaseAuth.getInstance().signOut();
+//                Intent mSignOut = new Intent(FacultyHomeActivity.this, MainActivity.class);
+//                mSignOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(mSignOut);
+
             }
     }
 

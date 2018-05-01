@@ -148,11 +148,11 @@ public class FacultyRegistrationActivity extends AppCompatActivity {
     }
 
     public static class Request implements Serializable{
-        String emailid;
-        String name;
-        String timestamp;
-        String type;
-        String year_of_joining;
+        public String emailid;
+        public String name;
+        public String timestamp;
+        public String type;
+        public String year_of_joining;
 
         public Request()
         {

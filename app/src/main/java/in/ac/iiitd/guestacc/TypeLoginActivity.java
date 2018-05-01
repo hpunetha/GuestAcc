@@ -2,7 +2,9 @@ package in.ac.iiitd.guestacc;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -37,6 +39,7 @@ public class TypeLoginActivity extends AppCompatActivity {
     public static final String USERTYPE = "user";
     public static final int STUDENT=0;
     public static final int FACULTY=1;
+    public static final int ADMIN=2;
 
     boolean mStaffFlag=false;
     boolean mFacultyFlag=false;
@@ -95,6 +98,12 @@ public class TypeLoginActivity extends AppCompatActivity {
             mProgDiag.dismiss();
 //            FirebaseUser User = FirebaseAuth.getInstance().getCurrentUser();
 //            Toast.makeText(TypeLoginActivity.this,User.getDisplayName(), Toast.LENGTH_SHORT).show();
+
+
+            SharedPreferences mSharedPref = getSharedPreferences(MainActivity.PREF, Context.MODE_PRIVATE);
+            SharedPreferences.Editor mEdit = mSharedPref.edit();
+            mEdit.putInt(USERTYPE,STUDENT);
+            mEdit.apply();
 
             Intent mUserHome = new Intent(this, FacultyHomeActivity.class);
             mUserHome.putExtra(USERTYPE,STUDENT);
@@ -230,6 +239,12 @@ public class TypeLoginActivity extends AppCompatActivity {
 
                                         Log.w("Faculty Found ", mToCheckEmail);
                                         mProgDiag.dismiss();
+
+                                        SharedPreferences mSharedPref = getSharedPreferences(MainActivity.PREF, Context.MODE_PRIVATE);
+                                        SharedPreferences.Editor mEdit = mSharedPref.edit();
+                                        mEdit.putInt(USERTYPE,FACULTY);
+                                        mEdit.apply();
+
                                         Intent mFacultyHome = new Intent(TypeLoginActivity.this, FacultyHomeActivity.class);
                                         mFacultyHome.putExtra(USERTYPE, FACULTY);
                                         startActivity(mFacultyHome);
@@ -292,6 +307,13 @@ public class TypeLoginActivity extends AppCompatActivity {
                             //Log.i ("Admin",val.child("emailid").getValue().toString());
                             if (val.child("emailid").getValue().equals(email)){
                                 //Log.w("Admin Found ", ab.getValue());
+
+
+                                SharedPreferences mSharedPref = getSharedPreferences(MainActivity.PREF, Context.MODE_PRIVATE);
+                                SharedPreferences.Editor mEdit = mSharedPref.edit();
+                                mEdit.putInt(USERTYPE,ADMIN);
+                                mEdit.apply();
+
                                 Toast.makeText(TypeLoginActivity.this,"Authenticated as Admin", Toast.LENGTH_SHORT).show();
                                 Intent mAdminHome = new Intent(TypeLoginActivity.this,Admin_HomeActivity.class);
                                 startActivity(mAdminHome);
@@ -431,6 +453,13 @@ public class TypeLoginActivity extends AppCompatActivity {
 
                                     Log.w("Staff Found ", mToCheckEmail);
                                     mProgDiag.dismiss();
+
+
+                                    SharedPreferences mSharedPref = getSharedPreferences(MainActivity.PREF, Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor mEdit = mSharedPref.edit();
+                                    mEdit.putInt(USERTYPE,FACULTY);
+                                    mEdit.apply();
+
                                     Intent mFacultyHome = new Intent(TypeLoginActivity.this, FacultyHomeActivity.class);
                                     mFacultyHome.putExtra(USERTYPE, FACULTY);
                                     startActivity(mFacultyHome);
