@@ -92,7 +92,7 @@ public class Admin_HomeActivity extends AppCompatActivity
 //            Intent mSignOut = new Intent(Admin_HomeActivity.this, MainActivity.class);
 //            mSignOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //            startActivity(mSignOut);
-            Log.i("Google Connection" , String.valueOf(mGoogleAPIClient.isConnected()));
+
             LoginClient_Singleton mClient = LoginClient_Singleton.getInstance(null);
             GoogleSignInClient mGSClient = mClient.getClient();
             mGSClient.signOut()
