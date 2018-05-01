@@ -96,7 +96,7 @@ public class Admin_HomeActivity extends AppCompatActivity
         if (id == R.id.adminHome) {
             getFragmentManager().beginTransaction().replace(R.id.adminHomeFrame, new Admin_HomeFragment()).commit();
         } else if (id == R.id.adminRoomStatus) {
-            //getFragmentManager().beginTransaction().replace(R.id.adminHomeFrame, new Admin_RoomStatus_Fragment()).commit();
+            getFragmentManager().beginTransaction().replace(R.id.adminHomeFrame, new Admin_RoomStatus_Fragment()).commit();
         } else if (id == R.id.adminCancelBooking) {
             Intent adminCancelBookingIntent = new Intent(Admin_HomeActivity.this,Admin_CancelBookings.class);
             startActivity(adminCancelBookingIntent);

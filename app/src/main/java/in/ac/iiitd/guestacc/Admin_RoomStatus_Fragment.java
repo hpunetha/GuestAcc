@@ -20,6 +20,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -27,6 +28,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.w3c.dom.Text;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -65,16 +68,35 @@ public class Admin_RoomStatus_Fragment extends Fragment implements Admin_RoomSta
     RecyclerView recyclerView;
     Admin_RoomStatus_RecyclerAdapter adapter;
 
+
+
+
+    public  String MapRoom(String t)
+    {
+        String type = "";
+
+        if(t.contains("bh"))       type = "Boys' Hostel" ;
+        if(t.contains("gh"))       type = "Girls' Hostel" ;
+        if(t.contains("frr"))      type = "Faculty Rooms" ;
+        if(t.contains("frf"))      type = "Faculty Flat" ;
+
+
+        return type ;
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View adminRoomStatus = inflater.inflate(R.layout.fragment_admin_room_status, container, false);
 
-
+        data = new ArrayList<>();
      /*#################################### RETRIEVE DATA END ############################################*/
 
        // mListViewAdminRoomStatus = (ListView) adminRoomStatus.findViewById(R.id.list_adminRoomStatus);
         mEditTextFromDate = (EditText) adminRoomStatus.findViewById(R.id.editTextAdminRoomFrom);
+        TextView mAdminRoomStatus = (TextView) adminRoomStatus.findViewById(R.id.adminRoomStatus) ;
+        mAdminRoomStatus.setVisibility(View.GONE);
         mEditTextToDate = (EditText) adminRoomStatus.findViewById(R.id.editTextAdminRoomTo);
         mAdminRoomAvailability = (Button) adminRoomStatus.findViewById(R.id.button_adminRoomCheckAvailability);
         //Reference : https://www.youtube.com/watch?v=28jA5-mO8K8
@@ -85,105 +107,98 @@ public class Admin_RoomStatus_Fragment extends Fragment implements Admin_RoomSta
         mSpinnerAvailabilityStatus.setAdapter(spinnerStatusAdapter);
 
         //***************************************************************************************************************************
-        mSpinnerAvailabilityStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        final String mFormat = "E, MMM d";
+        SimpleDateFormat mPreSDFormat = new SimpleDateFormat(mFormat, Locale.ENGLISH);
+        Date mPreDate = new Date();
+        mToDate = mPreDate;
+        String mPreTextCheckin = getString(R.string.check_in) + mPreSDFormat.format(mPreDate);
+        mEditTextFromDate.setText(mPreTextCheckin);
+        mSendFromDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(mPreDate.getTime());
+
+        Calendar mPreCal = Calendar.getInstance();
+        mPreCal.setTime(mPreDate);
+        mPreCal.add(Calendar.DATE, 1);
+        Date mPreNextDate = mPreCal.getTime();
+
+        String mPreTextCheckout = getString(R.string.check_out) + mPreSDFormat.format(mPreNextDate);
+        mEditTextToDate.setText(mPreTextCheckout);
+        mSendToDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(mPreNextDate.getTime());
+
+
+        final Calendar mCal = Calendar.getInstance();
+        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+            //DatePickerDialog.
+
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                Log.i("Spinner", String.valueOf(adapterView.getItemAtPosition(position)));
-
-                //*****************************************Calendar instances*********************************************
-
-                final String mFormat = "E, MMM d";
-                SimpleDateFormat mPreSDFormat = new SimpleDateFormat(mFormat, Locale.ENGLISH);
-                Date mPreDate = new Date();
-                mToDate = mPreDate;
-                String mPreTextCheckin = getString(R.string.check_in) + mPreSDFormat.format(mPreDate);
-                mEditTextFromDate.setText(mPreTextCheckin);
-                mSendFromDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(mPreDate.getTime());
-
-                Calendar mPreCal = Calendar.getInstance();
-                mPreCal.setTime(mPreDate);
-                mPreCal.add(Calendar.DATE, 1);
-                Date mPreNextDate = mPreCal.getTime();
-
-                String mPreTextCheckout = getString(R.string.check_out) + mPreSDFormat.format(mPreNextDate);
-                mEditTextToDate.setText(mPreTextCheckout);
-                mSendToDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(mPreNextDate.getTime());
-
-
-                final Calendar mCal = Calendar.getInstance();
-                final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-                    //DatePickerDialog.
-
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear,
-                                          int dayOfMonth) {
-                        mCal.set(Calendar.YEAR, year);
-                        mCal.set(Calendar.MONTH, monthOfYear);
-                        mCal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                mCal.set(Calendar.YEAR, year);
+                mCal.set(Calendar.MONTH, monthOfYear);
+                mCal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
 //              String mFormat = "E, MMM d";
-                        SimpleDateFormat mSimpleDF = new SimpleDateFormat(mFormat, Locale.ENGLISH);
+                SimpleDateFormat mSimpleDF = new SimpleDateFormat(mFormat, Locale.ENGLISH);
 
-                        if (mDateVal == 1) {
-                            String mTextIn = getString(R.string.check_in) + mSimpleDF.format(mCal.getTime());
+                if (mDateVal == 1) {
+                    String mTextIn = getString(R.string.check_in) + mSimpleDF.format(mCal.getTime());
 
-                            mSendFromDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(mCal.getTime());
+                    mSendFromDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(mCal.getTime());
 
-                            mToDate = mCal.getTime();
-                            mEditTextFromDate.setText(mTextIn);
-                            Calendar mChkCal = Calendar.getInstance();
-                            mChkCal.setTime(mToDate);
-                            mChkCal.add(Calendar.DATE, 1);
-                            String mTextOut = getString(R.string.check_out) + mSimpleDF.format(mChkCal.getTime());
-                            mEditTextToDate.setText(mTextOut);
+                    mToDate = mCal.getTime();
+                    mEditTextFromDate.setText(mTextIn);
+                    Calendar mChkCal = Calendar.getInstance();
+                    mChkCal.setTime(mToDate);
+                    mChkCal.add(Calendar.DATE, 1);
+                    String mTextOut = getString(R.string.check_out) + mSimpleDF.format(mChkCal.getTime());
+                    mEditTextToDate.setText(mTextOut);
 
-                            mSendToDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(mChkCal.getTime());
+                    mSendToDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(mChkCal.getTime());
 
-                        } else if (mDateVal == 2) {
-                            String text = getString(R.string.check_out) + mSimpleDF.format(mCal.getTime());
-                            mEditTextToDate.setText(text);
+                } else if (mDateVal == 2) {
+                    String text = getString(R.string.check_out) + mSimpleDF.format(mCal.getTime());
+                    mEditTextToDate.setText(text);
 
-                            mSendToDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(mCal.getTime());
-                        }
-                    }
+                    mSendToDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(mCal.getTime());
+                }
+            }
 
-                };
+        };
 
-                mEditTextFromDate.setOnClickListener(new View.OnClickListener() {
+        mEditTextFromDate.setOnClickListener(new View.OnClickListener() {
 
-                    @Override
-                    public void onClick(View v) {
-                        DatePickerDialog mDatePickDialog;
-                        mDatePickDialog = new DatePickerDialog(getActivity(), date, mCal
-                                .get(Calendar.YEAR), mCal.get(Calendar.MONTH),
-                                mCal.get(Calendar.DAY_OF_MONTH));
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog mDatePickDialog;
+                mDatePickDialog = new DatePickerDialog(getActivity(), date, mCal
+                        .get(Calendar.YEAR), mCal.get(Calendar.MONTH),
+                        mCal.get(Calendar.DAY_OF_MONTH));
 
-                        mDateVal = 1;
-                        //mDatePickDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+                mDateVal = 1;
+                //mDatePickDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
 
-                        mDatePickDialog.show();
-                    }
-                });
+                mDatePickDialog.show();
+            }
+        });
 
-                mEditTextToDate.setOnClickListener(new View.OnClickListener() {
+        mEditTextToDate.setOnClickListener(new View.OnClickListener() {
 
-                    @Override
-                    public void onClick(View view) {
-                        DatePickerDialog mDatePickDialog;
-                        mDatePickDialog = new DatePickerDialog(getActivity(), date, mCal
-                                .get(Calendar.YEAR), mCal.get(Calendar.MONTH),
-                                mCal.get(Calendar.DAY_OF_MONTH));
-                        mDateVal = 2;
+            @Override
+            public void onClick(View view) {
+                DatePickerDialog mDatePickDialog;
+                mDatePickDialog = new DatePickerDialog(getActivity(), date, mCal
+                        .get(Calendar.YEAR), mCal.get(Calendar.MONTH),
+                        mCal.get(Calendar.DAY_OF_MONTH));
+                mDateVal = 2;
 
-                        Calendar mChkCal = Calendar.getInstance();
-                        mChkCal.setTime(mToDate);
-                        mChkCal.add(Calendar.DATE, 1);
-                        //Date mPreNextDate = mChkCal.getTime();
+                Calendar mChkCal = Calendar.getInstance();
+                mChkCal.setTime(mToDate);
+                mChkCal.add(Calendar.DATE, 1);
+                //Date mPreNextDate = mChkCal.getTime();
 
-                        mDatePickDialog.getDatePicker().setMinDate(mChkCal.getTimeInMillis());
-                        mDatePickDialog.show();
-                    }
-                });
+                mDatePickDialog.getDatePicker().setMinDate(mChkCal.getTimeInMillis());
+                mDatePickDialog.show();
+            }
+        });
 
 //                mAdminRoomAvailability.setOnClickListener(new View.OnClickListener() {
 //                    @Override
@@ -192,13 +207,7 @@ public class Admin_RoomStatus_Fragment extends Fragment implements Admin_RoomSta
 //                    }
 //                });
 
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
 
         //*********************************************************************************************************************
 
@@ -219,8 +228,30 @@ public class Admin_RoomStatus_Fragment extends Fragment implements Admin_RoomSta
 
 
 
-        mAllDateRoomsAvailabilityCount = new HashMap<>();
-        mAllDateRoomsAvailabilityCount.put("bh1",true);
+
+        /*================================   KULDEEP' CODE ==========================================*/
+        DatabaseReference mDatabaseReference ;
+       final ArrayList<String> mRoomName = new ArrayList<>();
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("room_details");
+        mRoomName.clear();
+
+        mDatabaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot val : dataSnapshot.getChildren()) {
+                    if (dataSnapshot.getValue() != null) {
+                        //Store list of all rooms
+                        mRoomName.add(String.valueOf(val.child("id").getValue()));
+                        Log.i("status", String.valueOf(val.child("id").getValue()));
+                    }
+                }
+
+
+        //*************************************Range Query*********************************************
+
+
+                        mAllDateRoomsAvailabilityCount = new HashMap<>();
+     /*   mAllDateRoomsAvailabilityCount.put("bh1",true);
         mAllDateRoomsAvailabilityCount.put("bh2",true);
         mAllDateRoomsAvailabilityCount.put("gh1",true);
         mAllDateRoomsAvailabilityCount.put("gh2",true);
@@ -228,7 +259,234 @@ public class Admin_RoomStatus_Fragment extends Fragment implements Admin_RoomSta
         mAllDateRoomsAvailabilityCount.put("frr2",true);
         mAllDateRoomsAvailabilityCount.put("frr3",true);
         mAllDateRoomsAvailabilityCount.put("frf1",true);
-        mAllDateRoomsAvailabilityCount.put("frf2",true);
+        mAllDateRoomsAvailabilityCount.put("frf2",true);*/
+
+
+
+                        for(int i=0;i<mRoomName.size();i++)
+                        {
+                            mAllDateRoomsAvailabilityCount.put(mRoomName.get(i),true) ;
+
+                            Log.e("INC",mRoomName.get(i)) ;
+                        }
+
+                        Date mFromDate,mToDate1;
+
+                        final List<String> mBookedRoomList;
+
+                        mDateList= new ArrayList<>();
+                        Calendar mCalender;
+                        mFromDate=mToDate;
+
+                        mFirebaseDateList = new ArrayList<>();
+//        Log.i("sendToDate",mSendToDate);
+//        Log.i("fromDate",mSendFromDate);
+
+                        //Reference=> https://stackoverflow.com/questions/4216745/java-string-to-date-conversion
+                        DateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH);
+                        try
+                        {
+                            if (mDatabase!=null) {
+                                mFromDate = mDateFormat.parse(mSendFromDate);
+                                mToDate1 = mDateFormat.parse(mSendToDate);
+                                // Reference=>   https://stackoverflow.com/questions/2689379/how-to-get-a-list-of-dates-between-two-dates-in-java
+
+
+                                mCalender = new GregorianCalendar();
+                                mBookedRoomList = new ArrayList<String>();
+                                mCalender.setTime(mFromDate);
+                                while (mCalender.getTime().before(mToDate1)) {
+                                    Date result = mCalender.getTime();
+                                    String resultString = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(result);
+
+                                    mDateList.add(resultString);
+                                    mCalender.add(Calendar.DATE, 1);
+                                }
+
+                                Log.i("Date List", mDateList.toString());
+
+                                final DatabaseReference myRef;
+                                // String basetable ="bookings_final";
+                                String basetable = "bookings_final";
+
+                                //
+                                String strDBAccess = basetable;
+                                Log.i("date access", strDBAccess);
+                                myRef = mDatabase.getReference(strDBAccess);
+
+                                myRef.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        //                        for(DataSnapshot child : dataSnapshot.getChildren() )
+                                        //                        {
+                                        //
+                                        //
+                                        //                        }
+
+                                        Log.i("DATA SNAP START", dataSnapshot.toString());
+
+
+                                        for (DataSnapshot child : dataSnapshot.getChildren()) {
+                                            exitFlag = false;
+
+                                            Log.i("Retrieving child", " child key => " + child.getKey() + " and mDateList" + mDateList);
+                                            if (mDateList.contains(child.getKey())) {
+                                                final String tempDateString = child.getKey();
+
+                                                if (child.getChildrenCount() != 0) {
+                                                    Log.i("Bookings", "Bookings for " + tempDateString + " children " + dataSnapshot.getChildren().toString());
+
+                                                    for (DataSnapshot dbS : child.getChildren()) {
+                                                        try {
+
+                                                            Log.i("id booking", "id ->" + dbS.getKey() + " booking status->" + dbS.child("booking_status").getValue());
+
+                                                            if (dbS.getValue() != null) {
+                                                            }
+
+                                                            Booking mAdminBooking = dbS.getValue(Booking.class);
+                                                            // if (mAdminBooking.guests.size()>0)
+                                                            Log.i("INSIDETAG", mAdminBooking.booking_status);
+
+                                                            // pending_approval change to completed
+                                                            if (mAdminBooking.booking_status.equalsIgnoreCase("completed")) {
+
+
+                                                                if (mAdminBooking.guests.size() > 0) {
+                                                                    for (Guest guest1 : mAdminBooking.guests) {
+
+                                                                        Log.i("Check Keys", mAllDateRoomsAvailabilityCount.keySet().toString() + "  =? " + guest1.allocated_room);
+
+                                                                        if (mAllDateRoomsAvailabilityCount.keySet().contains(guest1.allocated_room)) {
+                                                                            mAllDateRoomsAvailabilityCount.put(guest1.allocated_room, false);
+
+
+                                                                        }
+                                                                    }
+
+                                                                    Log.i("Final Hashmap", mAllDateRoomsAvailabilityCount.toString());
+
+
+                                                                }
+
+
+                                                                //                                                    Log.i("INSIDETAG", mAdminBooking.guests.get(0).associated_room_id);
+
+                                                            }
+
+                                                        } catch (Exception e) {
+                                                            e.printStackTrace();
+                                                        }
+
+
+                                                    }
+                                                } else {
+                                                    Log.i("No Bookings ", "No Bookings for date " + tempDateString);
+
+
+                                                }
+
+                                            }
+
+
+                                        }
+
+                                        int count = 0;
+                                        for (Map.Entry<String, Boolean> entry : mAllDateRoomsAvailabilityCount.entrySet()) {
+                                            Boolean val = entry.getValue();
+
+                                            if (val) {
+                                                count += 1;
+                                            }
+
+                                        }
+
+                                        if (count > mTotalRooms) {
+                                            Log.i("YIPPIE", " ================Rooms can be booked now=======================");
+
+                                        } else {
+
+                                            Toast.makeText(getActivity(), "Specified number of rooms not available for given dates.", Toast.LENGTH_SHORT).show();
+
+                                        }
+
+
+                                    }
+
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+
+                                });
+                            }
+
+                        }
+                        catch (ParseException e1)
+                        {
+                            e1.printStackTrace();
+                        }
+
+
+
+                        for ( String key : mAllDateRoomsAvailabilityCount.keySet() )
+                        {
+                            String roomNo = "Room "+Character.toString(key.charAt(key.length()-1)) ;
+
+
+
+                            String color ;
+                            Boolean  c = mAllDateRoomsAvailabilityCount.get(key) ;
+
+
+                            if(c==true)         color = "A" ;
+                            else                color = "NA" ;
+
+
+                            Log.i("INCOMING_DATA",key);
+                            data.add(new Admin_Data_RoomStatus(MapRoom(key),roomNo,color));
+
+                        }
+
+
+                        if (adapter!=null) adapter.notifyDataSetChanged();
+
+        //*************************************Range Query End*********************************************
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        Log.i("statusSerach", mRoomName.toString());
+        /*==========================  END KULDEEP'S CODE= ==============================================*/
+
+
+
+/*        mAllDateRoomsAvailabilityCount = new HashMap<>();
+     *//*   mAllDateRoomsAvailabilityCount.put("bh1",true);
+        mAllDateRoomsAvailabilityCount.put("bh2",true);
+        mAllDateRoomsAvailabilityCount.put("gh1",true);
+        mAllDateRoomsAvailabilityCount.put("gh2",true);
+        mAllDateRoomsAvailabilityCount.put("frr1",true);
+        mAllDateRoomsAvailabilityCount.put("frr2",true);
+        mAllDateRoomsAvailabilityCount.put("frr3",true);
+        mAllDateRoomsAvailabilityCount.put("frf1",true);
+        mAllDateRoomsAvailabilityCount.put("frf2",true);*//*
+
+
+
+     for(int i=0;i<mRoomName.size();i++)
+     {
+         mAllDateRoomsAvailabilityCount.put(mRoomName.get(i),true) ;
+
+         Log.e("INC",mRoomName.get(i)) ;
+     }
 
         Date mFromDate,mToDate1;
 
@@ -386,7 +644,7 @@ public class Admin_RoomStatus_Fragment extends Fragment implements Admin_RoomSta
         catch (ParseException e1)
         {
             e1.printStackTrace();
-        }
+        }*/
 
 
 
@@ -395,7 +653,40 @@ public class Admin_RoomStatus_Fragment extends Fragment implements Admin_RoomSta
 
 
 /*************************   RECYCLER VIEW  ***************************************/
-        data = new ArrayList<>();
+
+
+/*   mAllDateRoomsAvailabilityCount.put("bh1",true);
+        mAllDateRoomsAvailabilityCount.put("bh2",true);
+        mAllDateRoomsAvailabilityCount.put("gh1",true);
+        mAllDateRoomsAvailabilityCount.put("gh2",true);
+        mAllDateRoomsAvailabilityCount.put("frr1",true);
+        mAllDateRoomsAvailabilityCount.put("frr2",true);
+        mAllDateRoomsAvailabilityCount.put("frr3",true);
+        mAllDateRoomsAvailabilityCount.put("frf1",true);
+        mAllDateRoomsAvailabilityCount.put("frf2",true);*/
+/*        data = new ArrayList<>();
+
+        for ( String key : mAllDateRoomsAvailabilityCount.keySet() )
+        {
+            String roomNo = "Room "+Character.toString(key.charAt(key.length()-1)) ;
+            String t = key.substring(0,key.length()-2) ;
+            String color ;
+
+
+            Boolean  c = mAllDateRoomsAvailabilityCount.get(key) ;
+
+
+            if(c==true)         color = "A" ;
+            else                color = "NA" ;
+            Log.i("INCOMING_DATA",t);
+            data.add(new Admin_Data_RoomStatus(MapRoom(t),roomNo,color));
+
+        }*/
+
+
+
+
+
         recyclerView = (RecyclerView) adminRoomStatus.findViewById(R.id.admin_room_status_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
 
