@@ -81,30 +81,30 @@ public class Admin_HomeActivity extends AppCompatActivity
             super.onBackPressed();
 
 
-        mBackCount++;
-
-//        if (mBackCount == 3) {
-//            Toast.makeText(this, "Press back 2 more times to sign-out", Toast.LENGTH_SHORT).show();
-//        }else if (mBackCount == 4) {
-//                Toast.makeText(this, "Press back 1 more time to sign-out", Toast.LENGTH_SHORT).show();
+//            mBackCount++;
 //
-//        } else if (mBackCount > 4) {
-
-//            LoginClient_Singleton mClient = LoginClient_Singleton.getInstance(null);
-//            GoogleSignInClient mGSClient = mClient.getClient();
-//            mGSClient.signOut()
-//                    .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<Void> task) {
-//                            // Signing out Gmail as well
-//                        }
-//                    });
-//            FirebaseAuth.getInstance().signOut();
+//            if (mBackCount == 2) {
+//                Toast.makeText(this, "Press back 2 more times to sign-out", Toast.LENGTH_SHORT).show();
+//            }else if (mBackCount == 3) {
+//                    Toast.makeText(this, "Press back 1 more time to sign-out", Toast.LENGTH_SHORT).show();
 //
-//            Intent mSignOut = new Intent(this, MainActivity.class);
-//            mSignOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//            startActivity(mSignOut);
-//        }
+//            } else if (mBackCount > 3) {
+//
+//                LoginClient_Singleton mClient = LoginClient_Singleton.getInstance(null);
+//                GoogleSignInClient mGSClient = mClient.getClient();
+//                mGSClient.signOut()
+//                        .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+//                            @Override
+//                            public void onComplete(@NonNull Task<Void> task) {
+//                                // Signing out Gmail as well
+//                            }
+//                        });
+//                FirebaseAuth.getInstance().signOut();
+//
+//                Intent mSignOut = new Intent(this, MainActivity.class);
+//                mSignOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(mSignOut);
+//            }
       }
     }
 
