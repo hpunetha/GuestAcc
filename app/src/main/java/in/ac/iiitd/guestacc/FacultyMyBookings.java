@@ -34,7 +34,14 @@ public class FacultyMyBookings extends AppCompatActivity implements FacultyMyBoo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.faculty_my_bookings_recyclerview);
+        try {
+            getSupportActionBar().setTitle("My Bookings");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        catch(Exception e)
+        {
 
+        }
 
         ProgressDialog progress = new ProgressDialog(this);
         progress.setMessage("Loading...Please Wait ");

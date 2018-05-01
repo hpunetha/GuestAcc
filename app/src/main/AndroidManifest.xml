@@ -61,6 +61,7 @@
             android:name=".Admin_HomeActivity"
             android:label="@string/admhome"
             android:screenOrientation="portrait"
+
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Admin_CancelBookings"
             android:parentActivityName=".Admin_HomeActivity"
@@ -83,6 +84,7 @@
             android:label="Registration"
             android:screenOrientation="portrait"/>
         <activity android:name=".FacultyMyBookings"
+            android:parentActivityName=".FacultyHomeActivity"
             android:screenOrientation="portrait"/>
 
 
