@@ -68,7 +68,7 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
 
 
         // TODO Change reference here
-        mFireBaseReference = FirebaseDatabase.getInstance().getReference("pending_requests/pending_approval");
+        mFireBaseReference = FirebaseDatabase.getInstance().getReference("/");
         //mFireBaseReference = FirebaseDatabase.getInstance().getReference("/");
         final ArrayList<Integer> mGuestRooms = new ArrayList<>(); //Store rooms
 
@@ -645,6 +645,8 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
             RelativeLayout.LayoutParams layoutparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
             /*********************     listen to the allocate button  *********************/
+
+
 
             final Integer index = i;
 
