@@ -44,7 +44,7 @@ public class Admin_ValidatePayment extends AppCompatActivity implements Admin_Va
        // progress.dismiss();
 
         data = new ArrayList<>();
-        mFireBaseReference = FirebaseDatabase.getInstance().getReference("pending_requests/verify_payment/");
+        mFireBaseReference = FirebaseDatabase.getInstance().getReference(MainActivity.PENDING_REQUESTS+"/"+MainActivity.VERIFY_PAYMENT);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mFireBaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
 

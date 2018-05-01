@@ -63,7 +63,7 @@ public class FacultyMyBookings extends AppCompatActivity implements FacultyMyBoo
         String email;
         if (mCurrentUserEmail!=null) {
            email= mCurrentUserEmail.replace("@iiitd.ac.in", "");
-            mFireBaseReference = FirebaseDatabase.getInstance().getReference("user/"+ email);
+            mFireBaseReference = FirebaseDatabase.getInstance().getReference(MainActivity.USER+"/"+ email);
         }
 
 

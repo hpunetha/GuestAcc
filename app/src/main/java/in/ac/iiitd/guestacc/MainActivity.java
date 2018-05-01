@@ -24,7 +24,24 @@ import com.google.firebase.auth.GoogleAuthProvider;
 /**
  * Created by hpunetha on 2/20/2018.
  */
+
 public class MainActivity extends AppCompatActivity {
+    public final static String ADMIN_DETAILS = "admin_details";
+    public final static String BOOKING_FINAL = "bookings_final";
+    public final static String BOOKING_FINAL_ = "bookings_final_";
+    public final static String BOOKING_FINAL_TESTING_ = "bookings_final_testing_";
+    public final static String FACULTY_STAFF = "faculty_staff";
+    public final static String PENDING_REQUESTS = "pending_requests";
+    public final static String ROOM_DETAILS = "room_details";
+    public final static String USER = "user";
+    public final static String PENDING_APPROVAL = "pending_approval";
+    public final static String PENDING_PAYMENT = "pending_payment";
+    public final static String COMPLETED = "completed";
+    public final static String CANCELLED = "cancelled";
+    public final static String REJECTED = "rejected";
+    public final static String VERIFY_PAYMENT = "verify_payment";
+    public final static String JOIN_REQUESTS = "join_requests";
+
 
     private int mBackCount=0;
 

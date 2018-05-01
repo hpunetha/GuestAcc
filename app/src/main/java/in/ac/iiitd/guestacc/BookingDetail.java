@@ -88,10 +88,10 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
         spinner_personal_funding.setAdapter(adapter_fundedBy);
 
         Button btnBook = (Button)findViewById(R.id.btnBook);
-        databaseReference_key_generator = FirebaseDatabase.getInstance().getReference("bookings_final_");
-        databaseReference_bookings_final = FirebaseDatabase.getInstance().getReference("bookings_final_");
-        databaseReference_pending_approval = FirebaseDatabase.getInstance().getReference("pending_requests/pending_approval");
-        databaseReference_user = FirebaseDatabase.getInstance().getReference("user");
+        databaseReference_key_generator = FirebaseDatabase.getInstance().getReference(MainActivity.BOOKING_FINAL_);
+        databaseReference_bookings_final = FirebaseDatabase.getInstance().getReference(MainActivity.BOOKING_FINAL_);
+        databaseReference_pending_approval = FirebaseDatabase.getInstance().getReference(MainActivity.PENDING_REQUESTS+"/"+MainActivity.PENDING_APPROVAL);
+        databaseReference_user = FirebaseDatabase.getInstance().getReference(MainActivity.USER);
 
         if(mFirebaseUser!=null)
         {

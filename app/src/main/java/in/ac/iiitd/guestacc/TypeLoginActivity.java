@@ -109,7 +109,7 @@ public class TypeLoginActivity extends AppCompatActivity {
 
 
 
-            DatabaseReference myRef = mDatabase.getReference("faculty_staff/faculty");
+            DatabaseReference myRef = mDatabase.getReference(MainActivity.FACULTY_STAFF+"/faculty");
 //********************OLD CODE COMMENTED BELOW************************
 //            myRef.addValueEventListener(new ValueEventListener() {
 //                @Override
@@ -280,7 +280,7 @@ public class TypeLoginActivity extends AppCompatActivity {
             boolean flag = false;
 
             //mDatabase = FirebaseDatabase.getInstance();
-            DatabaseReference myRef = mDatabase.getReference("admin_details");
+            DatabaseReference myRef = mDatabase.getReference(MainActivity.ADMIN_DETAILS);
 
             myRef.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -397,7 +397,7 @@ public class TypeLoginActivity extends AppCompatActivity {
 
     private void checkStaff()
     {
-        DatabaseReference myRef = mDatabase.getReference("faculty_staff/staff");
+        DatabaseReference myRef = mDatabase.getReference(MainActivity.FACULTY_STAFF+"/staff");
         myRef.addValueEventListener(new ValueEventListener()
         {
             @Override

@@ -68,8 +68,9 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
 
 
 
-//        mFireBaseReference = FirebaseDatabase.getInstance().getReference("pending_requests/pending_approval");
-        mFireBaseReference = FirebaseDatabase.getInstance().getReference("/");
+        // TODO Change reference here
+        mFireBaseReference = FirebaseDatabase.getInstance().getReference("pending_requests/pending_approval");
+        //mFireBaseReference = FirebaseDatabase.getInstance().getReference("/");
         final ArrayList<Integer> mGuestRooms = new ArrayList<>(); //Store rooms
 
 
@@ -326,7 +327,7 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
 
 //******************************Bookings_final reference*******************************************************************
 
-        mFireBaseReferencePendingApproval = FirebaseDatabase.getInstance().getReference("bookings_final");
+        mFireBaseReferencePendingApproval = FirebaseDatabase.getInstance().getReference(MainActivity.BOOKING_FINAL);
 
         mFireBaseReferencePendingApproval.addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -703,7 +704,7 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
     public void onButtonClick(View v, int position)
     {
 
-        DatabaseReference pending = FirebaseDatabase.getInstance().getReference("pending_requests/pending_approval");
+        DatabaseReference pending = FirebaseDatabase.getInstance().getReference(MainActivity.PENDING_REQUESTS+"/"+MainActivity.PENDING_APPROVAL);
         // Log.i("Pending_id",mAdminPendingApprovalData.get(position).getReqID());
 
         //Key removed from pending_approval
@@ -720,7 +721,7 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
         UpdateVerifyPayment updatePayment = new UpdateVerifyPayment(String.valueOf(no_of_persons),String.valueOf(mAdminPendingApprovalData.get(position).getRoomsData().size()),
                 mAdminPendingApprovalData.get(position).getDate().split(" ")[0],mAdminPendingApprovalData.get(position).getTotalPrice());
 
-        pending = FirebaseDatabase.getInstance().getReference("pending_requests/verify_payment");
+        pending = FirebaseDatabase.getInstance().getReference(MainActivity.PENDING_REQUESTS+"/"+MainActivity.VERIFY_PAYMENT);
 
         pending.child(mAdminPendingApprovalData.get(position).getReqID()).setValue(updatePayment);
         //  TODO Hide pane
@@ -744,7 +745,7 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
         //Log.i("Email",);
         String email = userEmail.replace("@iiitd.ac.in","");
         Log.i("Data",email);
-        pending = FirebaseDatabase.getInstance().getReference("user/"+email);
+        pending = FirebaseDatabase.getInstance().getReference(MainActivity.USER+"/"+email);
         try {
             pending.child(mAdminPendingApprovalData.get(position).getReqID()).child("status").setValue("pending_payment");
         }
@@ -753,7 +754,7 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
         }
 
         String date = mAdminPendingApprovalData.get(position).getDate().split(" ")[0];
-        pending = FirebaseDatabase.getInstance().getReference("bookings_final/"+date+"/"+mAdminPendingApprovalData.get(position).getReqID());
+        pending = FirebaseDatabase.getInstance().getReference(MainActivity.BOOKING_FINAL+"/"+date+"/"+mAdminPendingApprovalData.get(position).getReqID());
 
         try{
             pending.child("booking_status").setValue("pending_payment");

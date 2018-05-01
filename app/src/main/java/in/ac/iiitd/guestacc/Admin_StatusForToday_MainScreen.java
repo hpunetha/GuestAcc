@@ -34,10 +34,6 @@ public class Admin_StatusForToday_MainScreen extends AppCompatActivity {
     ArrayList<String> mRoomNameNotAvailable = new ArrayList<>();
     Booking mStatusForTodayBooking;
     Admin_StatusForToday_RecyclerViewAdapter mAdapter;
-    String PENDING_APPROVAL = "pending_approval";
-    String PENDING_PAYMENT = "pending_payment";
-    String COMPLETED = "completed";
-    String CANCELLED = "cancelled";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +42,7 @@ public class Admin_StatusForToday_MainScreen extends AppCompatActivity {
 
         //https://stackoverflow.com/questions/8654990/how-can-i-get-current-date-in-android
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference("room_details");
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference(MainActivity.ROOM_DETAILS);
         mRoomNameNotAvailable.clear();
         mRoomName.clear();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -61,6 +57,7 @@ public class Admin_StatusForToday_MainScreen extends AppCompatActivity {
                         Log.i("status", String.valueOf(val.child("id").getValue()));
                     }
                 }
+                if (mAdapter != null) { mAdapter.notifyDataSetChanged(); }
             }
 
             @Override
@@ -70,7 +67,7 @@ public class Admin_StatusForToday_MainScreen extends AppCompatActivity {
         });
 
         Log.i("Date", date);
-        mDataBaseBookingReference = FirebaseDatabase.getInstance().getReference("bookings_final/" + date);
+        mDataBaseBookingReference = FirebaseDatabase.getInstance().getReference(MainActivity.BOOKING_FINAL+"/" + date);
         mDataBaseBookingReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -78,7 +75,7 @@ public class Admin_StatusForToday_MainScreen extends AppCompatActivity {
                 for (DataSnapshot val : dataSnapshot.getChildren()) {
                     if (val.getValue() != null) {
                         mStatusForTodayBooking = val.getValue(Booking.class);
-                        if (mStatusForTodayBooking != null && mStatusForTodayBooking.getBooking_status().equals(COMPLETED)) {
+                        if (mStatusForTodayBooking != null && mStatusForTodayBooking.getBooking_status().equals(MainActivity.COMPLETED)) {
                             for (int i = 0; i < mStatusForTodayBooking.getGuests().size(); i++) {
                                 if (mStatusForTodayBooking.getGuests().get(i).getAllocated_room() != null)
                                     mRoomNameNotAvailable.add(mStatusForTodayBooking.getGuests().get(i).getAllocated_room());
