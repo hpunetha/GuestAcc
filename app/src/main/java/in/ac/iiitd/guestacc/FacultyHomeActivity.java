@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.CardView;
@@ -29,6 +30,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.plus.Plus;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -57,6 +63,7 @@ import java.util.Map;
 public class FacultyHomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    GoogleApiClient mGoogleAPIClient;
     //public static HashMap<String,RoomItem> mAllRoomsDetails;
     public static HashMap<String,RoomItem> mAllRoomsDetails;
 
@@ -193,28 +200,30 @@ public class FacultyHomeActivity extends AppCompatActivity
 
         btnCheckAvailFaculty.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-
-                if (mAllRoomsDetails.size()>0)
+            public void onClick(View view)
+            {
+                if (mAgreeTermsCheckBox.isChecked())
                 {
+                    if (mAllRoomsDetails.size() > 0) {
 
-                    new CheckAvailabilityTask(FacultyHomeActivity.this).execute();
-
+                        new CheckAvailabilityTask(FacultyHomeActivity.this).execute();
 
 //                Intent mBookingDetail = new Intent(FacultyHomeActivity.this, BookingDetail.class);
 //                startActivity(mBookingDetail);
 
+                    } else {
+
+                        Snackbar.make(view, "No Rooms are added. Please add rooms first", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                    }
+
                 }
                 else
                 {
-
-                    Snackbar.make(view, "No Rooms are added. Please add rooms first", Snackbar.LENGTH_LONG)
+                    Snackbar.make(view, "Please accept Terms and Conditions", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
+
                 }
-
-
-
-
 
 
             }
@@ -437,12 +446,28 @@ public class FacultyHomeActivity extends AppCompatActivity
             mBackCount++;
 
             if (mBackCount == 1) {
-                Toast.makeText(this, "Press again to sign-out", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Press again 2 times to Sign-out", Toast.LENGTH_SHORT).show();
 
 
-            } else if (mBackCount > 1) {
+            } else if (mBackCount > 2) {
+//                FirebaseAuth.getInstance().signOut();
+//                Intent mSignOut = new Intent(FacultyHomeActivity.this, MainActivity.class);
+//                mSignOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(mSignOut);
+
+
+                LoginClient_Singleton mClient = LoginClient_Singleton.getInstance(null);
+                GoogleSignInClient mGSClient = mClient.getClient();
+                mGSClient.signOut()
+                        .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                // Signing out Gmail as well
+                            }
+                        });
                 FirebaseAuth.getInstance().signOut();
-                Intent mSignOut = new Intent(FacultyHomeActivity.this, MainActivity.class);
+
+                Intent mSignOut = new Intent(this, MainActivity.class);
                 mSignOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(mSignOut);
             }
@@ -496,6 +521,23 @@ public class FacultyHomeActivity extends AppCompatActivity
             /////
             Intent myBookings = new Intent(this, FacultyMyBookings.class);
             startActivity(myBookings);
+        }
+        else if(id == R.id.logoutFaculty)
+        {
+            LoginClient_Singleton mClient = LoginClient_Singleton.getInstance(null);
+            GoogleSignInClient mGSClient = mClient.getClient();
+            mGSClient.signOut()
+                    .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            // Signing out Gmail as well
+                        }
+                    });
+            FirebaseAuth.getInstance().signOut();
+
+            Intent mSignOut = new Intent(this, MainActivity.class);
+            mSignOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(mSignOut);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
