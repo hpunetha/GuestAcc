@@ -469,7 +469,7 @@ public class Admin_RoomStatus_Fragment extends Fragment implements Admin_RoomSta
 
 
 /*        mAllDateRoomsAvailabilityCount = new HashMap<>();
-     *//*   mAllDateRoomsAvailabilityCount.put("bh1",true);
+        mAllDateRoomsAvailabilityCount.put("bh1",true);
         mAllDateRoomsAvailabilityCount.put("bh2",true);
         mAllDateRoomsAvailabilityCount.put("gh1",true);
         mAllDateRoomsAvailabilityCount.put("gh2",true);
@@ -477,7 +477,7 @@ public class Admin_RoomStatus_Fragment extends Fragment implements Admin_RoomSta
         mAllDateRoomsAvailabilityCount.put("frr2",true);
         mAllDateRoomsAvailabilityCount.put("frr3",true);
         mAllDateRoomsAvailabilityCount.put("frf1",true);
-        mAllDateRoomsAvailabilityCount.put("frf2",true);*//*
+        mAllDateRoomsAvailabilityCount.put("frf2",true);*/
 
 
 
@@ -644,7 +644,7 @@ public class Admin_RoomStatus_Fragment extends Fragment implements Admin_RoomSta
         catch (ParseException e1)
         {
             e1.printStackTrace();
-        }*/
+        }
 
 
 
