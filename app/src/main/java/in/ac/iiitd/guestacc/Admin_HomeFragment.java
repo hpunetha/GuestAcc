@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -85,8 +86,13 @@ public class Admin_HomeFragment extends Fragment {
         adminHomeCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent adminPendingApprovalIntent = new Intent(getActivity(), Admin_Pending_Approval.class);
-                startActivity(adminPendingApprovalIntent);
+                if (mTextViewPendingApproval.getText().toString().split(" ")[0].equals("0")){
+                    Toast.makeText(getActivity(),"No new faculty requests",Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Intent adminPendingApprovalIntent = new Intent(getActivity(), Admin_Pending_Approval.class);
+                    startActivity(adminPendingApprovalIntent);
+                }
             }
         });
 
@@ -95,18 +101,29 @@ public class Admin_HomeFragment extends Fragment {
         adminHomeCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent adminValidatePaymentIntent = new Intent(getActivity(), Admin_ValidatePayment.class);
-                startActivity(adminValidatePaymentIntent);
+                if (mTextViewVerifyPayment.getText().toString().split(" ")[0].equals("0")){
+                    Toast.makeText(getActivity(),"No new requests",Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Intent adminValidatePaymentIntent = new Intent(getActivity(), Admin_ValidatePayment.class);
+                    startActivity(adminValidatePaymentIntent);
+                }
             }
         });
 
         //Faculty Registration Requests
+        //TODO:Check for null value
         adminHomeCardView = (CardView) adminHomeView.findViewById(R.id.adminHomeCardView4);
         adminHomeCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (mTextViewFacultyRequest.getText().toString().split(" ")[0].equals("0")){
+                    Toast.makeText(getActivity(),"No new requests",Toast.LENGTH_SHORT).show();
+                }
+                else{
                 Intent intent = new Intent(getActivity(), Admin_FacultyRegistration.class);
                 startActivity(intent);
+                }
             }
         });
         return adminHomeView;

@@ -40,12 +40,14 @@ public class Admin_StatusForToday_MainScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_statusfortoday_activity_main);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //https://stackoverflow.com/questions/8654990/how-can-i-get-current-date-in-android
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference(MainActivity.ROOM_DETAILS);
         mRoomNameNotAvailable.clear();
+
+        //ArrayList<String> mRoomName = new ArrayList<>();
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference(MainActivity.ROOM_DETAILS);
         mRoomName.clear();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override

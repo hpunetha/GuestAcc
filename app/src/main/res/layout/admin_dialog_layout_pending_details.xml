@@ -18,34 +18,39 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <RadioButton
-                android:id="@+id/one_room"
-                android:layout_width="wrap_content"
+            <RadioGroup
+                android:id="@+id/radioGroupRoomNumbers"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="19dp"
-                android:layout_marginTop="17dp"
-                android:checked="true"
-                android:text="One Room" />
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+                <RadioButton
+                    android:id="@+id/one_room"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
-            <RadioButton
-                android:id="@+id/two_room"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignTop="@+id/one_room"
-                android:layout_marginEnd="55dp"
-                android:text="Two Room" />
+                    android:checked="true"
+                    android:text="One Room" />
+
+                <RadioButton
+                    android:id="@+id/two_room"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_alignTop="@+id/one_room"
+
+                    android:text="Two Room" />
+
+            </RadioGroup>
 
             <TextView
                 android:id="@+id/guest1_dialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/one_room"
-                android:layout_below="@+id/one_room"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="16dp"
+                android:layout_alignStart="@+id/radioGroupRoomNumbers"
+                android:layout_below="@+id/radioGroupRoomNumbers"
                 android:text="Guest 1"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
@@ -64,28 +69,27 @@
                 android:textStyle="bold" />
 
             <Spinner
-                android:id="@+id/spinner2"
+                android:id="@+id/spinner1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/guest1_dialog"
-                android:layout_marginStart="58dp"
-                android:layout_toEndOf="@+id/one_room" />
+                android:layout_toEndOf="@+id/guest1_dialog"
+                android:layout_marginStart="100sp"/>
 
             <Spinner
-                android:id="@+id/spinner3"
+                android:id="@+id/spinner2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/spinner2"
-                android:layout_alignTop="@+id/guest2_dialog" />
+                android:layout_alignStart="@+id/spinner1"
+                android:layout_alignTop="@+id/guest2_dialog"
+                android:layout_marginStart="100sp"/>
 
             <Button
                 android:id="@+id/disagree"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/spinner3"
-                android:layout_marginTop="14dp"
-                android:layout_toStartOf="@+id/spinner3"
-                android:layout_marginBottom="10dp"
+                android:layout_below="@+id/spinner2"
+                android:layout_toEndOf="@+id/guest2_dialog"
                 android:backgroundTint="@color/cardview_shadow_end_color"
                 android:text="DISAGREE" />
 

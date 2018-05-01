@@ -13,7 +13,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,7 +39,7 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
     DatabaseReference mFireBaseReference, mFireBaseReferencePendingApproval;
     ProgressDialog progressDialog;
     List<Admin_Data_PendingApproval> mAdminPendingApprovalData = new ArrayList<>(); //Store pending approval data
-    HashMap<String,Booking> mAdminUpdateData = new HashMap<>();
+    HashMap<String, Booking> mAdminUpdateData = new HashMap<>();
 
     Boolean flag = false;
 
@@ -47,7 +50,7 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
     String fromDate;
     String requestId;
     int count = 0;
-    int countcount=0;
+    int countcount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,9 +70,8 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
 //****************************************************************************************************
 
 
-
         // TODO Change reference here
-        mFireBaseReference = FirebaseDatabase.getInstance().getReference("pending_requests/pending_approval");
+        mFireBaseReference = FirebaseDatabase.getInstance().getReference("/");
         //mFireBaseReference = FirebaseDatabase.getInstance().getReference("/");
         final ArrayList<Integer> mGuestRooms = new ArrayList<>(); //Store rooms
 
@@ -88,20 +90,16 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
                 //mTextViewPendingApproval.setText(dataSnapshot.getChildrenCount()+" Requests");
                 //To clear Pending data
                 //mAdminPendingApprovalData.clear();
-                Log.i("DBSnapshot Value",dataSnapshot.child("pending_requests").getValue().toString());
+                Log.i("DBSnapshot Value", dataSnapshot.child("pending_requests").getValue().toString());
 
                 for (DataSnapshot val : dataSnapshot.getChildren()) {
 
-                    if (val.getKey().equalsIgnoreCase("pending_requests"))
-                    {
-                        for (DataSnapshot pend_approvalsnapshot : val.getChildren())
-                        {
-                            if (pend_approvalsnapshot.getKey().equalsIgnoreCase("pending_approval"))
-                            {
-                                for (DataSnapshot allreq : pend_approvalsnapshot.getChildren())
-                                {
+                    if (val.getKey().equalsIgnoreCase("pending_requests")) {
+                        for (DataSnapshot pend_approvalsnapshot : val.getChildren()) {
+                            if (pend_approvalsnapshot.getKey().equalsIgnoreCase("pending_approval")) {
+                                for (DataSnapshot allreq : pend_approvalsnapshot.getChildren()) {
                                     count++;
-                                    Log.i("count","pending approval"+ count);
+                                    Log.i("count", "pending approval" + count);
 
                                     Log.i("FinalClassDataAdapter", "Children Count " + String.valueOf(dataSnapshot.getChildrenCount()));
                                     Log.i("request", allreq.getKey());
@@ -123,155 +121,148 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
                     }
                 }
 
-                Log.i("Hashmap",mBookingIds.toString());
+                Log.i("Hashmap", mBookingIds.toString());
 
                 Booking mAdminBooking;
-                for (DataSnapshot val2:dataSnapshot.getChildren())
-                {
-                    if (val2.getKey().equalsIgnoreCase("bookings_final"))
-                    {
-                        Log.i("enter1","Bookings Final Entered");
-                        for(DataSnapshot snapshot1 : val2.getChildren())
-                        {
-                            Log.i("enter2",snapshot1.getChildren().toString());
-                                for (DataSnapshot snp2 :snapshot1.getChildren())
-                                {
+                for (DataSnapshot val2 : dataSnapshot.getChildren()) {
+                    if (val2.getKey().equalsIgnoreCase("bookings_final")) {
+                        Log.i("enter1", "Bookings Final Entered");
+                        for (DataSnapshot snapshot1 : val2.getChildren()) {
+                            Log.i("enter2", snapshot1.getChildren().toString());
+                            for (DataSnapshot snp2 : snapshot1.getChildren()) {
 //                                    for (Map.Entry<String, String> entry : mBookingIds.entrySet())
 //                                    {
-                                        //Log.i("dates", entry.getKey() + " " + entry.getValue());
-                                        Log.i("enter2",snp2.getKey() +"  ====? " +mBookingIds.toString());
-                                         if (mBookingIds.keySet().contains(snp2.getKey()))
-                                        {
-                                            Log.i("True Check",snp2.getKey() +"  ====? " +mBookingIds.toString());
-                                            //mAdminPendingApprovalDataRoomData.clear();
-                                            mBookingIds.get(snp2.getKey());
+                                //Log.i("dates", entry.getKey() + " " + entry.getValue());
+                                Log.i("enter2", snp2.getKey() + "  ====? " + mBookingIds.toString());
+                                if (mBookingIds.keySet().contains(snp2.getKey())) {
+                                    Log.i("True Check", snp2.getKey() + "  ====? " + mBookingIds.toString());
+                                    //mAdminPendingApprovalDataRoomData.clear();
+                                    mBookingIds.get(snp2.getKey());
 
 
+                                    countcount++;
+                                    Log.i("count", "booking's final" + countcount);
 
-                                            countcount++;
-                                            Log.i("count","booking's final"+ countcount);
+                                    Character gender;
+                                    int intMales = 0;
+                                    int intFemales = 0;
+                                    String reqID; //Done
+                                    String date; //Done
+                                    String type; //Done
+                                    String fundedBy = null; //Done
+                                    String purpose_of_visit; //Done
+                                    String males;  //Done
+                                    String females;  //Done
+                                    String projectName; //Done
+                                    String TotalPrice;
+                                    String guest1 = null;
+                                    String guest2 = null;
+                                    String preference = null;
+                                    boolean flagRoomtest = true;
+                                    //Entry found
+                                    //Log.i("reqId",dataSnapshot.child(entry.getValue()).child(entry.getKey()).getKey());
 
-                                            Character gender;
-                                            int intMales = 0;
-                                            int intFemales = 0;
-                                            String reqID; //Done
-                                            String date; //Done
-                                            String type; //Done
-                                            String fundedBy = null; //Done
-                                            String purpose_of_visit; //Done
-                                            String males;  //Done
-                                            String females;  //Done
-                                            String projectName; //Done
-                                            String TotalPrice;
-                                            String guest1 = null;
-                                            String guest2 = null;
-                                            String preference = null;
-                                            boolean flagRoomtest = true;
-                                            //Entry found
-                                            //Log.i("reqId",dataSnapshot.child(entry.getValue()).child(entry.getKey()).getKey());
-
-                                            mAdminBooking = snp2.getValue(Booking.class);
-                                            if(mAdminBooking!=null) {
-                                                Log.i("datestemp", mAdminBooking.timestamp + "  " + mAdminBooking.total_booking_price); //Working
-
+                                    mAdminBooking = snp2.getValue(Booking.class);
+                                    if (mAdminBooking != null) {
+                                        Log.i("datestemp", mAdminBooking.timestamp + "  " + mAdminBooking.total_booking_price); //Working
 
 
-                                                //Assigning AdminDataPendingApproval********************************************
-                                                reqID = (snp2.getKey());
-                                                date = mAdminBooking.getFrom_date() + " " + mAdminBooking.getTo_date();
-                                                type = mAdminBooking.getRequest_type_personal_or_official();
-                                                TotalPrice = mAdminBooking.getTotal_booking_price();
+                                        //Assigning AdminDataPendingApproval********************************************
+                                        reqID = (snp2.getKey());
+                                        date = mAdminBooking.getFrom_date() + " " + mAdminBooking.getTo_date();
+                                        type = mAdminBooking.getRequest_type_personal_or_official();
+                                        TotalPrice = mAdminBooking.getTotal_booking_price();
 
-                                                if (type.equals("Personal"))
-                                                    fundedBy = type;
-                                                else {
-                                                    if (mAdminBooking.getFundedby_project_pname() != null)
-                                                        fundedBy = mAdminBooking.getFundedby_project_pname();
-                                                    else if (mAdminBooking.getFundedby_institute_details() != null)
-                                                        fundedBy = mAdminBooking.getFundedby_institute_details();
+                                        if (type.equals("Personal"))
+                                            fundedBy = type;
+                                        else {
+                                            if (mAdminBooking.getFundedby_project_pname() != null)
+                                                fundedBy = mAdminBooking.getFundedby_project_pname();
+                                            else if (mAdminBooking.getFundedby_institute_details() != null)
+                                                fundedBy = mAdminBooking.getFundedby_institute_details();
+                                        }
+
+                                        purpose_of_visit = mAdminBooking.getPurpose_of_visit();
+                                        projectName = mAdminBooking.getFundedby_project_pname();
+                                        // mAdminPendingApprovalDataRoomData.clear();
+                                        mGuestRooms.clear();
+
+                                        List<Admin_Data_PendingApproval_RoomData> mAdminPendingApprovalDataRoomData = new ArrayList<>(); // Store pending approval roomdata
+
+                                        //Boolean flagRoomtest = true;
+                                        if (mAdminBooking.getGuests().size() > 0) {
+
+                                            for (int i = 0; i < mAdminBooking.guests.size(); i++) {
+                                                Admin_Data_PendingApproval_RoomData check;
+                                                if (mGuestRooms.contains(Integer.parseInt(mAdminBooking.guests.get(i).associated_room_id))) {
+
+                                                    flagRoomtest = false;
+                                                    gender = mAdminBooking.getGuests().get(i).getGender().charAt(0);
+                                                    if (gender == 'F') intFemales += 1;
+                                                    else intMales += 1;
+                                                    guest2 = mAdminBooking.getGuests().get(i).getName() + "(" + gender + ")";
+                                                    Log.i("Tag1", guest1 + " " + guest2 + " " + preference);
+                                                    check = new Admin_Data_PendingApproval_RoomData(guest1, guest2, preference);
+                                                    mAdminPendingApprovalDataRoomData.add(check);
+                                                    guest2 = null;
+                                                    //Log.i("insideTag","i = "+i+" inside same room");
+                                                } else {
+                                                    if (i > 0 && i < mAdminBooking.getGuests().size() - 1 && flagRoomtest == true) {
+                                                        //Log.i("insideTag","i = "+i+" inside middle loop");
+                                                        Log.i("Tag2", guest1 + " null " + preference);
+                                                        check = new Admin_Data_PendingApproval_RoomData(guest1, null, preference);
+                                                        mAdminPendingApprovalDataRoomData.add(check);
+                                                    }
+                                                    //Log.i("insideTag", "i = " + i + " inside else loop");
+                                                    mGuestRooms.add(Integer.parseInt(mAdminBooking.guests.get(i).associated_room_id));
+
+                                                    gender = mAdminBooking.getGuests().get(i).getGender().charAt(0);
+                                                    if (gender == 'F') intFemales += 1;
+                                                    else intMales += 1;
+                                                    guest1 = mAdminBooking.getGuests().get(i).getName() + "(" + gender + ")";
+                                                    preference = mAdminBooking.getGuests().get(i).getPrefered_location();
+                                                    flagRoomtest = true;
+                                                    if (i == mAdminBooking.getGuests().size() - 1) {
+                                                        Log.i("Tag3", guest1 + " null " + preference);
+                                                        check = new Admin_Data_PendingApproval_RoomData(guest1, null, preference);
+                                                        mAdminPendingApprovalDataRoomData.add(check);
+                                                    }
                                                 }
+                                            }//End of for loop iterating on guest size
+                                        }//End of if loop checking guest size > 0
 
-                                                purpose_of_visit = mAdminBooking.getPurpose_of_visit();
-                                                projectName = mAdminBooking.getFundedby_project_pname();
-                                                // mAdminPendingApprovalDataRoomData.clear();
-                                                mGuestRooms.clear();
+                                        males = String.valueOf(intMales);
+                                        females = String.valueOf(intFemales);
+                                        Log.i("Tag4", males + " " + females);
+                                        Log.i("Tag5 Final Class Data", reqID);
 
-                                                List<Admin_Data_PendingApproval_RoomData> mAdminPendingApprovalDataRoomData = new ArrayList<>(); // Store pending approval roomdata
+                                        for (int i = 0; i < mAdminPendingApprovalDataRoomData.size(); i++) {
+                                            Log.i("Tag6 RoomData", "requestr id :" + reqID + "\n" + mAdminPendingApprovalDataRoomData.get(i).guest1 + "\n"
+                                                    + mAdminPendingApprovalDataRoomData.get(i).guest2 + "\n" +
+                                                    mAdminPendingApprovalDataRoomData.get(i).preference);
+                                        }
 
-                                                //Boolean flagRoomtest = true;
-                                                if (mAdminBooking.getGuests().size() > 0) {
+                                        Log.i("Tag 7 FinalClassData", reqID + "\n" + date + "\n" + type + "\n" + fundedBy + "\n" + purpose_of_visit + "\n" + males + "\n" + females);
+                                        Log.i("Tag 8 FinalClassData", "Pending approval" + requestId + " " + mAdminPendingApprovalDataRoomData.toString());
+                                        mAdminPendingApprovalData.add(new Admin_Data_PendingApproval(reqID, date, type, fundedBy, purpose_of_visit, males, females, projectName, TotalPrice, mAdminPendingApprovalDataRoomData));
 
-                                                    for (int i = 0; i < mAdminBooking.guests.size(); i++) {
-                                                        Admin_Data_PendingApproval_RoomData check;
-                                                        if (mGuestRooms.contains(Integer.parseInt(mAdminBooking.guests.get(i).associated_room_id))) {
-
-                                                            flagRoomtest = false;
-                                                            gender = mAdminBooking.getGuests().get(i).getGender().charAt(0);
-                                                            if (gender == 'F') intFemales += 1;
-                                                            else intMales += 1;
-                                                            guest2 = mAdminBooking.getGuests().get(i).getName() + "(" + gender + ")";
-                                                            Log.i("Tag1", guest1 + " " + guest2 + " " + preference);
-                                                            check = new Admin_Data_PendingApproval_RoomData(guest1, guest2, preference);
-                                                            mAdminPendingApprovalDataRoomData.add(check);
-                                                            guest2 = null;
-                                                            //Log.i("insideTag","i = "+i+" inside same room");
-                                                        } else {
-                                                            if (i > 0 && i < mAdminBooking.getGuests().size() - 1 && flagRoomtest == true) {
-                                                                //Log.i("insideTag","i = "+i+" inside middle loop");
-                                                                Log.i("Tag2", guest1 + " null " + preference);
-                                                                check = new Admin_Data_PendingApproval_RoomData(guest1, null, preference);
-                                                                mAdminPendingApprovalDataRoomData.add(check);
-                                                            }
-                                                            //Log.i("insideTag", "i = " + i + " inside else loop");
-                                                            mGuestRooms.add(Integer.parseInt(mAdminBooking.guests.get(i).associated_room_id));
-
-                                                            gender = mAdminBooking.getGuests().get(i).getGender().charAt(0);
-                                                            if (gender == 'F') intFemales += 1;
-                                                            else intMales += 1;
-                                                            guest1 = mAdminBooking.getGuests().get(i).getName() + "(" + gender + ")";
-                                                            preference = mAdminBooking.getGuests().get(i).getPrefered_location();
-                                                            flagRoomtest = true;
-                                                            if (i == mAdminBooking.getGuests().size() - 1) {
-                                                                Log.i("Tag3", guest1 + " null " + preference);
-                                                                check = new Admin_Data_PendingApproval_RoomData(guest1, null, preference);
-                                                                mAdminPendingApprovalDataRoomData.add(check);
-                                                            }
-                                                        }
-                                                    }//End of for loop iterating on guest size
-                                                }//End of if loop checking guest size > 0
-
-                                                males = String.valueOf(intMales);
-                                                females = String.valueOf(intFemales);
-                                                Log.i("Tag4", males + " " + females);
-                                                Log.i("Tag5 Final Class Data", reqID);
-
-                                                for (int i = 0; i < mAdminPendingApprovalDataRoomData.size(); i++) {
-                                                    Log.i("Tag6 RoomData", "requestr id :" + reqID + "\n" + mAdminPendingApprovalDataRoomData.get(i).guest1 + "\n"
-                                                            + mAdminPendingApprovalDataRoomData.get(i).guest2 + "\n" +
-                                                            mAdminPendingApprovalDataRoomData.get(i).preference);
-                                                }
-
-                                                Log.i("Tag 7 FinalClassData", reqID + "\n" + date + "\n" + type + "\n" + fundedBy + "\n" + purpose_of_visit + "\n" + males + "\n" + females);
-                                                Log.i("Tag 8 FinalClassData", "Pending approval" + requestId + " " + mAdminPendingApprovalDataRoomData.toString());
-                                                mAdminPendingApprovalData.add(new Admin_Data_PendingApproval(reqID, date, type, fundedBy, purpose_of_visit, males, females, projectName,TotalPrice, mAdminPendingApprovalDataRoomData));
-
-                                            }
+                                    }
 
                             /*Log.i("faculty", "Institute: " + mAdminBooking.getFundedby_institute_details() + "\n" +
                                     "Investigator: " + mAdminBooking.getFundedby_project_pinvestigator() + "\n" +
                                     "Project Name: " + mAdminBooking.getFundedby_project_pname());*/
 
 
-                                        }//End of pending approval id in dataSnapshot
+                                }//End of pending approval id in dataSnapshot
 //                                    } //End of for loop iterating in mBookingsId
 
-                                }
+                            }
                         }
 
                     }
                 }
 
-                Log.i("ListsPendingAppData",mAdminPendingApprovalData.toString());
+                Log.i("ListsPendingAppData", mAdminPendingApprovalData.toString());
                 if (adapter != null) {
                     Log.i("FinalClassDataAdapter", "SizeMain" + mAdminPendingApprovalData.size());
                     for (int i = 0; i < mAdminPendingApprovalData.size(); i++) {
@@ -298,18 +289,9 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
                 }
 
 
-
-
-
             }
 
             private void checkPending(DataSnapshot snapshot1, HashMap<String, String> mBookingIds, List<Admin_Data_PendingApproval> mAdminPendingApprovalData, List<Admin_Data_PendingApproval_RoomData> mAdminPendingApprovalDataRoomData) {
-
-
-
-
-
-
 
 
             }
@@ -322,7 +304,6 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
 
 
 //****************************************************************************************************************************
-
 
 
 //******************************Bookings_final reference*******************************************************************
@@ -341,7 +322,6 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
 
 
                 /*Log.i("request", "inside bookings final" + dataSnapshot.getKey());*/
-
 
 
             }
@@ -431,7 +411,6 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
 
                     //mAdminPendingApprovalDataRoomData.clear();
                 }*/
-
 
 
 //******************************* Database(Kd) **************************************************
@@ -637,7 +616,7 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
     //**************************************************************************************************
 
     @Override
-    public void onItemClick(View view, int position, List<Admin_Data_PendingApproval_RoomData> adminDataPendingApprovalRoomData) {
+    public void onItemClick(View view, final int position, List<Admin_Data_PendingApproval_RoomData> adminDataPendingApprovalRoomData) {
 
 
         View row = recyclerView.getLayoutManager().findViewByPosition(position);
@@ -645,11 +624,11 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
         LinearLayout midLinearLayout = (LinearLayout) row.findViewById(R.id.midlayout);
 
         // if the view is already clicked, then hide it and remove all the views attached to it
-      //  if (midLinearLayout.getVisibility() == View.VISIBLE) {
-            midLinearLayout.setVisibility(View.GONE);
-            midLinearLayout.removeAllViews();
-       //     return;
-      //  }
+          if (midLinearLayout.getVisibility() == View.VISIBLE) {
+        midLinearLayout.setVisibility(View.GONE);
+        midLinearLayout.removeAllViews();
+             return;
+          }
 
 
         final View[] cardview = new View[adminDataPendingApprovalRoomData.size()];
@@ -670,6 +649,8 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
 
             /*********************     listen to the allocate button  *********************/
 
+
+
             final Integer index = i;
 
             allocateButton.setOnClickListener(new View.OnClickListener() {
@@ -679,7 +660,7 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
                     Admin_DialogSelect_PendingDetails dialogSelect = new Admin_DialogSelect_PendingDetails();//new Admin_DialogSelect_PendingDetails(cardview[index]) ;
 
                     // send reference to dialogselect
-                    dialogSelect.setCardview(cardview[index], dialogSelect);
+                    dialogSelect.setCardview(cardview[index], dialogSelect,position);
                     // set clicklistener using context of mainactivity
                     dialogSelect.setClickListener(context);
                     // get context from calling activity
@@ -693,7 +674,7 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
             midLinearLayout.addView(cardview[i]);
         }
 
-       // midLinearLayout.setVisibility(View.VISIBLE);
+         midLinearLayout.setVisibility(View.VISIBLE);
         //midLinearLayout.animate().translationY(midLinearLayout.getHeight());
         //rel.setVisibility(View.VISIBLE);
         // notifyDatasetChanged() ;
@@ -701,27 +682,26 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
     }
 
     @Override
-    public void onButtonClick(View v, int position)
-    {
+    public void onAcceptButtonClick(View v, int position) {
 
-        DatabaseReference pending = FirebaseDatabase.getInstance().getReference(MainActivity.PENDING_REQUESTS+"/"+MainActivity.PENDING_APPROVAL);
+        DatabaseReference pending = FirebaseDatabase.getInstance().getReference(MainActivity.PENDING_REQUESTS + "/" + MainActivity.PENDING_APPROVAL);
         // Log.i("Pending_id",mAdminPendingApprovalData.get(position).getReqID());
 
         //Key removed from pending_approval
-        pending.child(mAdminPendingApprovalData.get(position).getReqID()).getRef().removeValue() ;
+        pending.child(mAdminPendingApprovalData.get(position).getReqID()).getRef().removeValue();
         //Add females and males
         int no_of_persons = 0;
-        no_of_persons = Integer.parseInt(mAdminPendingApprovalData.get(position).getMales())+Integer.parseInt(mAdminPendingApprovalData.get(position).getFemales());
+        no_of_persons = Integer.parseInt(mAdminPendingApprovalData.get(position).getMales()) + Integer.parseInt(mAdminPendingApprovalData.get(position).getFemales());
 
-        Log.i("Pending_id",String.valueOf(no_of_persons));
-        Log.i("Pending_id",mAdminPendingApprovalData.get(position).getTotalPrice());
-        Log.i("Pending_id",String.valueOf(mAdminPendingApprovalData.get(position).getRoomsData().size()));
-        Log.i("Pending_id",mAdminPendingApprovalData.get(position).getDate().split(" ")[0]);
+        Log.i("Pending_id", String.valueOf(no_of_persons));
+        Log.i("Pending_id", mAdminPendingApprovalData.get(position).getTotalPrice());
+        Log.i("Pending_id", String.valueOf(mAdminPendingApprovalData.get(position).getRoomsData().size()));
+        Log.i("Pending_id", mAdminPendingApprovalData.get(position).getDate().split(" ")[0]);
 
-        UpdateVerifyPayment updatePayment = new UpdateVerifyPayment(String.valueOf(no_of_persons),String.valueOf(mAdminPendingApprovalData.get(position).getRoomsData().size()),
-                mAdminPendingApprovalData.get(position).getDate().split(" ")[0],mAdminPendingApprovalData.get(position).getTotalPrice());
+        UpdateVerifyPayment updatePayment = new UpdateVerifyPayment(String.valueOf(no_of_persons), String.valueOf(mAdminPendingApprovalData.get(position).getRoomsData().size()),
+                mAdminPendingApprovalData.get(position).getDate().split(" ")[0], mAdminPendingApprovalData.get(position).getTotalPrice());
 
-        pending = FirebaseDatabase.getInstance().getReference(MainActivity.PENDING_REQUESTS+"/"+MainActivity.VERIFY_PAYMENT);
+        pending = FirebaseDatabase.getInstance().getReference(MainActivity.PENDING_REQUESTS + "/" + MainActivity.VERIFY_PAYMENT);
 
         pending.child(mAdminPendingApprovalData.get(position).getReqID()).setValue(updatePayment);
         //  TODO Hide pane
@@ -730,36 +710,28 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
         String userEmail = null;
         try {
             mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
-            if (mFirebaseUser !=null) {
-
+            if (mFirebaseUser != null) {
                 userEmail = mFirebaseUser.getEmail();
-
             }
-
-        }
-        catch (NullPointerException e)
-        {
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
         //Log.i("Email",);
-        String email = userEmail.replace("@iiitd.ac.in","");
-        Log.i("Data",email);
-        pending = FirebaseDatabase.getInstance().getReference(MainActivity.USER+"/"+email);
+        String email = userEmail.replace("@iiitd.ac.in", "");
+        Log.i("Data", email);
+        pending = FirebaseDatabase.getInstance().getReference(MainActivity.USER + "/" + email);
         try {
             pending.child(mAdminPendingApprovalData.get(position).getReqID()).child("status").setValue("pending_payment");
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         String date = mAdminPendingApprovalData.get(position).getDate().split(" ")[0];
-        pending = FirebaseDatabase.getInstance().getReference(MainActivity.BOOKING_FINAL+"/"+date+"/"+mAdminPendingApprovalData.get(position).getReqID());
+        pending = FirebaseDatabase.getInstance().getReference(MainActivity.BOOKING_FINAL + "/" + date + "/" + mAdminPendingApprovalData.get(position).getReqID());
 
-        try{
+        try {
             pending.child("booking_status").setValue("pending_payment");
-        }
-        catch (Exception e){
+        } catch (Exception e) {
         }
         //if (pending.child(mAdminPendingApprovalData.get(position).getReqID()));
     }
@@ -775,8 +747,81 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
     }
 
 
-    public static class UpdateVerifyPayment implements Serializable
+    @Override
+    public void onRejectButtonClick(View v, int position) {
+
+        DatabaseReference pending = FirebaseDatabase.getInstance().getReference(MainActivity.PENDING_REQUESTS + "/" + MainActivity.PENDING_APPROVAL);
+        try {
+            pending.child(mAdminPendingApprovalData.get(position).getReqID()).getRef().removeValue();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        //No verify payment
+        //  TODO Hide pane
+
+        FirebaseUser mFirebaseUser;
+        String userEmail = null;
+        try {
+            mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+            if (mFirebaseUser != null) {
+                userEmail = mFirebaseUser.getEmail();
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        //Log.i("Email",);
+        String email = userEmail.replace("@iiitd.ac.in", "");
+        Log.i("Data", email);
+        pending = FirebaseDatabase.getInstance().getReference(MainActivity.USER + "/" + email);
+        try {
+            pending.child(mAdminPendingApprovalData.get(position).getReqID()).child("status").setValue("rejected");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        String date = mAdminPendingApprovalData.get(position).getDate().split(" ")[0];
+        pending = FirebaseDatabase.getInstance().getReference(MainActivity.BOOKING_FINAL + "/" + date + "/" + mAdminPendingApprovalData.get(position).getReqID());
+
+        try {
+            pending.child("booking_status").setValue("rejected");
+        } catch (Exception e) {
+        }
+        //if (pending.child(mAdminPendingApprovalData.get(position).getReqID()));
+    }
+
+    /***********       DIALOG BOX OPERATIONS   ************************/
+
+    @Override
+
+    public void onRadioGroupClicked(RadioGroup r , RadioButton one , RadioButton two ,Spinner spinnerOne , Spinner spinnerTwo , int position)
     {
+        String from_date;
+        String to_date;
+        if(one.isChecked()) {
+            spinnerTwo.setVisibility(View.GONE);
+            from_date = mAdminPendingApprovalData.get(position).getDate().split(" ")[0];
+            to_date = mAdminPendingApprovalData.get(position).getDate().split(" ")[1];
+
+ //***********************************   Range Query *****************************************************
+
+
+
+        }
+        else
+        {
+
+        }
+    }
+
+
+
+
+
+
+
+
+
+    public static class UpdateVerifyPayment implements Serializable {
         String no_of_persons;
         String no_of_rooms;
         String raised_on;
@@ -789,6 +834,5 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
             this.total_price = total_price;
         }
     }
-
 
 }
