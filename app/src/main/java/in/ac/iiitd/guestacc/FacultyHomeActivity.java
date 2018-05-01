@@ -104,12 +104,12 @@ public class FacultyHomeActivity extends AppCompatActivity
 
         if (mUserType==TypeLoginActivity.STUDENT)
         {
-            getSupportActionBar().setTitle("Student Home");
+            getSupportActionBar().setTitle("Home");
 
         }
         else
         {
-            getSupportActionBar().setTitle("Faculty Home");
+            getSupportActionBar().setTitle("Home");
         }
 
         try
@@ -585,7 +585,6 @@ public class FacultyHomeActivity extends AppCompatActivity
                 final DatabaseReference myRef;
                // String basetable ="bookings_final";
                 String basetable ="bookings_final";
-
 
                 //
                 String strDBAccess = basetable;

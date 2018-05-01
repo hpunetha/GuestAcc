@@ -16,12 +16,15 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +36,7 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
     DatabaseReference mFireBaseReference, mFireBaseReferencePendingApproval;
     ProgressDialog progressDialog;
     List<Admin_Data_PendingApproval> mAdminPendingApprovalData = new ArrayList<>(); //Store pending approval data
+    HashMap<String,Booking> mAdminUpdateData = new HashMap<>();
 
     Boolean flag = false;
 
@@ -157,6 +161,7 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
                                             String males;  //Done
                                             String females;  //Done
                                             String projectName; //Done
+                                            String TotalPrice;
                                             String guest1 = null;
                                             String guest2 = null;
                                             String preference = null;
@@ -172,8 +177,9 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
 
                                                 //Assigning AdminDataPendingApproval********************************************
                                                 reqID = (snp2.getKey());
-                                                date = mAdminBooking.getFrom_date() + "-" + mAdminBooking.getTo_date();
+                                                date = mAdminBooking.getFrom_date() + " " + mAdminBooking.getTo_date();
                                                 type = mAdminBooking.getRequest_type_personal_or_official();
+                                                TotalPrice = mAdminBooking.getTotal_booking_price();
 
                                                 if (type.equals("Personal"))
                                                     fundedBy = type;
@@ -246,7 +252,7 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
 
                                                 Log.i("Tag 7 FinalClassData", reqID + "\n" + date + "\n" + type + "\n" + fundedBy + "\n" + purpose_of_visit + "\n" + males + "\n" + females);
                                                 Log.i("Tag 8 FinalClassData", "Pending approval" + requestId + " " + mAdminPendingApprovalDataRoomData.toString());
-                                                mAdminPendingApprovalData.add(new Admin_Data_PendingApproval(reqID, date, type, fundedBy, purpose_of_visit, males, females, projectName, mAdminPendingApprovalDataRoomData));
+                                                mAdminPendingApprovalData.add(new Admin_Data_PendingApproval(reqID, date, type, fundedBy, purpose_of_visit, males, females, projectName,TotalPrice, mAdminPendingApprovalDataRoomData));
 
                                             }
 
@@ -638,11 +644,11 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
         LinearLayout midLinearLayout = (LinearLayout) row.findViewById(R.id.midlayout);
 
         // if the view is already clicked, then hide it and remove all the views attached to it
-        if (midLinearLayout.getVisibility() == View.VISIBLE) {
+      //  if (midLinearLayout.getVisibility() == View.VISIBLE) {
             midLinearLayout.setVisibility(View.GONE);
             midLinearLayout.removeAllViews();
-            return;
-        }
+       //     return;
+      //  }
 
 
         final View[] cardview = new View[adminDataPendingApprovalRoomData.size()];
@@ -686,15 +692,75 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
             midLinearLayout.addView(cardview[i]);
         }
 
-        midLinearLayout.setVisibility(View.VISIBLE);
+       // midLinearLayout.setVisibility(View.VISIBLE);
         //midLinearLayout.animate().translationY(midLinearLayout.getHeight());
         //rel.setVisibility(View.VISIBLE);
         // notifyDatasetChanged() ;
+
     }
 
     @Override
-    public void onButtonClick(View v, int position) {
+    public void onButtonClick(View v, int position)
+    {
 
+        DatabaseReference pending = FirebaseDatabase.getInstance().getReference("pending_requests/pending_approval");
+        // Log.i("Pending_id",mAdminPendingApprovalData.get(position).getReqID());
+
+        //Key removed from pending_approval
+        pending.child(mAdminPendingApprovalData.get(position).getReqID()).getRef().removeValue() ;
+        //Add females and males
+        int no_of_persons = 0;
+        no_of_persons = Integer.parseInt(mAdminPendingApprovalData.get(position).getMales())+Integer.parseInt(mAdminPendingApprovalData.get(position).getFemales());
+
+        Log.i("Pending_id",String.valueOf(no_of_persons));
+        Log.i("Pending_id",mAdminPendingApprovalData.get(position).getTotalPrice());
+        Log.i("Pending_id",String.valueOf(mAdminPendingApprovalData.get(position).getRoomsData().size()));
+        Log.i("Pending_id",mAdminPendingApprovalData.get(position).getDate().split(" ")[0]);
+
+        UpdateVerifyPayment updatePayment = new UpdateVerifyPayment(String.valueOf(no_of_persons),String.valueOf(mAdminPendingApprovalData.get(position).getRoomsData().size()),
+                mAdminPendingApprovalData.get(position).getDate().split(" ")[0],mAdminPendingApprovalData.get(position).getTotalPrice());
+
+        pending = FirebaseDatabase.getInstance().getReference("pending_requests/verify_payment");
+
+        pending.child(mAdminPendingApprovalData.get(position).getReqID()).setValue(updatePayment);
+        //  TODO Hide pane
+
+        FirebaseUser mFirebaseUser;
+        String userEmail = null;
+        try {
+            mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+            if (mFirebaseUser !=null) {
+
+                userEmail = mFirebaseUser.getEmail();
+
+            }
+
+        }
+        catch (NullPointerException e)
+        {
+            e.printStackTrace();
+        }
+        //Log.i("Email",);
+        String email = userEmail.replace("@iiitd.ac.in","");
+        Log.i("Data",email);
+        pending = FirebaseDatabase.getInstance().getReference("user/"+email);
+        try {
+            pending.child(mAdminPendingApprovalData.get(position).getReqID()).child("status").setValue("pending_payment");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        String date = mAdminPendingApprovalData.get(position).getDate().split(" ")[0];
+        pending = FirebaseDatabase.getInstance().getReference("bookings_final/"+date+"/"+mAdminPendingApprovalData.get(position).getReqID());
+
+        try{
+            pending.child("booking_status").setValue("pending_payment");
+        }
+        catch (Exception e){
+        }
+        //if (pending.child(mAdminPendingApprovalData.get(position).getReqID()));
     }
 
     @Override
@@ -705,6 +771,22 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
 
         // Do when return from dialog
 
+    }
+
+
+    public static class UpdateVerifyPayment implements Serializable
+    {
+        String no_of_persons;
+        String no_of_rooms;
+        String raised_on;
+        String total_price;
+
+        public UpdateVerifyPayment(String no_of_persons, String no_of_rooms, String raised_on, String total_price) {
+            this.no_of_persons = no_of_persons;
+            this.no_of_rooms = no_of_rooms;
+            this.raised_on = raised_on;
+            this.total_price = total_price;
+        }
     }
 
 
