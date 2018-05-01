@@ -1,7 +1,9 @@
 package in.ac.iiitd.guestacc;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -107,15 +109,20 @@ public class Admin_FacultyRegistration_RecyclerAdapter extends RecyclerView.Adap
 
                     Log.e("type.getText==>",type.getText().toString());
                     if(type.getText().toString().equals("faculty")) {
-                        faculty_staff.child("faculty").push().setValue(joinRequest);
+                        faculty_staff.child("faculty").child(email.getText().toString().replace("@iiitd.ac.in","")).setValue(joinRequest);
                     }
                     else if (type.getText().toString().equals("staff")) {
-                        faculty_staff.child("staff").push().setValue(joinRequest);
+                        faculty_staff.child("staff").child(email.getText().toString().replace("@iiitd.ac.in","")).setValue(joinRequest);
                     }
 
                     join_requests.child(email.getText().toString().replace("@iiitd.ac.in","")).getRef().removeValue();
+                    data.remove(getAdapterPosition());
                     Snackbar.make(view, "Join request added sucessfully", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
+                    if(data.size()==0)
+                    {
+                        ((Admin_FacultyRegistration)context).finish();
+                    }
 
                     notifyDataSetChanged();
                     }
@@ -126,6 +133,11 @@ public class Admin_FacultyRegistration_RecyclerAdapter extends RecyclerView.Adap
                 public void onClick(View view) {
                     Log.e("req-------->",email.getText().toString().replace("@iiitd.ac.in",""));
                     join_requests.child(email.getText().toString().replace("@iiitd.ac.in","")).getRef().removeValue();
+                    data.remove(getAdapterPosition());
+                    if(data.size()==0)
+                    {
+                        ((Admin_FacultyRegistration)context).finish();
+                    }
                     Snackbar.make(view, "Join request deleted sucessfully", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
 
