@@ -179,7 +179,7 @@ public class ViewAvailability extends AppCompatActivity {
 
     private void getAllAvailableRooms()
     {
-        DatabaseReference myRef = mDatabase.getReference("room_details");
+        DatabaseReference myRef = mDatabase.getReference(MainActivity.ROOM_DETAILS);
 
         myRef.addValueEventListener(new ValueEventListener() {
             @Override

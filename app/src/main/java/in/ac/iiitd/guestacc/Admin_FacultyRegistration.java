@@ -45,9 +45,9 @@ public class Admin_FacultyRegistration extends AppCompatActivity implements Admi
         /*------------------------   Database Access ---------------------------------*/
 
 
-        mDatabase = FirebaseDatabase.getInstance().getReference("join_requests");
+        mDatabase = FirebaseDatabase.getInstance().getReference(MainActivity.JOIN_REQUESTS);
 
-        existingFaculties = FirebaseDatabase.getInstance().getReference("faculty_staff/faculty");
+        existingFaculties = FirebaseDatabase.getInstance().getReference(MainActivity.FACULTY_STAFF+"/"+"faculty");
 
          //mDatabase
         data = new ArrayList<>() ;
@@ -163,11 +163,11 @@ public class Admin_FacultyRegistration extends AppCompatActivity implements Admi
             // add to
             //Log.e("DATA4",mDatabase.child());
 
-            DatabaseReference add = FirebaseDatabase.getInstance().getReference("faculty_staff/faculty") ;
+            DatabaseReference add = FirebaseDatabase.getInstance().getReference(MainActivity.FACULTY_STAFF+"/"+"faculty") ;
 
             //add.
 
-           DatabaseReference delete = FirebaseDatabase.getInstance().getReference("join_requests");
+           DatabaseReference delete = FirebaseDatabase.getInstance().getReference(MainActivity.JOIN_REQUESTS);
            delete.child(key).removeValue() ;
 
            // mDatabase.child().setValue() ;

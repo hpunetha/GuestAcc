@@ -28,7 +28,7 @@ public class Admin_FacultyRegistration_RecyclerAdapter extends RecyclerView.Adap
     private Button cancelButton ;
     private Button acceptButton;
     Context context ;
-    DatabaseReference pending = FirebaseDatabase.getInstance().getReference("join_requests");
+    DatabaseReference pending = FirebaseDatabase.getInstance().getReference(MainActivity.JOIN_REQUESTS);
 
 
 

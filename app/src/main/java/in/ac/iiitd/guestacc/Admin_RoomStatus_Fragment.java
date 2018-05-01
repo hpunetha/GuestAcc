@@ -267,12 +267,12 @@ public class Admin_RoomStatus_Fragment extends Fragment implements Admin_RoomSta
 
                 final DatabaseReference myRef;
                 // String basetable ="bookings_final";
-                String basetable = "bookings_final";
+              /*  String basetable = "bookings_final";
 
                 //
                 String strDBAccess = basetable;
-                Log.i("date access", strDBAccess);
-                myRef = mDatabase.getReference(strDBAccess);
+                Log.i("date access", strDBAccess);*/
+                myRef = mDatabase.getReference(MainActivity.BOOKING_FINAL);
 
                 myRef.addValueEventListener(new ValueEventListener() {
                     @Override
