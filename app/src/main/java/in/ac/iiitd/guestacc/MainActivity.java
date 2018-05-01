@@ -77,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
         mGSClient = GoogleSignIn.getClient(this,mGSOptions);
         mFbAuth = FirebaseAuth.getInstance();
 
+        LoginClient_Singleton.getInstance((mGSClient));
+
         mSignInButton.setOnClickListener(new View.OnClickListener()
         {
 
@@ -142,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
         {
             Log.d("Just Before Login ", "CheckIIITD Method Else=> " + mGoogleAcct.getDisplayName());
 
-            Toast.makeText(this,"Please login using the iiitd gmail account",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Only IIITD Gmail Account is allowed",Toast.LENGTH_SHORT).show();
             wrongAccFlag=-1;
             FirebaseAuth.getInstance().signOut();
 
