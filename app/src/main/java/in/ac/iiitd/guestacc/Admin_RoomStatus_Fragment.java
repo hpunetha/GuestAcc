@@ -20,6 +20,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -27,6 +28,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.w3c.dom.Text;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -75,6 +78,8 @@ public class Admin_RoomStatus_Fragment extends Fragment implements Admin_RoomSta
 
        // mListViewAdminRoomStatus = (ListView) adminRoomStatus.findViewById(R.id.list_adminRoomStatus);
         mEditTextFromDate = (EditText) adminRoomStatus.findViewById(R.id.editTextAdminRoomFrom);
+        TextView mAdminRoomStatus = (TextView) adminRoomStatus.findViewById(R.id.adminRoomStatus) ;
+        mAdminRoomStatus.setVisibility(View.GONE);
         mEditTextToDate = (EditText) adminRoomStatus.findViewById(R.id.editTextAdminRoomTo);
         mAdminRoomAvailability = (Button) adminRoomStatus.findViewById(R.id.button_adminRoomCheckAvailability);
         //Reference : https://www.youtube.com/watch?v=28jA5-mO8K8
@@ -85,105 +90,98 @@ public class Admin_RoomStatus_Fragment extends Fragment implements Admin_RoomSta
         mSpinnerAvailabilityStatus.setAdapter(spinnerStatusAdapter);
 
         //***************************************************************************************************************************
-        mSpinnerAvailabilityStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        final String mFormat = "E, MMM d";
+        SimpleDateFormat mPreSDFormat = new SimpleDateFormat(mFormat, Locale.ENGLISH);
+        Date mPreDate = new Date();
+        mToDate = mPreDate;
+        String mPreTextCheckin = getString(R.string.check_in) + mPreSDFormat.format(mPreDate);
+        mEditTextFromDate.setText(mPreTextCheckin);
+        mSendFromDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(mPreDate.getTime());
+
+        Calendar mPreCal = Calendar.getInstance();
+        mPreCal.setTime(mPreDate);
+        mPreCal.add(Calendar.DATE, 1);
+        Date mPreNextDate = mPreCal.getTime();
+
+        String mPreTextCheckout = getString(R.string.check_out) + mPreSDFormat.format(mPreNextDate);
+        mEditTextToDate.setText(mPreTextCheckout);
+        mSendToDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(mPreNextDate.getTime());
+
+
+        final Calendar mCal = Calendar.getInstance();
+        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+            //DatePickerDialog.
+
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                Log.i("Spinner", String.valueOf(adapterView.getItemAtPosition(position)));
-
-                //*****************************************Calendar instances*********************************************
-
-                final String mFormat = "E, MMM d";
-                SimpleDateFormat mPreSDFormat = new SimpleDateFormat(mFormat, Locale.ENGLISH);
-                Date mPreDate = new Date();
-                mToDate = mPreDate;
-                String mPreTextCheckin = getString(R.string.check_in) + mPreSDFormat.format(mPreDate);
-                mEditTextFromDate.setText(mPreTextCheckin);
-                mSendFromDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(mPreDate.getTime());
-
-                Calendar mPreCal = Calendar.getInstance();
-                mPreCal.setTime(mPreDate);
-                mPreCal.add(Calendar.DATE, 1);
-                Date mPreNextDate = mPreCal.getTime();
-
-                String mPreTextCheckout = getString(R.string.check_out) + mPreSDFormat.format(mPreNextDate);
-                mEditTextToDate.setText(mPreTextCheckout);
-                mSendToDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(mPreNextDate.getTime());
-
-
-                final Calendar mCal = Calendar.getInstance();
-                final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-                    //DatePickerDialog.
-
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear,
-                                          int dayOfMonth) {
-                        mCal.set(Calendar.YEAR, year);
-                        mCal.set(Calendar.MONTH, monthOfYear);
-                        mCal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                mCal.set(Calendar.YEAR, year);
+                mCal.set(Calendar.MONTH, monthOfYear);
+                mCal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
 //              String mFormat = "E, MMM d";
-                        SimpleDateFormat mSimpleDF = new SimpleDateFormat(mFormat, Locale.ENGLISH);
+                SimpleDateFormat mSimpleDF = new SimpleDateFormat(mFormat, Locale.ENGLISH);
 
-                        if (mDateVal == 1) {
-                            String mTextIn = getString(R.string.check_in) + mSimpleDF.format(mCal.getTime());
+                if (mDateVal == 1) {
+                    String mTextIn = getString(R.string.check_in) + mSimpleDF.format(mCal.getTime());
 
-                            mSendFromDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(mCal.getTime());
+                    mSendFromDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(mCal.getTime());
 
-                            mToDate = mCal.getTime();
-                            mEditTextFromDate.setText(mTextIn);
-                            Calendar mChkCal = Calendar.getInstance();
-                            mChkCal.setTime(mToDate);
-                            mChkCal.add(Calendar.DATE, 1);
-                            String mTextOut = getString(R.string.check_out) + mSimpleDF.format(mChkCal.getTime());
-                            mEditTextToDate.setText(mTextOut);
+                    mToDate = mCal.getTime();
+                    mEditTextFromDate.setText(mTextIn);
+                    Calendar mChkCal = Calendar.getInstance();
+                    mChkCal.setTime(mToDate);
+                    mChkCal.add(Calendar.DATE, 1);
+                    String mTextOut = getString(R.string.check_out) + mSimpleDF.format(mChkCal.getTime());
+                    mEditTextToDate.setText(mTextOut);
 
-                            mSendToDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(mChkCal.getTime());
+                    mSendToDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(mChkCal.getTime());
 
-                        } else if (mDateVal == 2) {
-                            String text = getString(R.string.check_out) + mSimpleDF.format(mCal.getTime());
-                            mEditTextToDate.setText(text);
+                } else if (mDateVal == 2) {
+                    String text = getString(R.string.check_out) + mSimpleDF.format(mCal.getTime());
+                    mEditTextToDate.setText(text);
 
-                            mSendToDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(mCal.getTime());
-                        }
-                    }
+                    mSendToDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(mCal.getTime());
+                }
+            }
 
-                };
+        };
 
-                mEditTextFromDate.setOnClickListener(new View.OnClickListener() {
+        mEditTextFromDate.setOnClickListener(new View.OnClickListener() {
 
-                    @Override
-                    public void onClick(View v) {
-                        DatePickerDialog mDatePickDialog;
-                        mDatePickDialog = new DatePickerDialog(getActivity(), date, mCal
-                                .get(Calendar.YEAR), mCal.get(Calendar.MONTH),
-                                mCal.get(Calendar.DAY_OF_MONTH));
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog mDatePickDialog;
+                mDatePickDialog = new DatePickerDialog(getActivity(), date, mCal
+                        .get(Calendar.YEAR), mCal.get(Calendar.MONTH),
+                        mCal.get(Calendar.DAY_OF_MONTH));
 
-                        mDateVal = 1;
-                        //mDatePickDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+                mDateVal = 1;
+                //mDatePickDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
 
-                        mDatePickDialog.show();
-                    }
-                });
+                mDatePickDialog.show();
+            }
+        });
 
-                mEditTextToDate.setOnClickListener(new View.OnClickListener() {
+        mEditTextToDate.setOnClickListener(new View.OnClickListener() {
 
-                    @Override
-                    public void onClick(View view) {
-                        DatePickerDialog mDatePickDialog;
-                        mDatePickDialog = new DatePickerDialog(getActivity(), date, mCal
-                                .get(Calendar.YEAR), mCal.get(Calendar.MONTH),
-                                mCal.get(Calendar.DAY_OF_MONTH));
-                        mDateVal = 2;
+            @Override
+            public void onClick(View view) {
+                DatePickerDialog mDatePickDialog;
+                mDatePickDialog = new DatePickerDialog(getActivity(), date, mCal
+                        .get(Calendar.YEAR), mCal.get(Calendar.MONTH),
+                        mCal.get(Calendar.DAY_OF_MONTH));
+                mDateVal = 2;
 
-                        Calendar mChkCal = Calendar.getInstance();
-                        mChkCal.setTime(mToDate);
-                        mChkCal.add(Calendar.DATE, 1);
-                        //Date mPreNextDate = mChkCal.getTime();
+                Calendar mChkCal = Calendar.getInstance();
+                mChkCal.setTime(mToDate);
+                mChkCal.add(Calendar.DATE, 1);
+                //Date mPreNextDate = mChkCal.getTime();
 
-                        mDatePickDialog.getDatePicker().setMinDate(mChkCal.getTimeInMillis());
-                        mDatePickDialog.show();
-                    }
-                });
+                mDatePickDialog.getDatePicker().setMinDate(mChkCal.getTimeInMillis());
+                mDatePickDialog.show();
+            }
+        });
 
 //                mAdminRoomAvailability.setOnClickListener(new View.OnClickListener() {
 //                    @Override
@@ -192,13 +190,7 @@ public class Admin_RoomStatus_Fragment extends Fragment implements Admin_RoomSta
 //                    }
 //                });
 
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
 
         //*********************************************************************************************************************
 

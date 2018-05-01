@@ -70,7 +70,7 @@ public class FacultyRegistrationActivity extends AppCompatActivity {
 
         if(email!=null)
         {
-            mJoinReq.email_id=email;
+            mJoinReq.emailid=email;
             mEmail.setText(email);
         }
 
@@ -124,7 +124,7 @@ public class FacultyRegistrationActivity extends AppCompatActivity {
 
                     Timestamp mTimeStamp = new Timestamp(System.currentTimeMillis());
                     mJoinReq.timestamp = mTimeStamp.toString();
-                    mJoinReq.email_id = emailToSet;
+                    mJoinReq.emailid = emailToSet;
                     mJoinReq.name = name;
                     mJoinReq.type = mSelectedType.toLowerCase();
                     mJoinReq.year_of_joining = yoj;
@@ -148,7 +148,7 @@ public class FacultyRegistrationActivity extends AppCompatActivity {
     }
 
     public static class Request implements Serializable{
-        String email_id;
+        String emailid;
         String name;
         String timestamp;
         String type;

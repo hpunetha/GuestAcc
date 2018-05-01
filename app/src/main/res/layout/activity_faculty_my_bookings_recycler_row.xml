@@ -57,7 +57,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/reqid_text"
+                    android:id="@+id/reqid_textfaculty"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
@@ -68,7 +68,7 @@
             </RelativeLayout>
 
             <TextView
-                android:id="@+id/npersons"
+                android:id="@+id/npersonsfaculty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/relativeLayout"
@@ -80,14 +80,14 @@
                 android:id="@+id/textView5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/npersons"
-                android:layout_alignBottom="@+id/npersons"
+                android:layout_alignBaseline="@+id/npersonsfaculty"
+                android:layout_alignBottom="@+id/npersonsfaculty"
                 android:layout_marginStart="2dp"
-                android:layout_toEndOf="@+id/npersons"
+                android:layout_toEndOf="@+id/npersonsfaculty"
                 android:text="@string/sppersons" />
 
             <TextView
-                android:id="@+id/roomname_cancel_bookings"
+                android:id="@+id/roomname_cancel_bookingsfaculty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@+id/textView5"
@@ -97,12 +97,30 @@
                 android:text="2" />
 
             <TextView
+                android:id="@+id/textViewStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/textView9"
+                android:layout_alignStart="@+id/textView9"
+                android:text="@string/status" />
+            <TextView
+                android:id="@+id/textViewStatusValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_toEndOf="@id/textViewStatus"
+                android:layout_alignBaseline="@id/textViewStatus"
+                />
+
+            <TextView
                 android:id="@+id/textView7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/roomname_cancel_bookings"
-                android:layout_alignBottom="@+id/roomname_cancel_bookings"
-                android:layout_toEndOf="@+id/roomname_cancel_bookings"
+                android:layout_alignBaseline="@+id/roomname_cancel_bookingsfaculty"
+                android:layout_alignBottom="@+id/roomname_cancel_bookingsfaculty"
+                android:layout_toEndOf="@+id/roomname_cancel_bookingsfaculty"
                 android:layout_marginStart="2dp"
                 android:text="@string/sprooms" />
 
@@ -118,7 +136,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/imageView"
-                android:layout_alignStart="@+id/npersons"
+                android:layout_alignStart="@+id/npersonsfaculty"
+                android:visibility="gone"
                 android:backgroundTint="@color/colorPrimary"
                 android:minHeight="0dp"
                 android:textColor="@color/white"
@@ -133,23 +152,25 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@+id/approve_validate"
                 android:layout_alignBottom="@+id/approve_validate"
-                android:layout_toEndOf="@+id/roomname_cancel_bookings"
+                android:layout_toEndOf="@+id/roomname_cancel_bookingsfaculty"
                 android:backgroundTint="@color/colorPrimary"
                 android:minHeight="0dp"
                 android:textColor="@color/white"
+                android:visibility="gone"
                 android:minWidth="0dp"
                 android:text="Cancel"
                 android:textAllCaps="false"
                 android:textSize="12dp" />
 
             <TextView
-                android:id="@+id/total"
+                android:id="@+id/totalPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:layout_above="@+id/approve_validate"
+                android:layout_below="@+id/npersonsfaculty"
                 android:layout_marginBottom="12dp"
                 android:layout_toEndOf="@+id/textView9"
+                android:layout_marginTop="10dp"
                 android:text="3000" />
 
             <TextView
@@ -157,8 +178,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:layout_alignBaseline="@+id/total"
-                android:layout_alignBottom="@+id/total"
+                android:layout_alignBaseline="@+id/totalPrice"
+                android:layout_alignBottom="@+id/totalPrice"
                 android:layout_alignStart="@+id/approve_validate"
                 android:text="@string/total" />
 
