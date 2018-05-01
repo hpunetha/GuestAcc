@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background2"
     tools:context="in.ac.iiitd.guestacc.BookingDetail">
     <ScrollView
         android:layout_width="fill_parent"
@@ -237,10 +238,12 @@
 
     <Button
         android:id="@+id/btnBook"
-        android:background="@color/colorPrimary"
+        android:background="@color/buttonColor"
+        android:textColor="@color/white"
         android:layout_alignParentBottom="true"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="match_parent"
+
         android:layout_height="40dp"
         android:text="Submit" />
 </RelativeLayout>
