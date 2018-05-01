@@ -1,6 +1,7 @@
 package in.ac.iiitd.guestacc;
 
 import android.content.Context;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,13 +14,14 @@ import android.widget.Toast;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by rakesh on 28/4/18.
  */
 
-public class Admin_FacultyRegistration_RecyclerAdapter extends RecyclerView.Adapter<Admin_FacultyRegistration_RecyclerAdapter.ViewHolder>
+public class Admin_FacultyRegistration_RecyclerAdapter extends RecyclerView.Adapter<Admin_FacultyRegistration_RecyclerAdapter.ViewHolder> implements Serializable
 {
     View v;
     private LayoutInflater inflater ;
@@ -28,8 +30,8 @@ public class Admin_FacultyRegistration_RecyclerAdapter extends RecyclerView.Adap
     private Button cancelButton ;
     private Button acceptButton;
     Context context ;
-    DatabaseReference pending = FirebaseDatabase.getInstance().getReference("join_requests");
-
+    DatabaseReference join_requests = FirebaseDatabase.getInstance().getReference("join_requests");
+    DatabaseReference faculty_staff = FirebaseDatabase.getInstance().getReference("faculty_staff");
 
 
 
@@ -91,30 +93,47 @@ public class Admin_FacultyRegistration_RecyclerAdapter extends RecyclerView.Adap
 
 
             //itemView.setOnClickListener(this);
-
-            cancelButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Log.e("RECYCLER","Cancel clicked");
-
-
-                }
-            });
-
-
             acceptButton.setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View view)
                 {
                     // TODO : Listen
-                    Log.e("RECYCLER in accept",pending.getKey());
+                    Log.e("RECYCLER in accept id",join_requests.child(email.getText().toString().replace("@iiitd.ac.in","")).getKey());
+                    Log.e("RECYCLER in accept name",name.getText().toString());
+                    JoinRequest joinRequest = new JoinRequest();
+                    joinRequest.emailid=email.getText().toString();
+                    joinRequest.name=name.getText().toString();
 
-                      mClickListener.onButtonClick(view,getAdapterPosition());
+                    Log.e("type.getText==>",type.getText().toString());
+                    if(type.getText().toString().equals("faculty")) {
+                        faculty_staff.child("faculty").push().setValue(joinRequest);
+                    }
+                    else if (type.getText().toString().equals("staff")) {
+                        faculty_staff.child("staff").push().setValue(joinRequest);
+                    }
 
+                    join_requests.child(email.getText().toString().replace("@iiitd.ac.in","")).getRef().removeValue();
+                    Snackbar.make(view, "Join request added sucessfully", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
 
+                    notifyDataSetChanged();
+                    }
+
+            });
+            cancelButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.e("req-------->",email.getText().toString().replace("@iiitd.ac.in",""));
+                    join_requests.child(email.getText().toString().replace("@iiitd.ac.in","")).getRef().removeValue();
+                    Snackbar.make(view, "Join request deleted sucessfully", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
+                    Log.e("RECYCLER","Cancel clicked");
+                    notifyDataSetChanged();
                 }
             });
+
         }
 
 

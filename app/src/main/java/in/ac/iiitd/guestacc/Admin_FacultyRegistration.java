@@ -90,7 +90,7 @@ public class Admin_FacultyRegistration extends AppCompatActivity implements Admi
                       //db.child("email_id").toString();
                       String key  = db.getKey().toString();
                       String Name = db.child("name").getValue().toString() ;
-                      String email =  db.child("email_id").getValue().toString();
+                      String email =  db.child("emailid").getValue().toString();
                       String type  = db.child("type").getValue().toString();
 
                         Log.e("DATA2",email) ;
