@@ -200,28 +200,30 @@ public class FacultyHomeActivity extends AppCompatActivity
 
         btnCheckAvailFaculty.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-
-                if (mAllRoomsDetails.size()>0)
+            public void onClick(View view)
+            {
+                if (mAgreeTermsCheckBox.isChecked())
                 {
+                    if (mAllRoomsDetails.size() > 0) {
 
-                    new CheckAvailabilityTask(FacultyHomeActivity.this).execute();
-
+                        new CheckAvailabilityTask(FacultyHomeActivity.this).execute();
 
 //                Intent mBookingDetail = new Intent(FacultyHomeActivity.this, BookingDetail.class);
 //                startActivity(mBookingDetail);
 
+                    } else {
+
+                        Snackbar.make(view, "No Rooms are added. Please add rooms first", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                    }
+
                 }
                 else
                 {
-
-                    Snackbar.make(view, "No Rooms are added. Please add rooms first", Snackbar.LENGTH_LONG)
+                    Snackbar.make(view, "Please accept Terms and Conditions", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
+
                 }
-
-
-
-
 
 
             }

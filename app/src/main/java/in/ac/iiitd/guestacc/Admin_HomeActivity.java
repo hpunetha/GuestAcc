@@ -84,7 +84,7 @@ public class Admin_HomeActivity extends AppCompatActivity
         mBackCount++;
 
         if (mBackCount == 1) {
-            Toast.makeText(this, "Press again 2 times to exit", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Press again 2 times to Sign-out", Toast.LENGTH_SHORT).show();
 
 
         } else if (mBackCount > 2) {
