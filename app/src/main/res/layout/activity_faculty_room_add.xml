@@ -91,7 +91,7 @@
     <Button
             android:id="@+id/btnApply"
             android:layout_below="@id/totalRoomsPrice"
-            android:background="@color/buttonColor"
+            android:background="@drawable/enableddisabledbutton"
             android:textColor="@color/white"
             android:layout_alignParentBottom="true"
             style="@style/Widget.AppCompat.Button.Borderless"

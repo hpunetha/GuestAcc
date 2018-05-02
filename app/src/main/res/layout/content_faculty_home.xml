@@ -254,7 +254,7 @@
                         android:layout_marginEnd="8dp"
                         android:layout_marginStart="8dp"
 
-                        android:background="@color/buttonColor"
+                        android:background="@drawable/enableddisabledbutton"
 
                         android:text="@string/book"
                         android:textAllCaps="false"
