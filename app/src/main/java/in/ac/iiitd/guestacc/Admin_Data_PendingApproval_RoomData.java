@@ -12,6 +12,9 @@ public class Admin_Data_PendingApproval_RoomData
     String guest1AllocatedRoom ;
     String guest2AllocatedRoom ;
 
+    String guest1Index ;
+    String guest2Index ;
+
 
     public String getGuest1() {
         return guest1;

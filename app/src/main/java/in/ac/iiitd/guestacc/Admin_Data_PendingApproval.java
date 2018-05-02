@@ -20,6 +20,8 @@ public class Admin_Data_PendingApproval
     String females ;
     String projectName ;
     String TotalPrice;
+    ArrayList<Guest> guestDetails ;
+
     List<Admin_Data_PendingApproval_RoomData> roomsData;
 
     public String getTotalPrice() {
@@ -102,8 +104,11 @@ public class Admin_Data_PendingApproval
         this.roomsData = roomsData;
     }
 
-    public Admin_Data_PendingApproval(String reqID, String date, String type, String fundedBy, String reason, String males, String females, String projectName, String TotalPrice, List<Admin_Data_PendingApproval_RoomData> roomsData) {
+    public Admin_Data_PendingApproval(String reqID, String date, String type, String fundedBy, String reason, String males, String females, String projectName, String TotalPrice
+            , List<Admin_Data_PendingApproval_RoomData> roomsData , ArrayList<Guest> guestDetails )
+    {
         this.roomsData = new ArrayList<>();
+        this.guestDetails = new ArrayList<>() ;
         this.reqID = reqID;
         this.date = date;
         this.type = type;
@@ -114,6 +119,7 @@ public class Admin_Data_PendingApproval
         this.projectName = projectName;
         this.roomsData = roomsData;
         this.TotalPrice = TotalPrice;
+        this.guestDetails = guestDetails ;
     }
 
     Admin_Data_PendingApproval()

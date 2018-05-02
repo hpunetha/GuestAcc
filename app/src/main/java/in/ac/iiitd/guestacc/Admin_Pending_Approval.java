@@ -81,6 +81,9 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
     ArrayAdapter<String> spinnerArrayAdapter2 ;
     ArrayAdapter<String> spinnerArrayAdapter ;
 
+    DatabaseReference reference ;
+    HashMap<String,Integer> guestNames ;
+
 
     String allocatedRoom1 ;
     String allocatedRoom2 ;
@@ -105,13 +108,15 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
     {
         String type = "" ;
 
+        String no = Character.toString(t.charAt(t.length()-1)) ;
+
         if (t.contains("Boys' Hostel")) type = "bh";
         if (t.contains("Girls' Hostel")) type = "gh";
         if (t.contains("Faculty Rooms")) type = "frr";
         if (t.contains("Faculty Flat")) type = "frf";
 
 
-        return type ;
+        return type+no ;
 
     }
 
@@ -257,7 +262,7 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
                                     if (mAdminBooking != null) {
                                         Log.i("datestemp", mAdminBooking.timestamp + "  " + mAdminBooking.total_booking_price); //Working
 
-
+                                       Log.i("GUEST ARRAY" ,mAdminBooking.guests.get(0).getName() );
                                         //Assigning AdminDataPendingApproval********************************************
                                         reqID = (snp2.getKey());
                                         date = mAdminBooking.getFrom_date() + " " + mAdminBooking.getTo_date();
@@ -335,7 +340,7 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
 
                                         Log.i("Tag 7 FinalClassData", reqID + "\n" + date + "\n" + type + "\n" + fundedBy + "\n" + purpose_of_visit + "\n" + males + "\n" + females);
                                         Log.i("Tag 8 FinalClassData", "Pending approval" + requestId + " " + mAdminPendingApprovalDataRoomData.toString());
-                                        mAdminPendingApprovalData.add(new Admin_Data_PendingApproval(reqID, date, type, fundedBy, purpose_of_visit, males, females, projectName, TotalPrice, mAdminPendingApprovalDataRoomData));
+                                        mAdminPendingApprovalData.add(new Admin_Data_PendingApproval(reqID, date, type, fundedBy, purpose_of_visit, males, females, projectName, TotalPrice, mAdminPendingApprovalDataRoomData,mAdminBooking.getGuests()));
 
                                     }
 
@@ -737,6 +742,8 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
             ((TextView) cardview[i].findViewById(R.id.GuestType1)).setText(roomDetails.guest1);
             ((TextView) cardview[i].findViewById(R.id.GuestType2)).setText(roomDetails.guest2);
             ((TextView) cardview[i].findViewById(R.id.preference)).setText(roomDetails.preference);
+
+
             Button allocateButton = (Button) cardview[i].findViewById(R.id.allocate);
             RelativeLayout.LayoutParams layoutparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
@@ -777,7 +784,8 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
 //*****************************************************  Accept button Click ******************************************************
 
     @Override
-    public void onAcceptButtonClick(View v, int position) {
+    public void onAcceptButtonClick(View v, int position)
+    {
 
         Admin_Data_PendingApproval dataRow= mAdminPendingApprovalData.get(position) ;
 
@@ -789,8 +797,48 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
 
         String startDate = dataRow.getDate().split(" ")[0] ;
         String id = dataRow.getReqID() ;
+        List<Admin_Data_PendingApproval_RoomData> rooms = dataRow.getRoomsData() ;
+        List<Guest> guestData = dataRow.guestDetails ;
 
-        //allocateRoom.child(startDate).child(id).child("guests")
+
+
+
+
+
+        for(int i=0;i<rooms.size();i++) {
+
+            if (rooms.get(i).getGuest1() != null) {
+                String guest1 = rooms.get(i).guest1.split("\\(")[0];
+
+
+                for (int j = 0; j < guestData.size(); j++) {
+                    if (guestData.get(j).getName().equals(guest1)) {
+                        guestData.get(j).setAllocated_room(rooms.get(i).guest1AllocatedRoom);
+                    }
+                }
+            }
+
+
+            if (rooms.get(i).getGuest2() != null) {
+                String guest2 = rooms.get(i).guest2.split("\\(")[0];
+
+
+                for (int j = 0; j < guestData.size(); j++) {
+                    if (guestData.get(j).getName().equals(guest2)) {
+                        guestData.get(j).setAllocated_room(rooms.get(i).guest2AllocatedRoom);
+                    }
+                }
+            }
+
+
+        }
+
+        allocateRoom.child(startDate).child(id).child("guests").setValue(guestData) ;
+
+
+
+
+
         //Key removed from pending_approval
         pending.child(mAdminPendingApprovalData.get(position).getReqID()).getRef().removeValue();
         //Add females and males
