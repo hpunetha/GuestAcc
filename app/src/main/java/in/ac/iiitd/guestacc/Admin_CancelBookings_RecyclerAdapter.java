@@ -1,7 +1,9 @@
 package in.ac.iiitd.guestacc;
 
 import android.content.Context;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,8 +31,8 @@ public class Admin_CancelBookings_RecyclerAdapter extends RecyclerView.Adapter<A
     private Button cancelButton ;
     RelativeLayout relativeLayout ;
     Context context;
-    DatabaseReference mBOOKING_FINAL = FirebaseDatabase.getInstance().getReference(MainActivity.BOOKING_FINAL+"/"+"2018-04-30");
-    DatabaseReference faculty_staff = FirebaseDatabase.getInstance().getReference("faculty_staff");
+    DatabaseReference mBOOKING_FINAL = FirebaseDatabase.getInstance().getReference(MainActivity.BOOKING_FINAL_);
+    DatabaseReference user = FirebaseDatabase.getInstance().getReference("user/priyabrata17043");
 
 
     Admin_CancelBookings_RecyclerAdapter(Context con, List<Admin_Data_CancelBookings> data)
@@ -62,7 +64,7 @@ public class Admin_CancelBookings_RecyclerAdapter extends RecyclerView.Adapter<A
     {
         //TODO : change position
 
-        Admin_Data_CancelBookings dataRow = data.get(0) ;
+        Admin_Data_CancelBookings dataRow = data.get(position) ;
 
         holder.reqID.setText(dataRow.getReqID());
         holder.totalGuest.setText(dataRow.getGuests());
@@ -70,7 +72,7 @@ public class Admin_CancelBookings_RecyclerAdapter extends RecyclerView.Adapter<A
         holder.nRooms.setText(dataRow.getNrooms());
         holder.startDate.setText(dataRow.getStartDate());
         holder.endDate.setText(dataRow.getEndDate());
-
+        //holder.reason.setText(dataRow.getReason());
 
     }
 
@@ -126,6 +128,7 @@ public class Admin_CancelBookings_RecyclerAdapter extends RecyclerView.Adapter<A
                     }
                     else
                     {
+
                         hiddenLayout.setVisibility(View.GONE);
                     }
                     // getting context from main activity
@@ -138,15 +141,31 @@ public class Admin_CancelBookings_RecyclerAdapter extends RecyclerView.Adapter<A
                 @Override
                 public void onClick(View v)
                 {
+                    Log.d("getStartDate()=>",data.get(getAdapterPosition()).getStartDate());
+                    Log.d("getReqID()=>", data.get(getAdapterPosition()).getReqID());
 
-                   EditText t = (EditText) v.findViewById(R.id.edit_text_cancel_bookings);
+                   if (reason!=null)
+                   {
+                       mBOOKING_FINAL.child(data.get(getAdapterPosition()).getStartDate()).child( data.get(getAdapterPosition()).getReqID()).child("booking_status").setValue(MainActivity.CANCELLED);
+                       Log.d("editTextValue=>",reason.getText().toString());
+                       mBOOKING_FINAL.child(data.get(getAdapterPosition()).getStartDate()).child( data.get(getAdapterPosition()).getReqID()).child("modification_reason").setValue(reason.getText().toString());
 
-                   String reason = t.getText().toString() ;
-                   // getting context from main activity
+                       Snackbar.make(v, "Request cancelled sucessfully", Snackbar.LENGTH_LONG)
+                               .setAction("Action", null).show();
+                       user.child( data.get(getAdapterPosition()).getReqID()).child("status").setValue(MainActivity.CANCELLED);
+                       data.remove(getAdapterPosition());
+                       notifyDataSetChanged();
+
+                   }
+                   else
+                   {
+                       Snackbar.make(v, "Please give a reason for cancellation", Snackbar.LENGTH_LONG)
+                               .setAction("Action", null).show();
+                   }
+                    // getting context from main activity
                     // dialogSelect.show(((AppCompatActivity)context).getSupportFragmentManager(),"123");
                 }
             });
-
 
         }
 

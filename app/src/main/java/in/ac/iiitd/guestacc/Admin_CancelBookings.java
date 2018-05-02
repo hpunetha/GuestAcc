@@ -37,38 +37,44 @@ public class Admin_CancelBookings extends AppCompatActivity implements Admin_Can
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         List<Admin_Data_CancelBookings> data = new ArrayList<>();
-        mDbRefBookings = FirebaseDatabase.getInstance().getReference(MainActivity.BOOKING_FINAL+"/"+"2018-04-30");
+        mDbRefBookings = FirebaseDatabase.getInstance().getReference(MainActivity.BOOKING_FINAL_);//+"/"+"2018-05-03");
 
 
         mDbRefBookingsListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    //  Log.e("DATA",dataSnapshot.getValue()) ;
+
+
                     for(DataSnapshot db : dataSnapshot.getChildren())
                     {
-                        // Log.e("DATA",db.child("email_id"));
+                        Log.d("date====>:", db.getKey().toString());
+                        for(DataSnapshot db_id : db.getChildren()) {
 
-                        //db.child("email_id").toString();
-                        String requestId  = db.getKey().toString();
-                        System.out.println(requestId);
-                        Log.d("req id:",requestId);
-                        String total_guests = db.child("total_guests").getValue().toString() ;
-                        String total_rooms =  db.child("total_rooms").getValue().toString();
-                        String from_date  = db.child("from_date").getValue().toString();
-                        String to_date  = db.child("to_date").getValue().toString();
+                            if(db_id.child("booking_status").getValue().toString().equals("completed"))
+                            {
+                                String requestId = db_id.getKey().toString();
 
-                        Log.d("total_guests:",total_guests);
-                        Log.d("total_rooms:",total_rooms);
-                        Log.d("from_date:",from_date);
+                                Log.d("req id:", db_id.getKey().toString());
+                                String total_guests = db_id.child("total_guests").getValue().toString();
+                                String total_rooms = db_id.child("total_rooms").getValue().toString();
+                                String from_date = db_id.child("from_date").getValue().toString();
+                                String to_date = db_id.child("to_date").getValue().toString();
 
-                        ArrayList<String> list_allocatedRooms = new ArrayList<String>();
-                        list_allocatedRooms.add("bh1");
+                                Log.d("total_guests:", total_guests);
+                                Log.d("total_rooms:", total_rooms);
+                                Log.d("from_date:", from_date);
 
-                        Log.e("DATA2",from_date) ;
+                                ArrayList<String> list_allocatedRooms = new ArrayList<String>();
+                                list_allocatedRooms.add("bh1");
 
-                        mlist_dataCancelBooking.add(new Admin_Data_CancelBookings(requestId,"bh1",total_guests,total_rooms,from_date.substring(from_date.length() - 5),to_date.substring(to_date.length() - 5)));
-                 }
+                                Log.e("DATA2", from_date);
+
+                                mlist_dataCancelBooking.add(new Admin_Data_CancelBookings(requestId, "", total_guests, total_rooms, from_date,to_date));//.substring(from_date.length() - 5), to_date.substring(to_date.length() - 5)));
+                                Log.d("mlist_==>" , mlist_dataCancelBooking.toString());
+                            }
+                        }
+                        }
                 }
 
                 if(adapter!=null)
@@ -86,7 +92,7 @@ public class Admin_CancelBookings extends AppCompatActivity implements Admin_Can
         mDbRefBookings.addValueEventListener(mDbRefBookingsListener);
         recyclerView = (RecyclerView)findViewById(R.id.cancel_bookings_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
+        Log.d("mlist_==>" , mlist_dataCancelBooking.toString());
         adapter = new Admin_CancelBookings_RecyclerAdapter(this, mlist_dataCancelBooking);
 
         adapter.setClickListener(this);

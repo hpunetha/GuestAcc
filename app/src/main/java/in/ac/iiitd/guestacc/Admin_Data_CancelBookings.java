@@ -20,6 +20,7 @@ public class Admin_Data_CancelBookings
     String guests;
     String nrooms ;
     String startDate ;
+    String reason;
 
     public String getStartDate() {
         return startDate;
@@ -73,7 +74,14 @@ public class Admin_Data_CancelBookings
         this.nrooms = nrooms;
     }
 
-//    Admin_Data_CancelBookings()
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+    //    Admin_Data_CancelBookings()
 //    {
 //        reqID = "1" ;
 //        // TODO : add a separate data type
