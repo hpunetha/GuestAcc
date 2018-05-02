@@ -32,9 +32,9 @@ public class Admin_FacultyRegistration_RecyclerAdapter extends RecyclerView.Adap
     private Button cancelButton ;
     private Button acceptButton;
     Context context ;
-    DatabaseReference join_requests = FirebaseDatabase.getInstance().getReference("join_requests");
+    DatabaseReference join_requests = FirebaseDatabase.getInstance().getReference(MainActivity.JOIN_REQUESTS);
     DatabaseReference faculty_staff = FirebaseDatabase.getInstance().getReference("faculty_staff");
-    DatabaseReference pending = FirebaseDatabase.getInstance().getReference(MainActivity.JOIN_REQUESTS);
+    //DatabaseReference pending = FirebaseDatabase.getInstance().getReference(MainActivity.JOIN_REQUESTS);
 
 
 

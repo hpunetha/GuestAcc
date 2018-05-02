@@ -88,14 +88,26 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
         spinner_personal_funding.setAdapter(adapter_fundedBy);
 
         Button btnBook = (Button)findViewById(R.id.btnBook);
-        databaseReference_key_generator = FirebaseDatabase.getInstance().getReference("bookings_final");
-        databaseReference_bookings_final = FirebaseDatabase.getInstance().getReference("bookings_final");
-        databaseReference_pending_approval = FirebaseDatabase.getInstance().getReference("pending_requests/pending_approval");
-        databaseReference_user = FirebaseDatabase.getInstance().getReference("user");
         databaseReference_key_generator = FirebaseDatabase.getInstance().getReference(MainActivity.BOOKING_FINAL_);
         databaseReference_bookings_final = FirebaseDatabase.getInstance().getReference(MainActivity.BOOKING_FINAL_);
         databaseReference_pending_approval = FirebaseDatabase.getInstance().getReference(MainActivity.PENDING_REQUESTS+"/"+MainActivity.PENDING_APPROVAL);
         databaseReference_user = FirebaseDatabase.getInstance().getReference(MainActivity.USER);
+
+        try {
+            mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+            if (mFirebaseUser !=null) {
+                mCurrentUserName = mFirebaseUser.getDisplayName();
+                mCurrentUserEmail = mFirebaseUser.getEmail();
+
+            }
+
+        }
+        catch (NullPointerException e)
+        {
+            e.printStackTrace();
+        }
+
 
         if(mFirebaseUser!=null)
         {
@@ -271,6 +283,11 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
                         SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                         Date todaydate = new Date();
                         booking.setRaised_on(formatter.format(todaydate));
+                        System.out.println("mCurrentUserEmail"+mCurrentUserEmail);
+                        System.out.println("mCurrentUserName"+mCurrentUserName);
+                        booking.setUserid(mCurrentUserEmail.replace("@iiitd.ac.in",""));
+                        booking.setTotal_guests(String.valueOf(FacultyHomeActivity.mTotalGuests));
+                        booking.setTotal_rooms(String.valueOf(FacultyHomeActivity.mTotalRooms));
 
 
                         System.out.println(hm_guestDetails);
