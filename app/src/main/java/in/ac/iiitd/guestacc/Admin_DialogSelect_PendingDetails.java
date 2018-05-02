@@ -21,10 +21,12 @@ public class Admin_DialogSelect_PendingDetails extends DialogFragment implements
 {
 
     private View cardview ;
+    View v;
 
     Admin_DialogSelect_PendingDetails currentObject ;
     private DialogClickListener mDialogClickListener ;
     public int position ;
+    RadioGroup mRadioGroupAllocateRoom ;
 
 
 
@@ -38,7 +40,7 @@ public class Admin_DialogSelect_PendingDetails extends DialogFragment implements
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
-        View v = LayoutInflater.from(getActivity()).inflate(R.layout.admin_dialog_layout_pending_details,null);
+         v = LayoutInflater.from(getActivity()).inflate(R.layout.admin_dialog_layout_pending_details,null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
 
@@ -46,18 +48,33 @@ public class Admin_DialogSelect_PendingDetails extends DialogFragment implements
         final RadioButton two = (RadioButton)v.findViewById(R.id.two_room) ;
 
         one.setChecked(true);
+
+
         final Spinner spinnerOne = (Spinner)v.findViewById(R.id.spinner1) ;
         final Spinner spinnerTwo = (Spinner)v.findViewById(R.id.spinner2) ;
 
-        final RadioGroup mRadioGroupAllocateRoom = v.findViewById(R.id.radioGroupRoomNumbers) ;
 
-        /*==========================         RadioGroup  ======================================*/
+        v.findViewById(R.id.guest2_dialog).setVisibility(View.INVISIBLE);
+
+
+        spinnerTwo.setVisibility(View.INVISIBLE);
+
+
+
+
+
+        mRadioGroupAllocateRoom = v.findViewById(R.id.radioGroupRoomNumbers) ;
+
+
+        mDialogClickListener.setSpinner(mRadioGroupAllocateRoom , one ,two , spinnerOne ,spinnerTwo,position,v);
+
+        /*=========================        RadioGroup  ======================================*/
 
         mRadioGroupAllocateRoom.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
 
-              mDialogClickListener.onRadioGroupClicked(mRadioGroupAllocateRoom , one ,two , spinnerOne ,spinnerTwo,position);
+              mDialogClickListener.setSpinner(mRadioGroupAllocateRoom , one ,two , spinnerOne ,spinnerTwo,position,v);
 
             }
         });
@@ -122,6 +139,8 @@ public class Admin_DialogSelect_PendingDetails extends DialogFragment implements
     public interface DialogClickListener
     {
         void onDialogClick(View view, String type) ;
-        void onRadioGroupClicked(RadioGroup r , RadioButton one , RadioButton two , Spinner spinnerOne ,Spinner spinnerTwo,int position);
+        void setSpinner(RadioGroup r , RadioButton one , RadioButton two
+                , Spinner spinnerOne ,Spinner spinnerTwo,int position, View v);
+        void onRadioGroupClicked() ;
     }
 }

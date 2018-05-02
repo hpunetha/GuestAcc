@@ -120,6 +120,7 @@
                 android:layout_alignBottom="@+id/imageView"
                 android:layout_alignStart="@+id/npersons"
                 android:backgroundTint="@color/colorPrimary"
+
                 android:minHeight="0dp"
                 android:textColor="@color/white"
                 android:minWidth="0dp"
@@ -143,12 +144,31 @@
                 android:textSize="12dp" />
 
             <TextView
+                android:id="@+id/fromDateTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_below="@+id/npersons"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@+id/fromDateTextViewValue"
+                android:text="28-05-1991" />
+
+            <TextView
+                android:id="@+id/fromDateTextViewValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_alignBaseline="@+id/fromDateTextView"
+                android:layout_alignBottom="@+id/fromDateTextView"
+                android:layout_alignStart="@+id/textView9"
+                android:text="Start Date:" />
+
+            <TextView
                 android:id="@+id/total"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:layout_above="@+id/approve_validate"
-                android:layout_marginBottom="12dp"
+                android:layout_below="@+id/fromDateTextViewValue"
                 android:layout_toEndOf="@+id/textView9"
                 android:text="3000" />
 

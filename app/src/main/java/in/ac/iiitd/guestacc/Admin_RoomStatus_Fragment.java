@@ -70,7 +70,10 @@ public class Admin_RoomStatus_Fragment extends Fragment implements Admin_RoomSta
     Admin_RoomStatus_RecyclerAdapter adapter;
 
 
-    public String MapRoom(String t) {
+
+
+    public  String MapRoom(String t)
+    {
         String type = "";
 
         if (t.contains("bh")) type = "Boys' Hostel";
@@ -79,7 +82,7 @@ public class Admin_RoomStatus_Fragment extends Fragment implements Admin_RoomSta
         if (t.contains("frf")) type = "Faculty Flat";
 
 
-        return type;
+        return type ;
 
     }
 
@@ -89,11 +92,13 @@ public class Admin_RoomStatus_Fragment extends Fragment implements Admin_RoomSta
         View adminRoomStatus = inflater.inflate(R.layout.fragment_admin_room_status, container, false);
 
         data = new ArrayList<>();
+
+      //  mDatabase = FirebaseDatabase.getInstance() ;
      /*#################################### RETRIEVE DATA END ############################################*/
 
-        // mListViewAdminRoomStatus = (ListView) adminRoomStatus.findViewById(R.id.list_adminRoomStatus);
+       // mListViewAdminRoomStatus = (ListView) adminRoomStatus.findViewById(R.id.list_adminRoomStatus);
         mEditTextFromDate = (EditText) adminRoomStatus.findViewById(R.id.editTextAdminRoomFrom);
-        TextView mAdminRoomStatus = (TextView) adminRoomStatus.findViewById(R.id.adminRoomStatus);
+        TextView mAdminRoomStatus = (TextView) adminRoomStatus.findViewById(R.id.adminRoomStatus) ;
         mAdminRoomStatus.setVisibility(View.GONE);
         mEditTextToDate = (EditText) adminRoomStatus.findViewById(R.id.editTextAdminRoomTo);
         mAdminRoomAvailability = (Button) adminRoomStatus.findViewById(R.id.button_adminRoomCheckAvailability);
@@ -206,44 +211,46 @@ public class Admin_RoomStatus_Fragment extends Fragment implements Admin_RoomSta
 //                });
 
 
+
         //*********************************************************************************************************************
 
 
         /*################################    RETRIEVE DATA #####################################################*/
 
 
-        try {
+
+
+        try
+        {
             mDatabase = FirebaseDatabase.getInstance();
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
 
 
 
 
-        /*================================   KULDEEP' CODE ==========================================*/
-        DatabaseReference mDatabaseReference;
-        final ArrayList<String> mRoomName = new ArrayList<>();
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference("room_details");
-        mRoomName.clear();
-
-        mDatabaseReference.addValueEventListener(new ValueEventListener() {
+        mAdminRoomAvailability.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot val : dataSnapshot.getChildren()) {
-                    if (dataSnapshot.getValue() != null) {
-                        //Store list of all rooms
-                        mRoomName.add(String.valueOf(val.child("id").getValue()));
-                        Log.i("status", String.valueOf(val.child("id").getValue()));
-                    }
-                }
+            public void onClick(View view) {
+
+                data.clear();
+                showRooms();
+            }
+        });
 
 
-                //*************************************Range Query*********************************************
 
 
-                mAllDateRoomsAvailabilityCount = new HashMap<>();
-     /*   mAllDateRoomsAvailabilityCount.put("bh1",true);
+
+
+
+/*************************   RECYCLER VIEW  ***************************************/
+
+
+/*   mAllDateRoomsAvailabilityCount.put("bh1",true);
         mAllDateRoomsAvailabilityCount.put("bh2",true);
         mAllDateRoomsAvailabilityCount.put("gh1",true);
         mAllDateRoomsAvailabilityCount.put("gh2",true);
@@ -254,205 +261,42 @@ public class Admin_RoomStatus_Fragment extends Fragment implements Admin_RoomSta
         mAllDateRoomsAvailabilityCount.put("frf2",true);*/
 
 
-                for (int i = 0; i < mRoomName.size(); i++) {
-                    mAllDateRoomsAvailabilityCount.put(mRoomName.get(i), true);
 
-                    Log.e("INC", mRoomName.get(i));
-                }
 
-                Date mFromDate, mToDate1;
 
-                final List<String> mBookedRoomList;
+        recyclerView = (RecyclerView) adminRoomStatus.findViewById(R.id.admin_room_status_recycler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
 
-                mDateList = new ArrayList<>();
-                Calendar mCalender;
-                mFromDate = mToDate;
+        adapter = new Admin_RoomStatus_RecyclerAdapter(this.getActivity(), data);
 
-                mFirebaseDateList = new ArrayList<>();
-//        Log.i("sendToDate",mSendToDate);
-//        Log.i("fromDate",mSendFromDate);
+        adapter.setClickListener(this);
 
-                //Reference=> https://stackoverflow.com/questions/4216745/java-string-to-date-conversion
-                DateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                try {
-                    if (mDatabase != null) {
-                        mFromDate = mDateFormat.parse(mSendFromDate);
-                        mToDate1 = mDateFormat.parse(mSendToDate);
-                        // Reference=>   https://stackoverflow.com/questions/2689379/how-to-get-a-list-of-dates-between-two-dates-in-java
+        recyclerView.setAdapter(adapter);
 
 
-                        mCalender = new GregorianCalendar();
-                        mBookedRoomList = new ArrayList<String>();
-                        mCalender.setTime(mFromDate);
-                        while (mCalender.getTime().before(mToDate1)) {
-                            Date result = mCalender.getTime();
-                            String resultString = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(result);
+/****************************END RECYCLERVIEW******************************************/
+        return adminRoomStatus;
+    }
 
-                            mDateList.add(resultString);
-                            mCalender.add(Calendar.DATE, 1);
-                        }
 
-                        Log.i("Date List", mDateList.toString());
+    public void showRooms()
+    {
 
-                        final DatabaseReference myRef;
-                        // String basetable ="bookings_final";
-                        String basetable = "bookings_final";
+        /***************************************************************************************/
 
-                        //
-                        String strDBAccess = basetable;
-                        Log.i("date access", strDBAccess);
-                        myRef = mDatabase.getReference(strDBAccess);
+          /*================================   KULDEEP' CODE ==========================================*/
+        DatabaseReference mDatabaseReference ;
+        final ArrayList<String> mRoomName = new ArrayList<>();
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("room_details");
+        mRoomName.clear();
 
-                        myRef.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                //                        for(DataSnapshot child : dataSnapshot.getChildren() )
-                                //                        {
-                                //
-                                //
-                                //                        }
 
-                                Log.i("DATA SNAP START", dataSnapshot.toString());
-
-
-                                for (DataSnapshot child : dataSnapshot.getChildren()) {
-                                    exitFlag = false;
-
-                                    Log.i("Retrieving child", " child key => " + child.getKey() + " and mDateList" + mDateList);
-                                    if (mDateList.contains(child.getKey())) {
-                                        final String tempDateString = child.getKey();
-
-                                        if (child.getChildrenCount() != 0) {
-                                            Log.i("Bookings", "Bookings for " + tempDateString + " children " + dataSnapshot.getChildren().toString());
-
-                                            for (DataSnapshot dbS : child.getChildren()) {
-                                                try {
-
-                                                    Log.i("id booking", "id ->" + dbS.getKey() + " booking status->" + dbS.child("booking_status").getValue());
-
-                                                    if (dbS.getValue() != null) {
-                                                    }
-
-                                                    Booking mAdminBooking = dbS.getValue(Booking.class);
-                                                    // if (mAdminBooking.guests.size()>0)
-                                                    Log.i("INSIDETAG", mAdminBooking.booking_status);
-
-                                                    // pending_approval change to completed
-                                                    if (mAdminBooking.booking_status.equalsIgnoreCase("completed")) {
-
-
-                                                        if (mAdminBooking.guests.size() > 0) {
-                                                            for (Guest guest1 : mAdminBooking.guests) {
-
-                                                                Log.i("Check Keys", mAllDateRoomsAvailabilityCount.keySet().toString() + "  =? " + guest1.allocated_room);
-
-                                                                if (mAllDateRoomsAvailabilityCount.keySet().contains(guest1.allocated_room)) {
-                                                                    mAllDateRoomsAvailabilityCount.put(guest1.allocated_room, false);
-
-
-                                                                }
-                                                            }
-
-                                                            Log.i("Final Hashmap", mAllDateRoomsAvailabilityCount.toString());
-
-
-                                                        }
-
-
-                                                        //                                                    Log.i("INSIDETAG", mAdminBooking.guests.get(0).associated_room_id);
-
-                                                    }
-
-                                                } catch (Exception e) {
-                                                    e.printStackTrace();
-                                                }
-
-
-                                            }
-                                        } else {
-                                            Log.i("No Bookings ", "No Bookings for date " + tempDateString);
-
-
-                                        }
-
-                                    }
-
-
-                                }
-
-                                int count = 0;
-                                for (Map.Entry<String, Boolean> entry : mAllDateRoomsAvailabilityCount.entrySet()) {
-                                    Boolean val = entry.getValue();
-
-                                    if (val) {
-                                        count += 1;
-                                    }
-
-                                }
-
-                                if (count > mTotalRooms) {
-                                    Log.i("YIPPIE", " ================Rooms can be booked now=======================");
-
-                                } else {
-
-                                    Toast.makeText(getActivity(), "Specified number of rooms not available for given dates.", Toast.LENGTH_SHORT).show();
-
-                                }
-
-
-                            }
-
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-
-                        });
-                    }
-
-                } catch (ParseException e1) {
-                    e1.printStackTrace();
-                }
-
-
-                for (String key : mAllDateRoomsAvailabilityCount.keySet()) {
-                    String roomNo = "Room " + Character.toString(key.charAt(key.length() - 1));
-
-
-                    String color;
-                    Boolean c = mAllDateRoomsAvailabilityCount.get(key);
-
-
-                    if (c == true) color = "A";
-                    else color = "NA";
-
-
-                    Log.i("INCOMING_DATA", key);
-                    data.add(new Admin_Data_RoomStatus(MapRoom(key), roomNo, color));
-
-                }
-
-
-                if (adapter != null) adapter.notifyDataSetChanged();
-
-                //*************************************Range Query End*********************************************
-
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
 
         Log.i("statusSerach", mRoomName.toString());
         /*==========================  END KULDEEP'S CODE= ==============================================*/
 
+        mAllDateRoomsAvailabilityCount = new HashMap<>();
 
-
-/*        mAllDateRoomsAvailabilityCount = new HashMap<>();
         mAllDateRoomsAvailabilityCount.put("bh1",true);
         mAllDateRoomsAvailabilityCount.put("bh2",true);
         mAllDateRoomsAvailabilityCount.put("gh1",true);
@@ -461,31 +305,34 @@ public class Admin_RoomStatus_Fragment extends Fragment implements Admin_RoomSta
         mAllDateRoomsAvailabilityCount.put("frr2",true);
         mAllDateRoomsAvailabilityCount.put("frr3",true);
         mAllDateRoomsAvailabilityCount.put("frf1",true);
-        mAllDateRoomsAvailabilityCount.put("frf2",true);*/
+        mAllDateRoomsAvailabilityCount.put("frf2",true);
 
 
-        for (int i = 0; i < mRoomName.size(); i++) {
-            mAllDateRoomsAvailabilityCount.put(mRoomName.get(i), true);
 
-            Log.e("INC", mRoomName.get(i));
+        for(int i=0;i<mRoomName.size();i++)
+        {
+            mAllDateRoomsAvailabilityCount.put(mRoomName.get(i),true) ;
+
+            Log.e("INC",mRoomName.get(i)) ;
         }
 
-        Date mFromDate, mToDate1;
+        Date mFromDate,mToDate1;
 
         final List<String> mBookedRoomList;
 
-        mDateList = new ArrayList<>();
+        mDateList= new ArrayList<>();
         Calendar mCalender;
-        mFromDate = mToDate;
+        mFromDate=mToDate;
 
         mFirebaseDateList = new ArrayList<>();
 //        Log.i("sendToDate",mSendToDate);
 //        Log.i("fromDate",mSendFromDate);
 
         //Reference=> https://stackoverflow.com/questions/4216745/java-string-to-date-conversion
-        DateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-        try {
-            if (mDatabase != null) {
+        DateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH);
+        try
+        {
+            if (mDatabase!=null) {
                 mFromDate = mDateFormat.parse(mSendFromDate);
                 mToDate1 = mDateFormat.parse(mSendToDate);
                 // Reference=>   https://stackoverflow.com/questions/2689379/how-to-get-a-list-of-dates-between-two-dates-in-java
@@ -511,6 +358,9 @@ public class Admin_RoomStatus_Fragment extends Fragment implements Admin_RoomSta
                 //
                 String strDBAccess = basetable;
                 Log.i("date access", strDBAccess);*/
+
+
+                Log.e("KULDEEP",mAllDateRoomsAvailabilityCount.toString());
                 myRef = mDatabase.getReference(MainActivity.BOOKING_FINAL);
 
                 myRef.addValueEventListener(new ValueEventListener() {
@@ -590,26 +440,30 @@ public class Admin_RoomStatus_Fragment extends Fragment implements Admin_RoomSta
 
                         }
 
-                        int count = 0;
-                        for (Map.Entry<String, Boolean> entry : mAllDateRoomsAvailabilityCount.entrySet()) {
-                            Boolean val = entry.getValue();
+                        // **********************n Modification 8****************************8
 
-                            if (val) {
-                                count += 1;
-                            }
+
+
+                        for ( String key : mAllDateRoomsAvailabilityCount.keySet() )
+                        {
+                            String roomNo = "Room "+Character.toString(key.charAt(key.length()-1)) ;
+
+                            String color ;
+
+
+                            Boolean  c = mAllDateRoomsAvailabilityCount.get(key) ;
+
+
+                            if(c==true)         color = "A" ;
+                            else                color = "NA" ;
+                            Log.i("INCOMING_DATA",MapRoom(key));
+                            data.add(new Admin_Data_RoomStatus(MapRoom(key),roomNo,color));
 
                         }
 
-                        if (count > mTotalRooms) {
-                            Log.i("YIPPIE", " ================Rooms can be booked now=======================");
+                        if(adapter!=null)      adapter.notifyDataSetChanged();
 
-                        } else {
-
-                            Toast.makeText(getActivity(), "Specified number of rooms not available for given dates.", Toast.LENGTH_SHORT).show();
-
-                        }
-
-
+                        //**********************************************************************
                     }
 
 
@@ -619,59 +473,17 @@ public class Admin_RoomStatus_Fragment extends Fragment implements Admin_RoomSta
                     }
 
                 });
-
-
             }
 
-        } catch (ParseException e1) {
+        }
+        catch (ParseException e1)
+        {
             e1.printStackTrace();
         }
 
 
-/*************************   RECYCLER VIEW  ***************************************/
 
-
-/*   mAllDateRoomsAvailabilityCount.put("bh1",true);
-        mAllDateRoomsAvailabilityCount.put("bh2",true);
-        mAllDateRoomsAvailabilityCount.put("gh1",true);
-        mAllDateRoomsAvailabilityCount.put("gh2",true);
-        mAllDateRoomsAvailabilityCount.put("frr1",true);
-        mAllDateRoomsAvailabilityCount.put("frr2",true);
-        mAllDateRoomsAvailabilityCount.put("frr3",true);
-        mAllDateRoomsAvailabilityCount.put("frf1",true);
-        mAllDateRoomsAvailabilityCount.put("frf2",true);*/
-/*        data = new ArrayList<>();
-
-        for ( String key : mAllDateRoomsAvailabilityCount.keySet() )
-        {
-            String roomNo = "Room "+Character.toString(key.charAt(key.length()-1)) ;
-            String t = key.substring(0,key.length()-2) ;
-            String color ;
-
-
-            Boolean  c = mAllDateRoomsAvailabilityCount.get(key) ;
-
-
-            if(c==true)         color = "A" ;
-            else                color = "NA" ;
-            Log.i("INCOMING_DATA",t);
-            data.add(new Admin_Data_RoomStatus(MapRoom(t),roomNo,color));
-
-        }*/
-
-
-        recyclerView = (RecyclerView) adminRoomStatus.findViewById(R.id.admin_room_status_recycler);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
-
-        adapter = new Admin_RoomStatus_RecyclerAdapter(this.getActivity(), data);
-
-        adapter.setClickListener(this);
-
-        recyclerView.setAdapter(adapter);
-
-
-/****************************END RECYCLERVIEW******************************************/
-        return adminRoomStatus;
+        /***************************************************************************************/
     }
 
 //    @SuppressLint("StaticFieldLeak")

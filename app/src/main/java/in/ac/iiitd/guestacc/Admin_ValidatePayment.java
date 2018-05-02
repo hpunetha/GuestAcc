@@ -63,6 +63,7 @@ public class Admin_ValidatePayment extends AppCompatActivity implements Admin_Va
                         mAdminData.setPersons(ds2.child("no_of_persons").getValue().toString());
                         mAdminData.setRooms(ds2.child("no_of_rooms").getValue().toString());
                         mAdminData.setTotal(ds2.child("total_price").getValue().toString());
+                        mAdminData.setFromDate(ds2.child("from_date").getValue().toString());
                         Log.i("madmindata", mAdminData.getPersons() + " " + mAdminData.getReqId() +" " + mAdminData.getRooms() + " " + mAdminData.getTotal());
                         data.add(mAdminData);
                     }

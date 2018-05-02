@@ -2,6 +2,7 @@ package in.ac.iiitd.guestacc;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,6 +70,7 @@ public class Admin_ValidatePayment_RecyclerAdapter extends RecyclerView.Adapter<
         holder.persons.setText(dataRow.getPersons());
         holder.rooms.setText(dataRow.getRooms());
         holder.total.setText(dataRow.getTotal());
+        holder.fromDate.setText(dataRow.getFromDate());
 
 
 
@@ -85,6 +87,8 @@ public class Admin_ValidatePayment_RecyclerAdapter extends RecyclerView.Adapter<
         private TextView persons ;
         private TextView rooms ;
         private TextView total ;
+        private TextView fromDate;
+
 
 
 
@@ -94,9 +98,9 @@ public class Admin_ValidatePayment_RecyclerAdapter extends RecyclerView.Adapter<
 
             reqID = itemView.findViewById(R.id.reqid_text) ;
             persons =  itemView.findViewById(R.id.npersons) ;
-            rooms = itemView.findViewById(R.id.roomname_cancel_bookings) ;
+            rooms = itemView.findViewById(R.id.roomname_cancel_bookings);
             total = itemView.findViewById(R.id.total) ;
-
+            fromDate= itemView.findViewById(R.id.fromDateTextViewValue);
 
             approveMainButton = itemView.findViewById(R.id.approve_validate) ;
             cancelMainButton = itemView.findViewById(R.id.cancel_validate) ;
@@ -112,7 +116,7 @@ public class Admin_ValidatePayment_RecyclerAdapter extends RecyclerView.Adapter<
                 public void onClick(View v)
                 {
 
-
+                    Log.i("Date ",data.get(getAdapterPosition()).fromDate);
 
                     // getting context from main activity
                     // dialogSelect.show(((AppCompatActivity)context).getSupportFragmentManager(),"123");
@@ -131,7 +135,9 @@ public class Admin_ValidatePayment_RecyclerAdapter extends RecyclerView.Adapter<
 
 
 
-                    DatabaseReference myRef = mDatabase.getReference(MainActivity.ADMIN_DETAILS);
+                    DatabaseReference myRef = mDatabase.getReference(MainActivity.BOOKING_FINAL);
+
+                    Log.i("Data =>",data.toString());
 
                     myRef.addValueEventListener(new ValueEventListener() {
                         @Override
