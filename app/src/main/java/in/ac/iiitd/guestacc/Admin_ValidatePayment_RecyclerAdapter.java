@@ -116,7 +116,7 @@ public class Admin_ValidatePayment_RecyclerAdapter extends RecyclerView.Adapter<
                 public void onClick(View v)
                 {
 
-
+                    Log.i("Date ",data.get(getAdapterPosition()).fromDate);
 
                     // getting context from main activity
                     // dialogSelect.show(((AppCompatActivity)context).getSupportFragmentManager(),"123");
