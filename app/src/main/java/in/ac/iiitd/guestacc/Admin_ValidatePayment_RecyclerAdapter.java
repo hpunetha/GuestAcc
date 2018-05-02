@@ -9,7 +9,11 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -19,6 +23,7 @@ import java.util.List;
 
 public class Admin_ValidatePayment_RecyclerAdapter extends RecyclerView.Adapter<Admin_ValidatePayment_RecyclerAdapter.ViewHolder>
 {
+    FirebaseDatabase mDatabase;
     View v;
     private LayoutInflater inflater ;
     private ValidateItemClickListener mClickListener ;
@@ -107,8 +112,39 @@ public class Admin_ValidatePayment_RecyclerAdapter extends RecyclerView.Adapter<
                 public void onClick(View v)
                 {
 
+
+
                     // getting context from main activity
                     // dialogSelect.show(((AppCompatActivity)context).getSupportFragmentManager(),"123");
+
+
+
+                    try {
+                        //email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+                        mDatabase = FirebaseDatabase.getInstance();
+                    }
+                    catch (NullPointerException e)
+                    {
+                        e.printStackTrace();
+                    }
+
+
+
+
+                    DatabaseReference myRef = mDatabase.getReference(MainActivity.ADMIN_DETAILS);
+
+                    myRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
 
 
 
