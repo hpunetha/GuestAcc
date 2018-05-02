@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -18,6 +19,7 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,9 +30,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class Admin_Pending_Approval extends AppCompatActivity implements Admin_Pending_Approval_RecyclerAdapter.ItemClickListener
@@ -40,6 +50,8 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
     ProgressDialog progressDialog;
     List<Admin_Data_PendingApproval> mAdminPendingApprovalData = new ArrayList<>(); //Store pending approval data
     HashMap<String, Booking> mAdminUpdateData = new HashMap<>();
+    HashMap<String,Boolean> mAllDateRoomsAvailabilityCount ;
+    ArrayList<String> mRoomName ;
 
     Boolean flag = false;
 
@@ -51,6 +63,47 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
     String requestId;
     int count = 0;
     int countcount = 0;
+    List<String> mDateList ;
+    Boolean exitFlag = true ;
+    String from_date;
+    String to_date;
+    Date mToDate;
+    ArrayList mFirebaseDateList ;
+
+    FirebaseDatabase mDatabase ;
+    Spinner spinnerOne ;
+    Spinner spinnerTwo ;
+    List<String> spinnerItemsList ;
+
+
+    public  String MapRoom(String t)
+    {
+        String type = "";
+
+        if (t.contains("bh")) type = "Boys' Hostel";
+        if (t.contains("gh")) type = "Girls' Hostel";
+        if (t.contains("frr")) type = "Faculty Rooms";
+        if (t.contains("frf")) type = "Faculty Flat";
+
+
+        return type ;
+
+    }
+
+
+    public  String MapPrice(String t)
+    {
+        String price = "";
+
+        if (t.contains("bh")) price = "1500";
+        if (t.contains("gh")) price = "1500";
+        if (t.contains("frr")) price = "1500";
+        if (t.contains("frf")) price = "2500";
+
+
+        return price ;
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,12 +114,25 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
         context = this;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading..... Please Wait");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.setIndeterminate(true);
         progressDialog.show();
         //new getPendingApproval().execute();
+
+        try
+        {
+            mDatabase = FirebaseDatabase.getInstance() ;
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+
+
+
 //****************************************************************************************************
 
 
@@ -799,25 +865,286 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
 
     @Override
 
-    public void onRadioGroupClicked(RadioGroup r , RadioButton one , RadioButton two ,Spinner spinnerOne , Spinner spinnerTwo , int position)
+    public void setSpinner(RadioGroup r , RadioButton one , RadioButton two ,Spinner spinner1 , Spinner spinner2 , int position , View v)
     {
 
         //TODO Receive rooms with price in hashmap
         //TODO range query between dates
         //TODO write operations in database
-        String from_date;
-        String to_date;
-        if(one.isChecked()) {
-            spinnerTwo.setVisibility(View.GONE);
+
+
+        this.spinnerOne = v.findViewById(R.id.spinner1);
+        this.spinnerTwo = v.findViewById(R.id.spinner2);
+        if (one.isChecked())
+        {
+
+            /*********** HIDE LOWER VIEWS      ********************/
+            spinnerTwo.setVisibility(View.INVISIBLE);
+            v.findViewById(R.id.guest2_dialog).setVisibility(View.INVISIBLE);
             from_date = mAdminPendingApprovalData.get(position).getDate().split(" ")[0];
             to_date = mAdminPendingApprovalData.get(position).getDate().split(" ")[1];
 
- //***********************************   Range Query inside One room Dialog group *****************************************************
+            //***********************************   Range Query inside One room Dialog group *****************************************************
 
 
- //********************************* Range query end inside One room Dialog Group ****************************************************
+
+ /*================================   KULDEEP' CODE ==========================================*/
+
+
+/*
+
+ DatabaseReference mDatabaseReference ;
+            final ArrayList<String> mRoomName = new ArrayList<>();
+            mDatabaseReference = FirebaseDatabase.getInstance().getReference("room_details");
+            mRoomName.clear();
+
+            mDatabaseReference.addValueEventListener(new ValueEventListener()
+            {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot val : dataSnapshot.getChildren()) {
+                        if (dataSnapshot.getValue() != null) {
+                            //Store list of all rooms
+                            mRoomName.add(String.valueOf(val.child("id").getValue()));
+                            Log.i("status", String.valueOf(val.child("id").getValue()));
+                        }
+                    }
+*/
+
+
+            //*************************************Range Query*********************************************
+
+
+            mAllDateRoomsAvailabilityCount = new HashMap<>();
+            mAllDateRoomsAvailabilityCount.put("bh1", true);
+            mAllDateRoomsAvailabilityCount.put("bh2", true);
+            mAllDateRoomsAvailabilityCount.put("gh1", true);
+            mAllDateRoomsAvailabilityCount.put("gh2", true);
+            mAllDateRoomsAvailabilityCount.put("frr1", true);
+            mAllDateRoomsAvailabilityCount.put("frr2", true);
+            mAllDateRoomsAvailabilityCount.put("frr3", true);
+            mAllDateRoomsAvailabilityCount.put("frf1", true);
+            mAllDateRoomsAvailabilityCount.put("frf2", true);
+
+
+/*
+
+                    for(int i=0;i<mRoomName.size();i++)
+                    {
+                        mAllDateRoomsAvailabilityCount.put(mRoomName.get(i),true) ;
+
+                        Log.e("INC",mRoomName.get(i)) ;
+                    }
+*/
+
+            Date mFromDate, mToDate1;
+
+            List<String> mBookedRoomList;
+
+            mDateList = new ArrayList<>();
+            Calendar mCalender;
+            mFromDate = mToDate;
+
+            mFirebaseDateList = new ArrayList<>();
+//        Log.i("sendToDate",mSendToDate);
+//        Log.i("fromDate",mSendFromDate);
+
+            //Reference=> https://stackoverflow.com/questions/4216745/java-string-to-date-conversion
+            DateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+            try {
+                if (mDatabase != null)
+                {
+                    mFromDate = mDateFormat.parse(from_date);
+                    mToDate1 = mDateFormat.parse(to_date);
+                    // Reference=>   https://stackoverflow.com/questions/2689379/how-to-get-a-list-of-dates-between-two-dates-in-java
+
+
+                    mCalender = new GregorianCalendar();
+                    mBookedRoomList = new ArrayList<String>();
+                    mCalender.setTime(mFromDate);
+                    while (mCalender.getTime().before(mToDate1)) {
+                        Date result = mCalender.getTime();
+                        String resultString = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(result);
+
+                        mDateList.add(resultString);
+                        mCalender.add(Calendar.DATE, 1);
+                    }
+
+                    Log.i("Date List", mDateList.toString());
+
+                    final DatabaseReference myRef;
+                    // String basetable ="bookings_final";
+                    String basetable = "bookings_final";
+
+                    //
+                    String strDBAccess = basetable;
+                    Log.i("date access", strDBAccess);
+                    myRef = mDatabase.getReference(strDBAccess);
+
+                    myRef.addValueEventListener(new ValueEventListener()
+                    {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot)
+                        {
+                            //                        for(DataSnapshot child : dataSnapshot.getChildren() )
+                            //                        {
+                            //
+                            //
+                            //                        }
+
+                            Log.i("DATA SNAP START", dataSnapshot.toString());
+
+
+                            for (DataSnapshot child : dataSnapshot.getChildren()) {
+                                exitFlag = false;
+
+                                Log.i("Retrieving child", " child key => " + child.getKey() + " and mDateList" + mDateList);
+                                if (mDateList.contains(child.getKey())) {
+                                    final String tempDateString = child.getKey();
+
+                                    if (child.getChildrenCount() != 0) {
+                                        Log.i("Bookings", "Bookings for " + tempDateString + " children " + dataSnapshot.getChildren().toString());
+
+                                        for (DataSnapshot dbS : child.getChildren()) {
+                                            try {
+
+                                                Log.i("id booking", "id ->" + dbS.getKey() + " booking status->" + dbS.child("booking_status").getValue());
+
+                                                if (dbS.getValue() != null) {
+                                                }
+
+                                                Booking mAdminBooking = dbS.getValue(Booking.class);
+                                                // if (mAdminBooking.guests.size()>0)
+                                                Log.i("INSIDETAG", mAdminBooking.booking_status);
+
+                                                // pending_approval change to completed
+                                                if (mAdminBooking.booking_status.equalsIgnoreCase("completed")) {
+
+
+                                                    if (mAdminBooking.guests.size() > 0)
+                                                    {
+                                                        for (Guest guest1 : mAdminBooking.guests)
+                                                        {
+
+                                                            Log.i("Check Keys", mAllDateRoomsAvailabilityCount.keySet().toString() + "  =? " + guest1.allocated_room);
+
+                                                            if (mAllDateRoomsAvailabilityCount.keySet().contains(guest1.allocated_room))
+                                                            {
+                                                                mAllDateRoomsAvailabilityCount.put(guest1.allocated_room, false);
+
+                                                                Log.i("FINAL HASH LOOP",mAllDateRoomsAvailabilityCount.toString());
+                                                            }
+                                                        }
+
+                                                        Log.i("Final Hashmap", mAllDateRoomsAvailabilityCount.toString());
+
+
+                                                    }
+
+
+                                                    //                                                    Log.i("INSIDETAG", mAdminBooking.guests.get(0).associated_room_id);
+
+                                                }
+
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+
+
+                                        }
+                                    } else {
+                                        Log.i("No Bookings ", "No Bookings for date " + tempDateString);
+
+
+                                    }
+
+                                }
+
+
+                            }
+
+                            int count = 0;
+                            for (Map.Entry<String, Boolean> entry : mAllDateRoomsAvailabilityCount.entrySet()) {
+                                Boolean val = entry.getValue();
+
+                                if (val) {
+                                    count += 1;
+                                }
+
+                            }
+                            spinnerItemsList = new ArrayList<>();
+
+
+                            Log.i("NEW FINAL HASHMAP", mAllDateRoomsAvailabilityCount.toString());
+
+                            for (String key : mAllDateRoomsAvailabilityCount.keySet()) {
+                                if (mAllDateRoomsAvailabilityCount.get(key)) {
+                                    String roomNo = "Room " + Character.toString(key.charAt(key.length() - 1));
+                                    String roomType = MapRoom(key);
+                                    String price = MapPrice(key);
+
+                                    spinnerItemsList.add(roomType + " " + roomNo);
+                                    Log.i("INCOMING_DATA", key);
+                                    //data.add(new Admin_Data_RoomStatus(MapRoom(key),roomNo,color));
+                                }
+                            }
+
+
+                            // define spinner adapter
+
+                            final ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(Admin_Pending_Approval.this, android.R.layout.simple_spinner_item, spinnerItemsList);
+
+                            spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                            spinnerOne.setAdapter(spinnerArrayAdapter);
+
+/*
+                                    if (count > mTotalRooms) {
+                                        Log.i("YIPPIE", " ================Rooms can be booked now=======================");
+
+                                    } else {
+
+                                        Toast.makeText(getActivity(), "Specified number of rooms not available for given dates.", Toast.LENGTH_SHORT).show();
+
+                                    }*/
+
+
+                        }
+
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+
+                    });
+                }
+
+            } catch (ParseException e1) {
+                e1.printStackTrace();
+            }
+
+
+            //  if (adapter!=null) adapter.notifyDataSetChanged();
+
+            //*************************************Range Query End*********************************************
 
         }
+
+              /*  @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }*/
+         // });
+
+           // Log.i("statusSerach", mRoomName.toString());
+        /*==========================  END KULDEEP'S CODE= ==============================================*/
+
+
+
+
+            //********************************* Range query end inside One room Dialog Group ****************************************************
+
+
         else {
 
             //**********************************   Range Query inside Two room Group  *****************************************************
@@ -826,6 +1153,16 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
             //*********************************  Range query inside Two room group end  ****************************************************
 
         }
+    }
+
+    @Override
+    public void onRadioGroupClicked()
+    {
+        final ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(Admin_Pending_Approval.this,android.R.layout.simple_spinner_item,spinnerItemsList);
+
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        spinnerOne.setAdapter(spinnerArrayAdapter);
+
     }
 
 
