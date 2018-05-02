@@ -20,6 +20,9 @@
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"
                 android:layout_height="240dp"
+                android:padding="10dp"
+                android:background="@drawable/custombtn1"
+                android:layout_marginTop="50dp"
                 android:contentDescription="@string/imgdetails"
                 app:srcCompat="@drawable/img_def" />
 
@@ -27,6 +30,7 @@
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:layout_marginTop="20dp"
                 android:layout_weight="1">
 
                 <RadioGroup
@@ -34,6 +38,7 @@
                     android:layout_width="300dp"
                     android:layout_height="180dp"
                     android:layout_marginEnd="2dp"
+
                     android:layout_marginStart="2dp"
                     android:background="@drawable/custombtn1"
                     android:paddingEnd="5dp"
