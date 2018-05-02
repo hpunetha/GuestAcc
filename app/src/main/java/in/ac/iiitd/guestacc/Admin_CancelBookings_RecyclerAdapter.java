@@ -32,7 +32,7 @@ public class Admin_CancelBookings_RecyclerAdapter extends RecyclerView.Adapter<A
     RelativeLayout relativeLayout ;
     Context context;
     DatabaseReference mBOOKING_FINAL = FirebaseDatabase.getInstance().getReference(MainActivity.BOOKING_FINAL_);
-    DatabaseReference user = FirebaseDatabase.getInstance().getReference("user/priyabrata17043");
+    DatabaseReference user = FirebaseDatabase.getInstance().getReference("user/"+FacultyHomeActivity.mCurrentUserEmail.replace("@iiitd.ac.in",""));
 
 
     Admin_CancelBookings_RecyclerAdapter(Context con, List<Admin_Data_CancelBookings> data)
