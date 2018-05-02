@@ -317,6 +317,7 @@ public class TypeLoginActivity extends AppCompatActivity {
                                 Toast.makeText(TypeLoginActivity.this,"Authenticated as Admin", Toast.LENGTH_SHORT).show();
                                 Intent mAdminHome = new Intent(TypeLoginActivity.this,Admin_HomeActivity.class);
                                 startActivity(mAdminHome);
+                                finish();
                                 flag=true;
                                 break;
                             }
@@ -465,6 +466,7 @@ public class TypeLoginActivity extends AppCompatActivity {
                                     startActivity(mFacultyHome);
 
                                     mStaffFlag = true;
+
 
 
                                     Log.w("Last HashMap Val=", mToCheckEmail);

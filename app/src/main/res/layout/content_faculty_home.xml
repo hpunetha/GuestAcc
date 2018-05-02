@@ -134,7 +134,7 @@
                         <android.support.v7.widget.CardView
                             android:id="@+id/contractedCardView"
                             android:layout_width="match_parent"
-                            android:layout_height="130dp"
+                            android:layout_height="wrap_content"
                             android:layout_margin="10dp"
                             android:elevation="1dp"
                             android:padding="10dp"
@@ -172,7 +172,7 @@
                         <android.support.v7.widget.CardView
                             android:id="@+id/expandedCardView"
                             android:layout_width="match_parent"
-                            android:layout_height="250dp"
+                            android:layout_height="wrap_content"
                             android:layout_margin="10dp"
                             android:elevation="1dp"
                             android:padding="10dp"
@@ -182,26 +182,29 @@
 
                             <RelativeLayout
                                 android:layout_width="wrap_content"
-                                android:layout_height="match_parent">
+                                android:layout_height="wrap_content">
 
                                 <TextView
                                     android:id="@+id/termsheadingexpanded"
                                     android:layout_width="match_parent"
-                                    android:layout_height="40dp"
+                                    android:layout_height="wrap_content"
                                     android:background="@color/buttonColor"
+                                    android:maxLines="500"
 
 
-                                    android:minLines="1"
                                     android:padding="10dp"
                                     android:text="Terms and Conditions"
                                     android:textColor="@android:color/white" />
 
                                 <TextView
+                                    android:id="@+id/allTextTerms"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-
+                                    android:minLines="1"
+                                    android:singleLine="false"
+                                    android:scrollbars="vertical"
                                     android:layout_below="@id/termsheadingexpanded"
-                                    android:maxLines="40"
+                                    android:maxLines="500"
                                     android:padding="10dp"
                                     android:text="@string/termsexpanded" />
 
@@ -221,8 +224,7 @@
                                 android:id="@+id/agreeTermsCheckBox"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:shadowColor="@color/buttonColor"
-
+                                android:shadowColor="@color/white"
                                 android:layout_centerVertical="true"
                                 android:layout_marginLeft="10dp"
 
@@ -254,7 +256,7 @@
                         android:layout_marginEnd="8dp"
                         android:layout_marginStart="8dp"
 
-                        android:background="@color/buttonColor"
+                        android:background="@drawable/enableddisabledbutton"
 
                         android:text="@string/book"
                         android:textAllCaps="false"

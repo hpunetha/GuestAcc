@@ -77,37 +77,35 @@ public class Admin_HomeActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         }
-// else {
-//            super.onBackPressed();
-//        }
-
-        mBackCount++;
-
-        if (mBackCount == 1) {
-            Toast.makeText(this, "Press again 2 times to Sign-out", Toast.LENGTH_SHORT).show();
+        else {
+            super.onBackPressed();
 
 
-        } else if (mBackCount > 2) {
-//            FirebaseAuth.getInstance().signOut();
-//            Intent mSignOut = new Intent(Admin_HomeActivity.this, MainActivity.class);
-//            mSignOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//            startActivity(mSignOut);
-
-            LoginClient_Singleton mClient = LoginClient_Singleton.getInstance(null);
-            GoogleSignInClient mGSClient = mClient.getClient();
-            mGSClient.signOut()
-                    .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            // Signing out Gmail as well
-                        }
-                    });
-            FirebaseAuth.getInstance().signOut();
-
-            Intent mSignOut = new Intent(this, MainActivity.class);
-            mSignOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(mSignOut);
-        }
+//            mBackCount++;
+//
+//            if (mBackCount == 2) {
+//                Toast.makeText(this, "Press back 2 more times to sign-out", Toast.LENGTH_SHORT).show();
+//            }else if (mBackCount == 3) {
+//                    Toast.makeText(this, "Press back 1 more time to sign-out", Toast.LENGTH_SHORT).show();
+//
+//            } else if (mBackCount > 3) {
+//
+//                LoginClient_Singleton mClient = LoginClient_Singleton.getInstance(null);
+//                GoogleSignInClient mGSClient = mClient.getClient();
+//                mGSClient.signOut()
+//                        .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+//                            @Override
+//                            public void onComplete(@NonNull Task<Void> task) {
+//                                // Signing out Gmail as well
+//                            }
+//                        });
+//                FirebaseAuth.getInstance().signOut();
+//
+//                Intent mSignOut = new Intent(this, MainActivity.class);
+//                mSignOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(mSignOut);
+//            }
+      }
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -118,7 +116,7 @@ public class Admin_HomeActivity extends AppCompatActivity
         if (id == R.id.adminHome) {
             getFragmentManager().beginTransaction().replace(R.id.adminHomeFrame, new Admin_HomeFragment()).commit();
         } else if (id == R.id.adminRoomStatus) {
-            getFragmentManager().beginTransaction().replace(R.id.adminHomeFrame, new Admin_RoomStatus_Fragment()).commit();
+            getFragmentManager().beginTransaction().replace(R.id.adminHomeFrame, new Admin_RoomStatus_Fragment()).addToBackStack("roomstatus").commit();
         } else if (id == R.id.adminCancelBooking) {
             Intent adminCancelBookingIntent = new Intent(Admin_HomeActivity.this,Admin_CancelBookings.class);
             startActivity(adminCancelBookingIntent);

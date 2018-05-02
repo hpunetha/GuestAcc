@@ -50,6 +50,7 @@ public class Admin_HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View adminHomeView = inflater.inflate(R.layout.fragment_admin_home, container, false);
 
+
         mTextViewBookedRooms = (TextView) adminHomeView.findViewById(R.id.adminHomeBookedRooms);
         mTextViewAvailableRooms = (TextView) adminHomeView.findViewById(R.id.adminRoomsAvailable);
         mTextViewFacultyRequest = (TextView) adminHomeView.findViewById(R.id.adminHomeFacultyRequest);

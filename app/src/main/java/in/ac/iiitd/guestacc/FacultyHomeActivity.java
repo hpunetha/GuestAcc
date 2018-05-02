@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.CardView;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -160,6 +161,9 @@ public class FacultyHomeActivity extends AppCompatActivity
         final RelativeLayout.LayoutParams mContractedParameters = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         mContractedParameters.addRule(RelativeLayout.BELOW, R.id.contractedCardView);
 
+
+//        TextView mTextAllTerms = findViewById(R.id.allTextTerms);
+//        mTextAllTerms.setMovementMethod(new ScrollingMovementMethod());
 
         mAgreeTermsRelativeLayout = (RelativeLayout) findViewById(R.id.agreeTermsRelativeLayout);
         mAgreeTermsCheckBox =(CheckBox) findViewById(R.id.agreeTermsCheckBox);
@@ -492,24 +496,25 @@ public class FacultyHomeActivity extends AppCompatActivity
 
         }
 
+
         getMenuInflater().inflate(R.menu.faculty_home, menu);
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
