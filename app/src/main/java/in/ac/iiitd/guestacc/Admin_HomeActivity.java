@@ -123,6 +123,8 @@ public class Admin_HomeActivity extends AppCompatActivity
 
         } else if (id == R.id.adminAddRoom)
         {
+            Intent adminRoomAddIntent = new Intent(Admin_HomeActivity.this,Admin_RoomAddActivity.class);
+            startActivity(adminRoomAddIntent);
 
 
         } else if (id == R.id.adminAddAdmin)

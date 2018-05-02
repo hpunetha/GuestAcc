@@ -41,6 +41,8 @@ public class AdminRegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_registration);
 
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mMyFirebaseRef = FirebaseDatabase.getInstance().getReference(MainActivity.ADMIN_DETAILS);
 
         mNameF = (EditText)findViewById(R.id.editTextNameAdmin);

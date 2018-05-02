@@ -46,7 +46,7 @@
         <activity
             android:name=".FacultyRegistrationActivity"
             android:label="Registration"
-            android:parentActivityName=".Admin_HomeActivity"
+            android:parentActivityName=".FacultyHomeActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Admin_HomeActivity"
@@ -91,7 +91,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AdminRegistrationActivity"></activity>
+        <activity android:name=".AdminRegistrationActivity"
+            android:parentActivityName=".Admin_HomeActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Admin_RoomAddActivity"
+            android:parentActivityName=".Admin_HomeActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
     </application>
 
 </manifest>
