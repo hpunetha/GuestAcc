@@ -112,10 +112,13 @@ public class Admin_Pending_Approval_RecyclerAdapter extends RecyclerView.Adapter
 
                 relativeLayout = itemView.findViewById(R.id.expandable) ;
 
+
+
+
                 // make recycler row clickable
                 itemView.setOnClickListener(this);
 
-
+                   // onClick(v);
                 // listen to the accept button
                 acceptMainButton.setOnClickListener(new View.OnClickListener()
                 {
@@ -137,7 +140,7 @@ public class Admin_Pending_Approval_RecyclerAdapter extends RecyclerView.Adapter
                     }
                 });
 
-
+               // acceptMainButton.performClick();
             }
 
             @Override

@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -36,6 +37,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -73,7 +75,16 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
     FirebaseDatabase mDatabase ;
     Spinner spinnerOne ;
     Spinner spinnerTwo ;
-    List<String> spinnerItemsList ;
+    public List<String> spinnerItemsList ;
+
+    public List<String> spinnerItemsList2 ;
+    ArrayAdapter<String> spinnerArrayAdapter2 ;
+    ArrayAdapter<String> spinnerArrayAdapter ;
+
+
+    String allocatedRoom1 ;
+    String allocatedRoom2 ;
+    int i ;
 
 
     public  String MapRoom(String t)
@@ -136,7 +147,7 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
 //****************************************************************************************************
 
 
-        // TODO Change reference here
+        // TODO : Change reference here
         mFireBaseReference = FirebaseDatabase.getInstance().getReference("/");
         //mFireBaseReference = FirebaseDatabase.getInstance().getReference("/");
         final ArrayList<Integer> mGuestRooms = new ArrayList<>(); //Store rooms
@@ -393,7 +404,8 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(DatabaseError databaseError)
+            {
 
             }
         });
@@ -699,7 +711,8 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
 
         final View[] cardview = new View[adminDataPendingApprovalRoomData.size()];
 
-        for (int i = 0; i < adminDataPendingApprovalRoomData.size(); i++) {
+        for (i = 0; i < adminDataPendingApprovalRoomData.size(); i++)
+        {
             Admin_Data_PendingApproval_RoomData roomDetails = adminDataPendingApprovalRoomData.get(i);
 
             cardview[i] = (View) getLayoutInflater().inflate(R.layout.admin_pending_approval_card_view, null);
@@ -726,7 +739,7 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
                     Admin_DialogSelect_PendingDetails dialogSelect = new Admin_DialogSelect_PendingDetails();//new Admin_DialogSelect_PendingDetails(cardview[index]) ;
 
                     // send reference to dialogselect
-                    dialogSelect.setCardview(cardview[index], dialogSelect,position);
+                    dialogSelect.setCardview(cardview[index], dialogSelect,position , i);
                     // set clicklistener using context of mainactivity
                     dialogSelect.setClickListener(context);
                     // get context from calling activity
@@ -754,6 +767,9 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
 
         DatabaseReference pending = FirebaseDatabase.getInstance().getReference(MainActivity.PENDING_REQUESTS + "/" + MainActivity.PENDING_APPROVAL);
         // Log.i("Pending_id",mAdminPendingApprovalData.get(position).getReqID());
+
+
+
 
         //Key removed from pending_approval
         pending.child(mAdminPendingApprovalData.get(position).getReqID()).getRef().removeValue();
@@ -802,17 +818,14 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
         } catch (Exception e) {
         }
         //if (pending.child(mAdminPendingApprovalData.get(position).getReqID()));
-    }
-
-    @Override
-    public void onDialogClick(View cardview, String type) {
-        // use this method on Dialog clicks
-        // Log.e("TOAST",cardview.toString(),null);
 
 
-        // Do when return from dialog
+        mAdminPendingApprovalData.remove(position) ;
+        adapter.notifyDataSetChanged();
 
     }
+
+
 
 //***********************************************  Accept button click end  *******************************************************
 
@@ -865,12 +878,15 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
 
     @Override
 
-    public void setSpinner(RadioGroup r , RadioButton one , RadioButton two ,Spinner spinner1 , Spinner spinner2 , int position , View v)
+    public void setSpinner(RadioGroup r , RadioButton one , RadioButton two , Spinner spinner1 , Spinner spinner2 , final int position , View v)
     {
 
-        //TODO Receive rooms with price in hashmap
-        //TODO range query between dates
-        //TODO write operations in database
+
+
+
+        // TODO Receive rooms with price in hashmap
+        // TODO range query between dates
+        // TODO write operations in database
 
 
         this.spinnerOne = v.findViewById(R.id.spinner1);
@@ -1064,17 +1080,19 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
                             }
 
                             int count = 0;
-                            for (Map.Entry<String, Boolean> entry : mAllDateRoomsAvailabilityCount.entrySet()) {
+                            for (Map.Entry<String, Boolean> entry : mAllDateRoomsAvailabilityCount.entrySet())
+                            {
                                 Boolean val = entry.getValue();
 
-                                if (val) {
+                                if (val)
+                                {
                                     count += 1;
                                 }
 
                             }
                             spinnerItemsList = new ArrayList<>();
 
-
+                            spinnerItemsList2 = new ArrayList<>();
                             Log.i("NEW FINAL HASHMAP", mAllDateRoomsAvailabilityCount.toString());
 
                             for (String key : mAllDateRoomsAvailabilityCount.keySet()) {
@@ -1084,6 +1102,7 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
                                     String price = MapPrice(key);
 
                                     spinnerItemsList.add(roomType + " " + roomNo);
+                                    spinnerItemsList2.add(roomType + " " + roomNo) ;
                                     Log.i("INCOMING_DATA", key);
                                     //data.add(new Admin_Data_RoomStatus(MapRoom(key),roomNo,color));
                                 }
@@ -1092,10 +1111,18 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
 
                             // define spinner adapter
 
-                            final ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(Admin_Pending_Approval.this, android.R.layout.simple_spinner_item, spinnerItemsList);
+                            spinnerArrayAdapter = new ArrayAdapter<String>(Admin_Pending_Approval.this, android.R.layout.simple_spinner_item, spinnerItemsList);
 
                             spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
                             spinnerOne.setAdapter(spinnerArrayAdapter);
+
+
+
+
+                            spinnerArrayAdapter2 = new ArrayAdapter<String>(Admin_Pending_Approval.this, android.R.layout.simple_spinner_item, spinnerItemsList2);
+
+                            spinnerArrayAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                            spinnerTwo.setAdapter(spinnerArrayAdapter2);
 
 /*
                                     if (count > mTotalRooms) {
@@ -1106,7 +1133,6 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
                                         Toast.makeText(getActivity(), "Specified number of rooms not available for given dates.", Toast.LENGTH_SHORT).show();
 
                                     }*/
-
 
                         }
 
@@ -1124,30 +1150,73 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
             }
 
 
-            //  if (adapter!=null) adapter.notifyDataSetChanged();
 
-            //*************************************Range Query End*********************************************
+
+
+            spinnerOne.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+            {
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                {
+
+                    /**************     ArrayList copy  ******************/
+
+                    spinnerItemsList2 = new ArrayList<>(spinnerItemsList);
+
+
+                    /**************     end ArrayList copy  ******************/
+
+                    allocatedRoom1 = spinnerItemsList.get(position);
+                    spinnerItemsList2.remove(position) ;
+
+                    spinnerArrayAdapter2 = new ArrayAdapter<String>(Admin_Pending_Approval.this, android.R.layout.simple_spinner_item, spinnerItemsList2);
+
+                    spinnerArrayAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                    spinnerTwo.setAdapter(spinnerArrayAdapter2);
+                    spinnerArrayAdapter2.notifyDataSetChanged();
+
+
+                } // to close the onItemSelected
+                public void onNothingSelected(AdapterView<?> parent)
+                {
+
+                }
+            });
+
+
+            spinnerTwo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                     allocatedRoom2 = spinnerItemsList2.get((spinnerTwo.getSelectedItemPosition())) ;
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
+
 
         }
 
-              /*  @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }*/
-         // });
-
-           // Log.i("statusSerach", mRoomName.toString());
         /*==========================  END KULDEEP'S CODE= ==============================================*/
-
-
-
 
             //********************************* Range query end inside One room Dialog Group ****************************************************
 
 
         else {
 
-            //**********************************   Range Query inside Two room Group  *****************************************************
+            //**********************************   Range Query inside TWO   ROOM  Group  *****************************************************
+            this.spinnerTwo.setVisibility(View.VISIBLE);
+            v.findViewById(R.id.guest2_dialog).setVisibility(View.VISIBLE);
+
+
+
+
+
+
+
+
+
 
 
             //*********************************  Range query inside Two room group end  ****************************************************
@@ -1166,7 +1235,30 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
     }
 
 
-    public static class UpdateVerifyPayment implements Serializable {
+    @Override
+    public void onDialogClick(View cardview, int position , int roomIndex)
+    {
+        // use this method on Dialog clicks
+        // Log.e("TOAST",cardview.toString(),null);
+
+
+        Log.i("DIALOG DATA : ",allocatedRoom1+" || "+allocatedRoom2) ;
+        mAdminPendingApprovalData.get(position)
+                .getRoomsData().get(roomIndex-1).setGuest1AllocatedRoom(allocatedRoom1);
+
+        mAdminPendingApprovalData.get(position)
+                .getRoomsData().get(roomIndex-1).setGuest2AllocatedRoom(allocatedRoom2);
+
+
+
+
+
+        // Do when return from dialog
+
+    }
+
+    public static class UpdateVerifyPayment implements Serializable
+    {
         String no_of_persons;
         String no_of_rooms;
         String raised_on;
