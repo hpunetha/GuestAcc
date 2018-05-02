@@ -22,6 +22,7 @@ public class Admin_DialogSelect_PendingDetails extends DialogFragment implements
 
     private View cardview ;
     View v;
+    int index ;
 
     Admin_DialogSelect_PendingDetails currentObject ;
     private DialogClickListener mDialogClickListener ;
@@ -30,11 +31,12 @@ public class Admin_DialogSelect_PendingDetails extends DialogFragment implements
 
 
 
-    protected void setCardview(View cardview,Admin_DialogSelect_PendingDetails obj , int position)
+    protected void setCardview(View cardview,Admin_DialogSelect_PendingDetails obj , int position , int index)
     {
         this.cardview = cardview ;
         this.currentObject = obj ;
         this.position = position ;
+        this.index = index ;
     }
 
     @Override
@@ -112,7 +114,14 @@ public class Admin_DialogSelect_PendingDetails extends DialogFragment implements
 
 
 // listen to the disagree button
-        disagreeButton.setOnClickListener(this);
+        disagreeButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Admin_DialogSelect_PendingDetails.this.dismiss();
+            }
+        });
 
 
 
@@ -127,7 +136,7 @@ public class Admin_DialogSelect_PendingDetails extends DialogFragment implements
     public void onClick(View v)
     {
 
-        mDialogClickListener.onDialogClick(cardview,"You Clicked Dialog Disgaree button");
+        mDialogClickListener.onDialogClick(cardview,position,index);
         Admin_DialogSelect_PendingDetails.this.dismiss();
     }
 
@@ -138,7 +147,7 @@ public class Admin_DialogSelect_PendingDetails extends DialogFragment implements
 
     public interface DialogClickListener
     {
-        void onDialogClick(View view, String type) ;
+        void onDialogClick(View view, int position,int index) ;
         void setSpinner(RadioGroup r , RadioButton one , RadioButton two
                 , Spinner spinnerOne ,Spinner spinnerTwo,int position, View v);
         void onRadioGroupClicked() ;
