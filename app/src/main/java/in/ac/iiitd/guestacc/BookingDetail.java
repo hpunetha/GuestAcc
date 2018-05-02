@@ -73,6 +73,7 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
         final EditText editText_InstituteDesc = (EditText)findViewById(R.id.editText_InstituteDesc);
         final EditText editText_ROV = (EditText)findViewById(R.id.editText_ROV);
 
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         String[] items = new String[]{"Personal", "Official"};
@@ -87,11 +88,15 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
         ArrayAdapter<String> adapter_fundedBy = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items_FundedBy);
         spinner_personal_funding.setAdapter(adapter_fundedBy);
 
-        Button btnBook = (Button)findViewById(R.id.btnBook);
-        databaseReference_key_generator = FirebaseDatabase.getInstance().getReference(MainActivity.BOOKING_FINAL_);
-        databaseReference_bookings_final = FirebaseDatabase.getInstance().getReference(MainActivity.BOOKING_FINAL_);
+        final Button btnBook = (Button)findViewById(R.id.btnBook);
+        databaseReference_key_generator = FirebaseDatabase.getInstance().getReference(MainActivity.BOOKING_FINAL);
+        databaseReference_bookings_final = FirebaseDatabase.getInstance().getReference(MainActivity.BOOKING_FINAL);
         databaseReference_pending_approval = FirebaseDatabase.getInstance().getReference(MainActivity.PENDING_REQUESTS+"/"+MainActivity.PENDING_APPROVAL);
         databaseReference_user = FirebaseDatabase.getInstance().getReference(MainActivity.USER);
+//        if(btnBook.isEnabled())
+//        {
+//            btnBook.setEnabled(false);
+//        }
 
         try {
             mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -337,6 +342,8 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
                         Toast.makeText(getApplicationContext(), "Your request is submitted sucessfully", Toast.LENGTH_LONG).show();
                         //finish();
                     System.out.println("============>>>>>Enter");
+                   // btnBook.setEnabled(false);
+
                     finish();
                     //Intent mFacultyHomeActivity = new Intent(BookingDetail.this, FacultyHomeActivity.class);
                     //startActivity(mFacultyHomeActivity);

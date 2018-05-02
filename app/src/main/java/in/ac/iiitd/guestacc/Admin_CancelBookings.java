@@ -37,7 +37,7 @@ public class Admin_CancelBookings extends AppCompatActivity implements Admin_Can
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         List<Admin_Data_CancelBookings> data = new ArrayList<>();
-        mDbRefBookings = FirebaseDatabase.getInstance().getReference(MainActivity.BOOKING_FINAL_);//+"/"+"2018-05-03");
+        mDbRefBookings = FirebaseDatabase.getInstance().getReference(MainActivity.BOOKING_FINAL);//+"/"+"2018-05-03");
 
 
         mDbRefBookingsListener = new ValueEventListener() {
@@ -89,6 +89,8 @@ public class Admin_CancelBookings extends AppCompatActivity implements Admin_Can
             }
         };
 
+        Log.d("oncreate","called");
+
         mDbRefBookings.addValueEventListener(mDbRefBookingsListener);
         recyclerView = (RecyclerView)findViewById(R.id.cancel_bookings_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -98,6 +100,7 @@ public class Admin_CancelBookings extends AppCompatActivity implements Admin_Can
         adapter.setClickListener(this);
 
         recyclerView.setAdapter(adapter);
+
     }
 
     @Override
