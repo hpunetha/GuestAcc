@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="in.ac.iiitd.guestacc.Admin_RoomAddActivity">
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+
+        android:elevation="1dp"
+        app:cardBackgroundColor="@color/cardview_light_background"
+        app:cardCornerRadius="12dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="300dp">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/textView3"
+                android:layout_below="@+id/textView3"
+                android:layout_marginTop="25dp"
+                android:text="Price"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="37dp"
+                android:layout_marginTop="36dp"
+                android:text="Location"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/editTextRoomLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/textView3"
+                android:layout_alignBaseline="@id/textView3"
+                android:layout_marginStart="20dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/editTextRoomPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_alignBottom="@+id/textView4"
+                android:layout_alignStart="@+id/editTextRoomLocation"
+                android:ems="10"
+                android:inputType="textEmailAddress"
+                android:textSize="15sp" />
+
+            <RelativeLayout
+                android:id="@+id/relativeLayout4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/addRoomButton"
+                android:layout_alignStart="@+id/textView4"
+                android:layout_marginBottom="29dp">
+
+                <CheckBox
+                    android:id="@+id/checkBoxMale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Male" />
+
+                <CheckBox
+                    android:id="@+id/checkBoxFemale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/checkBoxMale"
+                    android:text="Female" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/relativeLayout4"
+                android:layout_marginStart="40dp"
+                android:layout_alignBaseline="@+id/relativeLayout4"
+                android:layout_marginTop="28dp">
+
+                <CheckBox
+                    android:id="@+id/checkBoxStudentCanBook"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Student" />
+
+                <CheckBox
+                    android:id="@+id/checkBoxFacultyCanBook"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/checkBoxStudentCanBook"
+                    android:text="Faculty/Staff" />
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/addRoomButton"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/enableddisabledbutton"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="Add"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+</RelativeLayout>

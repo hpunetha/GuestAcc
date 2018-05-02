@@ -82,4 +82,5 @@
     <string name="sppersons"> Persons</string>
     <string name="sprooms"> Rooms</string>
     <string name="status">Status</string>
+    <string name="title_activity_admin_registration">AdminRegistration</string>
 </resources>
