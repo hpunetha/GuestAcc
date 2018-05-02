@@ -38,7 +38,7 @@ public class Admin_ValidatePayment_RecyclerAdapter extends RecyclerView.Adapter<
 
     DatabaseReference mFireBaseReference;
     DatabaseReference mBOOKING_FINAL = FirebaseDatabase.getInstance().getReference(MainActivity.BOOKING_FINAL);
-    DatabaseReference mPendingPayment = FirebaseDatabase.getInstance().getReference(MainActivity.PENDING_REQUESTS+"/"+MainActivity.PENDING_PAYMENT);
+    DatabaseReference mVERIFYPAYMENT = FirebaseDatabase.getInstance().getReference(MainActivity.PENDING_REQUESTS+"/"+MainActivity.VERIFY_PAYMENT);
 
 
     Admin_ValidatePayment_RecyclerAdapter(Context con, List<Admin_Data_ValidatePayment> data)
@@ -156,14 +156,25 @@ public class Admin_ValidatePayment_RecyclerAdapter extends RecyclerView.Adapter<
 //                        }
 //                    });
 
-                    mBOOKING_FINAL.addValueEventListener(new ValueEventListener() {
+                    mBOOKING_FINAL.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
+                            Log.d("date===>",data.get(getAdapterPosition()).getFromDate());
+                            Log.d("id===>",data.get(getAdapterPosition()).getReqId());
 
                             ValidatePymentRequestUserId = dataSnapshot.child(data.get(getAdapterPosition()).getFromDate()).child( data.get(getAdapterPosition()).getReqId()).child("userid").getValue().toString();
+
+                            Log.d("VUserId==>",ValidatePymentRequestUserId);
+
+
                             mBOOKING_FINAL.child(data.get(getAdapterPosition()).getFromDate()).child( data.get(getAdapterPosition()).getReqId()).child("booking_status").setValue(MainActivity.COMPLETED);
+
+
                             DatabaseReference user = FirebaseDatabase.getInstance().getReference("user"+"/"+ValidatePymentRequestUserId);
-                            mPendingPayment.child(data.get(getAdapterPosition()).getReqId()).getRef().removeValue();
+
+                            user.child(data.get(getAdapterPosition()).getReqId()).child("status").setValue(MainActivity.COMPLETED);
+
+                            mVERIFYPAYMENT.child(data.get(getAdapterPosition()).getReqId()).getRef().removeValue();
                             data.remove(getAdapterPosition());
                             Snackbar.make(((View)itemView.findViewById( R.id.npersons)), "Request validated sucessfully", Snackbar.LENGTH_LONG)
                                     .setAction("Action", null).show();
@@ -198,18 +209,53 @@ public class Admin_ValidatePayment_RecyclerAdapter extends RecyclerView.Adapter<
                 @Override
                 public void onClick(View v)
                 {
-                    mBOOKING_FINAL.child(data.get(getAdapterPosition()).getFromDate()).child( data.get(getAdapterPosition()).getReqId()).child("booking_status").setValue(MainActivity.CANCELLED);
 
-                    String ValidatePaymentusername = "";
-                    DatabaseReference user = FirebaseDatabase.getInstance().getReference("user/"+ValidatePaymentusername);
+                    mBOOKING_FINAL.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            Log.d("date===>",data.get(getAdapterPosition()).getFromDate());
+                            Log.d("id===>",data.get(getAdapterPosition()).getReqId());
 
-                    user.child( data.get(getAdapterPosition()).getReqId()).child("status").setValue(MainActivity.CANCELLED);
-                    mPendingPayment.child(data.get(getAdapterPosition()).getReqId()).getRef().removeValue();
+                            ValidatePymentRequestUserId = dataSnapshot.child(data.get(getAdapterPosition()).getFromDate()).child( data.get(getAdapterPosition()).getReqId()).child("userid").getValue().toString();
 
-                    data.remove(getAdapterPosition());
-                    Snackbar.make(v, "Request cancelled sucessfully", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                    notifyDataSetChanged();
+                            Log.d("VUserId==>",ValidatePymentRequestUserId);
+
+
+                            mBOOKING_FINAL.child(data.get(getAdapterPosition()).getFromDate()).child( data.get(getAdapterPosition()).getReqId()).child("booking_status").setValue(MainActivity.REJECTED);
+
+
+                            DatabaseReference user = FirebaseDatabase.getInstance().getReference("user"+"/"+ValidatePymentRequestUserId);
+
+                            user.child(data.get(getAdapterPosition()).getReqId()).child("status").setValue(MainActivity.REJECTED);
+
+                            mVERIFYPAYMENT.child(data.get(getAdapterPosition()).getReqId()).getRef().removeValue();
+                            data.remove(getAdapterPosition());
+                            Snackbar.make(((View)itemView.findViewById( R.id.npersons)), "Request rejected sucessfully", Snackbar.LENGTH_LONG)
+                                    .setAction("Action", null).show();
+                            notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+
+
+
+//                    mBOOKING_FINAL.child(data.get(getAdapterPosition()).getFromDate()).child( data.get(getAdapterPosition()).getReqId()).child("booking_status").setValue(MainActivity.CANCELLED);
+//
+//                    String ValidatePaymentusername = "";
+//                    DatabaseReference user = FirebaseDatabase.getInstance().getReference("user/"+ValidatePaymentusername);
+//
+//                    user.child( data.get(getAdapterPosition()).getReqId()).child("status").setValue(MainActivity.CANCELLED);
+//                    mVERIFYPAYMENT.child(data.get(getAdapterPosition()).getReqId()).getRef().removeValue();
+//
+//                    data.remove(getAdapterPosition());
+//                    Snackbar.make(v, "Request cancelled sucessfully", Snackbar.LENGTH_LONG)
+//                            .setAction("Action", null).show();
+//                    notifyDataSetChanged();
                 }
             });
 

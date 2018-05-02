@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -30,8 +31,8 @@ public class Admin_CancelBookings_RecyclerAdapter extends RecyclerView.Adapter<A
     private LayoutInflater inflater ;
     private CancelItemClickListener mClickListener ;
     private List<Admin_Data_CancelBookings> data ;
-    private Button cancellationButton ;
-    private Button cancelButton ;
+    private Button cancellationButton,textbtn ;
+    private ImageButton cancelButton ;
     RelativeLayout relativeLayout ;
     ValueEventListener mDbRefBookingsListener;
     Context context;
@@ -111,9 +112,10 @@ public class Admin_CancelBookings_RecyclerAdapter extends RecyclerView.Adapter<A
             startDate = itemView.findViewById(R.id.start_date) ;
             endDate = itemView.findViewById(R.id.end_sate) ;
 
-            cancelButton = itemView.findViewById(R.id.cancel_cancel_bookings) ;
+            cancelButton = itemView.findViewById(R.id.buttonCancelRequest) ;
             cancellationButton = itemView.findViewById(R.id.confirm_cancel_cancel_bookings) ;
-
+            textbtn = itemView.findViewById(R.id.cancel_cancel_bookings);
+            textbtn.setVisibility(View.GONE);
             // make recycler row clickable
             itemView.setOnClickListener(this);
 
@@ -149,7 +151,7 @@ public class Admin_CancelBookings_RecyclerAdapter extends RecyclerView.Adapter<A
                     Log.d("getStartDate()=>",data.get(getAdapterPosition()).getStartDate());
                     Log.d("getReqID()=>", data.get(getAdapterPosition()).getReqID());
 
-                   if (reason!=null)
+                   if (reason.getText().equals(""))
                    {
 
                        mBOOKING_FINAL.addListenerForSingleValueEvent(new ValueEventListener() {
