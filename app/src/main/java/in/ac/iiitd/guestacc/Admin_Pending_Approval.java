@@ -770,7 +770,6 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
 
 
 
-
         //Key removed from pending_approval
         pending.child(mAdminPendingApprovalData.get(position).getReqID()).getRef().removeValue();
         //Add females and males
