@@ -10,6 +10,7 @@ public class Admin_Data_ValidatePayment
     String persons ;
     String rooms;
     String total ;
+    String fromDate;
 
 
     public String getReqId() {
@@ -44,12 +45,16 @@ public class Admin_Data_ValidatePayment
         this.total = total;
     }
 
-    Admin_Data_ValidatePayment(String reqId, String persons, String rooms, String total)
+    public String getFromDate(){return this.fromDate;}
+    public void setFromDate(String fromd){this.fromDate=fromd;}
+
+    Admin_Data_ValidatePayment(String reqId, String persons, String rooms, String total,String fromDate)
     {
         this.persons = persons ;
         this.reqId = reqId ;
         this.rooms = rooms ;
         this.total = total ;
+        this.fromDate=fromDate;
     }
 
     Admin_Data_ValidatePayment()
@@ -58,6 +63,7 @@ public class Admin_Data_ValidatePayment
         this.reqId = "1" ;
         this.rooms = "2";
         this.total = "4500" ;
+        this.fromDate="2018-05-01";
     }
 
 

@@ -22,7 +22,7 @@
             android:title="Add Admin" />
         <item
             android:id="@+id/adminLogout"
-            android:visible="false"
+
             android:title="Logout"/>
     </group>
 

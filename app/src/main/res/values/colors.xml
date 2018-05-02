@@ -4,7 +4,8 @@
 
     <color name="colorPrimary"> #9933CC</color>
     <color name="colorPrimaryDark"> #660099 </color>
-    <color name="colorAccent"> #af95df   </color>
+    <color name="colorAccent"> #d273f3    </color>
+    <color name="colorAccent1"> #af95df   </color>
     <color name="white">#FFFFFF</color>
     <color name="fragmentHeader">#91DFF8</color>
     <color name = "cardcolor">#30829c</color>
