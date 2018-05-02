@@ -813,7 +813,7 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
 
                 for (int j = 0; j < guestData.size(); j++) {
                     if (guestData.get(j).getName().equals(guest1)) {
-                        guestData.get(j).setAllocated_room(rooms.get(i).guest1AllocatedRoom);
+                        guestData.get(j).setAllocated_room(ReverseMap(rooms.get(i).guest1AllocatedRoom));
                     }
                 }
             }
@@ -825,7 +825,7 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
 
                 for (int j = 0; j < guestData.size(); j++) {
                     if (guestData.get(j).getName().equals(guest2)) {
-                        guestData.get(j).setAllocated_room(rooms.get(i).guest2AllocatedRoom);
+                        guestData.get(j).setAllocated_room(ReverseMap(rooms.get(i).guest2AllocatedRoom));
                     }
                 }
             }
