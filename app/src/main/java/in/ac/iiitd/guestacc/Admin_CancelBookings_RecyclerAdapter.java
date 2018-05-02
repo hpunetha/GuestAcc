@@ -11,6 +11,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.List;
 
 /**
@@ -26,6 +29,8 @@ public class Admin_CancelBookings_RecyclerAdapter extends RecyclerView.Adapter<A
     private Button cancelButton ;
     RelativeLayout relativeLayout ;
     Context context;
+    DatabaseReference mBOOKING_FINAL = FirebaseDatabase.getInstance().getReference(MainActivity.BOOKING_FINAL+"/"+"2018-04-30");
+    DatabaseReference faculty_staff = FirebaseDatabase.getInstance().getReference("faculty_staff");
 
 
     Admin_CancelBookings_RecyclerAdapter(Context con, List<Admin_Data_CancelBookings> data)

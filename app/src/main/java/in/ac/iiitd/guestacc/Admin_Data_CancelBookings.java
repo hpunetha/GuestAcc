@@ -6,6 +6,15 @@ package in.ac.iiitd.guestacc;
 
 public class Admin_Data_CancelBookings
 {
+    public Admin_Data_CancelBookings(String reqID, String rooms, String guests, String nrooms, String startDate, String endDate) {
+        this.reqID = reqID;
+        this.rooms = rooms;
+        this.guests = guests;
+        this.nrooms = nrooms;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
     String reqID;
     String rooms;
     String guests;
@@ -64,16 +73,16 @@ public class Admin_Data_CancelBookings
         this.nrooms = nrooms;
     }
 
-    Admin_Data_CancelBookings()
-    {
-        reqID = "1" ;
-        // TODO : add a separate data type
-
-        rooms = "BH1 BH2";
-        guests="2" ;
-        nrooms = "2" ;
-        startDate = "29 April" ;
-        endDate = "2 May" ;
-
-    }
+//    Admin_Data_CancelBookings()
+//    {
+//        reqID = "1" ;
+//        // TODO : add a separate data type
+//
+//        rooms = "BH1 BH2";
+//        guests="2" ;
+//        nrooms = "2" ;
+//        startDate = "29 April" ;
+//        endDate = "2 May" ;
+//
+//    }
 }
