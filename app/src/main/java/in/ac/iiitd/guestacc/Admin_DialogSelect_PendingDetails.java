@@ -11,11 +11,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
-;
 
-/**
- * Created by rakesh on 22/4/18.
- */
+
 
 public class Admin_DialogSelect_PendingDetails extends DialogFragment implements View.OnClickListener
 {

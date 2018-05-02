@@ -11,9 +11,6 @@ import android.widget.TextView;
 
 import java.util.List;
 
-/**
- * Created by rakesh on 19/4/18.
- */
 
 public class Admin_Pending_Approval_RecyclerAdapter extends RecyclerView.Adapter<Admin_Pending_Approval_RecyclerAdapter.ViewHolder>
 {

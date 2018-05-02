@@ -1,9 +1,6 @@
 package in.ac.iiitd.guestacc;
 
 
-/**
- * Created by kd on 24/4/18.
- */
 
 public class Admin_StatusForToday_Data {
     String roomNameStatusForToday;

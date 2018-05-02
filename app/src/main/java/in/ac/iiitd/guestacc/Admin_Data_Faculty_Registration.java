@@ -1,8 +1,6 @@
 package in.ac.iiitd.guestacc;
 
-/**
- * Created by rakesh on 28/4/18.
- */
+
 
 public class Admin_Data_Faculty_Registration
 {

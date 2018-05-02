@@ -1,8 +1,5 @@
 package in.ac.iiitd.guestacc;
 
-/**
- * Created by rakesh on 30/4/18.
- */
 
 public class Admin_Data_RoomStatus
 {

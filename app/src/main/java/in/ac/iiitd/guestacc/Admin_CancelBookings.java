@@ -16,9 +16,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by rakesh on 22/4/18.
- */
 
 public class Admin_CancelBookings extends AppCompatActivity implements Admin_CancelBookings_RecyclerAdapter.CancelItemClickListener
 {

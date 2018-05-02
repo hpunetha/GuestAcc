@@ -66,6 +66,7 @@
         <activity
             android:name=".Admin_ValidatePayment"
             android:label="@string/Admin_ValidatePayment"
+            android:screenOrientation="portrait"
             android:parentActivityName=".Admin_HomeActivity" />
         <activity
             android:name=".Admin_StatusForToday_MainScreen"
@@ -92,9 +93,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".AdminRegistrationActivity"
+            android:label="Admin Registration"
             android:parentActivityName=".Admin_HomeActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".Admin_RoomAddActivity"
+            android:label="Room Addition"
             android:parentActivityName=".Admin_HomeActivity"
             android:screenOrientation="portrait">
 

@@ -16,9 +16,7 @@ import org.w3c.dom.Text;
 
 import java.util.List;
 
-/**
- * Created by KunalChoudhary on 3/6/2018.
- */
+
 
 public class roomadapter extends RecyclerView.Adapter<roomadapter.roomViewHolder> {
 

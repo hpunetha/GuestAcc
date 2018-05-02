@@ -1,8 +1,6 @@
 package in.ac.iiitd.guestacc;
 
-/**
- * Created by KunalChoudhary on 3/6/2018.
- */
+
 
 public class Room {
 

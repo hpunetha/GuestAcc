@@ -3,9 +3,6 @@ package in.ac.iiitd.guestacc;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-/**
- * Created by hpunetha on 4/30/2018.
- */
 
 
 //Reference ==>https://stackoverflow.com/questions/25031669/passing-the-googleapiclient-obj-from-one-activity-to-another

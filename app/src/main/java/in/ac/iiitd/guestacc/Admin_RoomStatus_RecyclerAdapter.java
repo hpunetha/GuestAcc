@@ -11,9 +11,6 @@ import android.widget.TextView;
 
 import java.util.List;
 
-/**
- * Created by rakesh on 30/4/18.
- */
 
 public class Admin_RoomStatus_RecyclerAdapter extends RecyclerView.Adapter<Admin_RoomStatus_RecyclerAdapter.ViewHolder>
 {

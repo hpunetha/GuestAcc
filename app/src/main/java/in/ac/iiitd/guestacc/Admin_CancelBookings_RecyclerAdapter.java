@@ -21,9 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
-/**
- * Created by rakesh on 22/4/18.
- */
+
 
 public class Admin_CancelBookings_RecyclerAdapter extends RecyclerView.Adapter<Admin_CancelBookings_RecyclerAdapter.ViewHolder> {
     View v;

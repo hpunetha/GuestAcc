@@ -19,9 +19,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by rakesh on 28/4/18.
- */
+
 
 public class Admin_FacultyRegistration extends AppCompatActivity implements Admin_FacultyRegistration_RecyclerAdapter.FacultyRegistrationItemClickListener
 

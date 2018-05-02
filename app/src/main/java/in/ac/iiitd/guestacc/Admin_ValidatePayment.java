@@ -18,9 +18,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by rakesh on 22/4/18.
- */
+
 
 public class Admin_ValidatePayment extends AppCompatActivity implements Admin_ValidatePayment_RecyclerAdapter.ValidateItemClickListener
 {

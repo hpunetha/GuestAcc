@@ -3,9 +3,7 @@ package in.ac.iiitd.guestacc;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by rakesh on 19/4/18.
- */
+
 
 /*This is data model class, it uses Admin_Data_PendingApproval_RoomData object*/
 public class Admin_Data_PendingApproval

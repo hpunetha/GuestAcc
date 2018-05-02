@@ -20,9 +20,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by hpunetha on 4/23/2018.
- */
+
 public class FacultyRoomAddFragment extends Fragment implements View.OnClickListener{
 
     private static final String ARG_PARAM1 = "param1";

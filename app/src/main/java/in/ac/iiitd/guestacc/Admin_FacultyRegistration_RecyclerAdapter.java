@@ -19,9 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * Created by rakesh on 28/4/18.
- */
+
 
 public class Admin_FacultyRegistration_RecyclerAdapter extends RecyclerView.Adapter<Admin_FacultyRegistration_RecyclerAdapter.ViewHolder> implements Serializable
 {

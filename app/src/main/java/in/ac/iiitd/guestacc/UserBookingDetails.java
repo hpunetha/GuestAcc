@@ -1,8 +1,6 @@
 package in.ac.iiitd.guestacc;
 
-/**
- * Created by priya on 28/4/18.
- */
+
 
 public class UserBookingDetails {
 

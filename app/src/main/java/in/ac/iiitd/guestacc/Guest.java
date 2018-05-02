@@ -1,8 +1,6 @@
 package in.ac.iiitd.guestacc;
 
-/**
- * Created by priya on 15/4/18.
- */
+
 
 public class Guest {
     public String getItemtag() {

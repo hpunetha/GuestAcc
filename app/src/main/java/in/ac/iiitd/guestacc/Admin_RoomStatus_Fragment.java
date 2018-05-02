@@ -44,9 +44,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-/**
- * Created by kd on 22/4/18.
- */
+
 
 public class Admin_RoomStatus_Fragment extends Fragment implements Admin_RoomStatus_RecyclerAdapter.ItemClickListener {
     Date mToDate;

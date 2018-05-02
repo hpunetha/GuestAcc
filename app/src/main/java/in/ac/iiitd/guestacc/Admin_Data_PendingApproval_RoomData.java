@@ -1,8 +1,5 @@
 package in.ac.iiitd.guestacc;
 
-/**
- * Created by rakesh on 19/4/18.
- */
 
 public class Admin_Data_PendingApproval_RoomData
 {

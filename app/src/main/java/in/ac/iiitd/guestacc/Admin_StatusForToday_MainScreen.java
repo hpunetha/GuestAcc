@@ -1,8 +1,5 @@
 package in.ac.iiitd.guestacc;
 
-/**
- * Created by kd on 24/4/18.
- */
 
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;

@@ -26,9 +26,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.Map;
-/**
- * Created by hpunetha on 3/22/2018.
- */
+
 public class TypeLoginActivity extends AppCompatActivity {
 
     FirebaseDatabase mDatabase;

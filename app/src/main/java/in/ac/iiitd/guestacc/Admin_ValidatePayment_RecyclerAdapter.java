@@ -19,9 +19,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
-/**
- * Created by rakesh on 22/4/18.
- */
 
 public class Admin_ValidatePayment_RecyclerAdapter extends RecyclerView.Adapter<Admin_ValidatePayment_RecyclerAdapter.ViewHolder>
 {

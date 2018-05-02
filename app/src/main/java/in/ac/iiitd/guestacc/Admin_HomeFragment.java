@@ -30,9 +30,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * Created by kd on 15/4/18.
- */
+
 
 public class Admin_HomeFragment extends Fragment {
 

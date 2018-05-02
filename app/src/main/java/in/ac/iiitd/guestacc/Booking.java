@@ -3,9 +3,6 @@ package in.ac.iiitd.guestacc;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-/**
- * Created by priya on 18/4/18.
- */
 
 public class Booking  implements Serializable {
     public String booking_status;

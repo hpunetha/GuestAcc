@@ -1,9 +1,5 @@
 package in.ac.iiitd.guestacc;
 
-/**
- * Created by rakesh on 22/4/18.
- */
-
 public class Admin_Data_ValidatePayment
 {
     String reqId ;

@@ -27,9 +27,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-/**
- * Created by hpunetha on 2/25/2018.
- */
 
 
 public class UserHomeActivity extends AppCompatActivity {

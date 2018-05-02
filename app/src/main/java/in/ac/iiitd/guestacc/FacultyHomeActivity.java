@@ -57,9 +57,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-/**
- * Created by hpunetha on 4/20/2018.
- */
+
 
 public class FacultyHomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
