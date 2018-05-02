@@ -54,7 +54,8 @@
                 android:text="Guest 1"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_marginRight="30sp"/>
 
             <TextView
                 android:id="@+id/guest2_dialog"
@@ -66,23 +67,22 @@
                 android:text="Guest 2"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_marginRight="30sp"/>
 
             <Spinner
                 android:id="@+id/spinner1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/guest1_dialog"
-                android:layout_toEndOf="@+id/guest1_dialog"
-                android:layout_marginStart="100sp"/>
+                android:layout_toEndOf="@+id/guest1_dialog" />
 
             <Spinner
                 android:id="@+id/spinner2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/spinner1"
                 android:layout_alignTop="@+id/guest2_dialog"
-                android:layout_marginStart="100sp"/>
+                android:layout_toEndOf="@+id/guest2_dialog" />
 
             <Button
                 android:id="@+id/disagree"

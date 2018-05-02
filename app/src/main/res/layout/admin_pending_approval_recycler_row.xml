@@ -87,7 +87,7 @@
                     android:layout_alignTop="@+id/typeText"
                     android:layout_marginStart="99dp"
                     android:layout_toEndOf="@+id/typeText"
-                    android:text="Funded By" />
+                    android:text="Paid By" />
 
                 <TextView
                     android:id="@+id/fundedbyText"
@@ -187,7 +187,7 @@
                 android:layout_below="@id/main_layout"
                 android:orientation="vertical"
                 android:visibility="gone"
-                android:animateLayoutChanges="true">
+                >
 
             </LinearLayout>
 
