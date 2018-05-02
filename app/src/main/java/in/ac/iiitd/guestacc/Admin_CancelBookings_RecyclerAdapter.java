@@ -31,7 +31,7 @@ public class Admin_CancelBookings_RecyclerAdapter extends RecyclerView.Adapter<A
     private Button cancelButton ;
     RelativeLayout relativeLayout ;
     Context context;
-    DatabaseReference mBOOKING_FINAL = FirebaseDatabase.getInstance().getReference(MainActivity.BOOKING_FINAL_);
+    DatabaseReference mBOOKING_FINAL = FirebaseDatabase.getInstance().getReference(MainActivity.BOOKING_FINAL);
     DatabaseReference user = FirebaseDatabase.getInstance().getReference("user/"+FacultyHomeActivity.mCurrentUserEmail.replace("@iiitd.ac.in",""));
 
 
