@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.CardView;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -160,6 +161,9 @@ public class FacultyHomeActivity extends AppCompatActivity
         final RelativeLayout.LayoutParams mContractedParameters = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         mContractedParameters.addRule(RelativeLayout.BELOW, R.id.contractedCardView);
 
+
+//        TextView mTextAllTerms = findViewById(R.id.allTextTerms);
+//        mTextAllTerms.setMovementMethod(new ScrollingMovementMethod());
 
         mAgreeTermsRelativeLayout = (RelativeLayout) findViewById(R.id.agreeTermsRelativeLayout);
         mAgreeTermsCheckBox =(CheckBox) findViewById(R.id.agreeTermsCheckBox);
