@@ -1,6 +1,7 @@
 package in.ac.iiitd.guestacc;
 
 import android.content.Context;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,6 +36,13 @@ public class Admin_ValidatePayment_RecyclerAdapter extends RecyclerView.Adapter<
     Context context;
 
     DatabaseReference mFireBaseReference;
+    DatabaseReference mBOOKING_FINAL = FirebaseDatabase.getInstance().getReference(MainActivity.BOOKING_FINAL);
+    DatabaseReference mPendingPayment = FirebaseDatabase.getInstance().getReference(MainActivity.PENDING_REQUESTS+"/"+MainActivity.PENDING_PAYMENT);
+
+
+    String ValidatePaymentusername = "";
+    DatabaseReference user = FirebaseDatabase.getInstance().getReference("user/"+ValidatePaymentusername);
+
 
     Admin_ValidatePayment_RecyclerAdapter(Context con, List<Admin_Data_ValidatePayment> data)
     {
@@ -116,41 +124,50 @@ public class Admin_ValidatePayment_RecyclerAdapter extends RecyclerView.Adapter<
                 public void onClick(View v)
                 {
 
-                    Log.i("Date ",data.get(getAdapterPosition()).fromDate);
+//                    Log.i("Date ",data.get(getAdapterPosition()).fromDate);
+//
+//                    // getting context from main activity
+//                    // dialogSelect.show(((AppCompatActivity)context).getSupportFragmentManager(),"123");
+//
+//
+//
+//                    try {
+//                        //email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+//                        mDatabase = FirebaseDatabase.getInstance();
+//                    }
+//                    catch (NullPointerException e)
+//                    {
+//                        e.printStackTrace();
+//                    }
+//
+//
+//
+//
+//                    DatabaseReference myRef = mDatabase.getReference(MainActivity.BOOKING_FINAL);
+//
+//                    Log.i("Data =>",data.toString());
+//
+//                    myRef.addValueEventListener(new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(DataSnapshot dataSnapshot) {
+//
+//                        }
+//
+//                        @Override
+//                        public void onCancelled(DatabaseError databaseError) {
+//
+//                        }
+//                    });
 
-                    // getting context from main activity
-                    // dialogSelect.show(((AppCompatActivity)context).getSupportFragmentManager(),"123");
+                    mBOOKING_FINAL.child(data.get(getAdapterPosition()).getFromDate()).child( data.get(getAdapterPosition()).getReqId()).child("booking_status").setValue(MainActivity.COMPLETED);
 
+                    user.child( data.get(getAdapterPosition()).getReqId()).child("status").setValue(MainActivity.COMPLETED);
+                    mPendingPayment.child(data.get(getAdapterPosition()).getReqId()).getRef().removeValue();
 
-
-                    try {
-                        //email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-                        mDatabase = FirebaseDatabase.getInstance();
-                    }
-                    catch (NullPointerException e)
-                    {
-                        e.printStackTrace();
-                    }
-
-
-
-
-                    DatabaseReference myRef = mDatabase.getReference(MainActivity.BOOKING_FINAL);
-
-                    Log.i("Data =>",data.toString());
-
-                    myRef.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
-
+                    data.remove(getAdapterPosition());
+                    Snackbar.make(v, "Request validated sucessfully", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    notifyDataSetChanged();
 
 
 
@@ -162,8 +179,15 @@ public class Admin_ValidatePayment_RecyclerAdapter extends RecyclerView.Adapter<
                 @Override
                 public void onClick(View v)
                 {
-                    // getting context from main activity
-                    // dialogSelect.show(((AppCompatActivity)context).getSupportFragmentManager(),"123");
+                    mBOOKING_FINAL.child(data.get(getAdapterPosition()).getFromDate()).child( data.get(getAdapterPosition()).getReqId()).child("booking_status").setValue(MainActivity.CANCELLED);
+
+                    user.child( data.get(getAdapterPosition()).getReqId()).child("status").setValue(MainActivity.CANCELLED);
+                    mPendingPayment.child(data.get(getAdapterPosition()).getReqId()).getRef().removeValue();
+
+                    data.remove(getAdapterPosition());
+                    Snackbar.make(v, "Request cancelled sucessfully", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    notifyDataSetChanged();
                 }
             });
 

@@ -89,6 +89,8 @@ public class Admin_CancelBookings extends AppCompatActivity implements Admin_Can
             }
         };
 
+        Log.d("oncreate","called");
+
         mDbRefBookings.addValueEventListener(mDbRefBookingsListener);
         recyclerView = (RecyclerView)findViewById(R.id.cancel_bookings_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -98,6 +100,7 @@ public class Admin_CancelBookings extends AppCompatActivity implements Admin_Can
         adapter.setClickListener(this);
 
         recyclerView.setAdapter(adapter);
+
     }
 
     @Override

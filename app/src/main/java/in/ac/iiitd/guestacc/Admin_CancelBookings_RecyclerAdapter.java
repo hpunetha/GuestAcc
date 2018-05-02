@@ -13,8 +13,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -30,9 +33,11 @@ public class Admin_CancelBookings_RecyclerAdapter extends RecyclerView.Adapter<A
     private Button cancellationButton ;
     private Button cancelButton ;
     RelativeLayout relativeLayout ;
+    ValueEventListener mDbRefBookingsListener;
     Context context;
     DatabaseReference mBOOKING_FINAL = FirebaseDatabase.getInstance().getReference(MainActivity.BOOKING_FINAL);
-    DatabaseReference user = FirebaseDatabase.getInstance().getReference("user/"+FacultyHomeActivity.mCurrentUserEmail.replace("@iiitd.ac.in",""));
+    String CancelledRequestUserId;
+
 
 
     Admin_CancelBookings_RecyclerAdapter(Context con, List<Admin_Data_CancelBookings> data)
@@ -146,16 +151,36 @@ public class Admin_CancelBookings_RecyclerAdapter extends RecyclerView.Adapter<A
 
                    if (reason!=null)
                    {
-                       mBOOKING_FINAL.child(data.get(getAdapterPosition()).getStartDate()).child( data.get(getAdapterPosition()).getReqID()).child("booking_status").setValue(MainActivity.CANCELLED);
-                       Log.d("editTextValue=>",reason.getText().toString());
-                       mBOOKING_FINAL.child(data.get(getAdapterPosition()).getStartDate()).child( data.get(getAdapterPosition()).getReqID()).child("modification_reason").setValue(reason.getText().toString());
 
-                       Snackbar.make(v, "Request cancelled sucessfully", Snackbar.LENGTH_LONG)
-                               .setAction("Action", null).show();
-                       user.child( data.get(getAdapterPosition()).getReqID()).child("status").setValue(MainActivity.CANCELLED);
-                       data.remove(getAdapterPosition());
-                       notifyDataSetChanged();
+                       mBOOKING_FINAL.addListenerForSingleValueEvent(new ValueEventListener() {
+                           @Override
+                           public void onDataChange(DataSnapshot dataSnapshot) {
+                               CancelledRequestUserId =  dataSnapshot.child(data.get(getAdapterPosition()).getStartDate()).child( data.get(getAdapterPosition()).getReqID()).child("userid").getValue().toString();
+                               mBOOKING_FINAL.child(data.get(getAdapterPosition()).getStartDate()).child( data.get(getAdapterPosition()).getReqID()).child("booking_status").setValue(MainActivity.CANCELLED);
+                               mBOOKING_FINAL.child(data.get(getAdapterPosition()).getStartDate()).child( data.get(getAdapterPosition()).getReqID()).child("modification_reason").setValue(reason.getText().toString());
+                               DatabaseReference user = FirebaseDatabase.getInstance().getReference("user"+"/"+CancelledRequestUserId);
+                               Log.d("CancelledRequestUserId", "=====================>>>>>>>>>>");
+                               Log.d("CancelledRequestUserId",CancelledRequestUserId);
+                               user.child(data.get(getAdapterPosition()).getReqID()).child("status").setValue(MainActivity.CANCELLED);
 
+                               Log.d("dataListsize",String.valueOf(data.size()));
+                               //data.clear();
+
+                               data.remove(getAdapterPosition());
+                               notifyDataSetChanged();
+
+                               Log.d("dataListsize",String.valueOf(data.size()));
+
+                               Snackbar.make(((View)itemView.findViewById( R.id.start_date)), "Request cancelled sucessfully", Snackbar.LENGTH_LONG)
+                                       .setAction("Action", null).show();
+                           }
+
+
+                           @Override
+                           public void onCancelled(DatabaseError databaseError) {
+
+                           }
+                       });
                    }
                    else
                    {
