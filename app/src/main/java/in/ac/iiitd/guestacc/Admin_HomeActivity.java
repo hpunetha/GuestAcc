@@ -121,9 +121,14 @@ public class Admin_HomeActivity extends AppCompatActivity
             Intent adminCancelBookingIntent = new Intent(Admin_HomeActivity.this,Admin_CancelBookings.class);
             startActivity(adminCancelBookingIntent);
 
-        } else if (id == R.id.adminAddRoom) {
+        } else if (id == R.id.adminAddRoom)
+        {
 
-        } else if (id == R.id.adminAddAdmin) {
+
+        } else if (id == R.id.adminAddAdmin)
+        {
+            Intent mAddAdmin = new Intent(Admin_HomeActivity.this, AdminRegistrationActivity.class);
+            startActivity(mAddAdmin);
 
         } else if (id == R.id.adminLogout) {
 
