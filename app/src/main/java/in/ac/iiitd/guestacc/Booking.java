@@ -24,6 +24,13 @@ public class Booking  implements Serializable {
     public String timestamp;
     public String raised_on;
     public String total_booking_price;
+
+    public String userid;
+
+
+
+    public String total_rooms;
+    public String total_guests;
     public ArrayList<Guest> guests = new ArrayList<Guest>();
 
 
@@ -163,4 +170,28 @@ public class Booking  implements Serializable {
     public void setRaised_on(String raised_on) {
         this.raised_on = raised_on;
     }
+    public String getUserid() {
+        return userid;
+    }
+
+    public void setUserid(String userid) {
+        this.userid = userid;
+    }
+
+    public String getTotal_rooms() {
+        return total_rooms;
+    }
+
+    public void setTotal_rooms(String total_rooms) {
+        this.total_rooms = total_rooms;
+    }
+
+    public String getTotal_guests() {
+        return total_guests;
+    }
+
+    public void setTotal_guests(String total_guests) {
+        this.total_guests = total_guests;
+    }
+
 }
