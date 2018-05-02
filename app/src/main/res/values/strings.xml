@@ -52,7 +52,7 @@
 3 - Students can book rooms only for their Parents and immediate siblings.\n\
     4 - Only Faculty/Staff are allowed to book Rooms/Flats in Faculty Residence\n\
     5 - Student's Guests can stay for a maximum duration of three days\n\
-    6 - </string>
+    6 - Faculty Guests can stay for any number of days but subjected to cancellation if urgent requirement for Institute/Project emerges.</string>
     <string name="i_agree_with_the_terms_and_conditions">I agree with the terms and conditions.</string>
     <string name="notregistered_general_message">You are not currently registered as Faculty/Staff.</string>
     <string name="not_registered">Do you want to send registration request to the Admin?</string>
