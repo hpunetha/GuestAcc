@@ -155,6 +155,8 @@ public class Admin_CancelBookings_RecyclerAdapter extends RecyclerView.Adapter<A
                        mBOOKING_FINAL.addListenerForSingleValueEvent(new ValueEventListener() {
                            @Override
                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+
                                CancelledRequestUserId =  dataSnapshot.child(data.get(getAdapterPosition()).getStartDate()).child( data.get(getAdapterPosition()).getReqID()).child("userid").getValue().toString();
                                mBOOKING_FINAL.child(data.get(getAdapterPosition()).getStartDate()).child( data.get(getAdapterPosition()).getReqID()).child("booking_status").setValue(MainActivity.CANCELLED);
                                mBOOKING_FINAL.child(data.get(getAdapterPosition()).getStartDate()).child( data.get(getAdapterPosition()).getReqID()).child("modification_reason").setValue(reason.getText().toString());
