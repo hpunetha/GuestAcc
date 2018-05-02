@@ -101,6 +101,20 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
 
     }
 
+    public String ReverseMap(String t)
+    {
+        String type = "" ;
+
+        if (t.contains("Boys' Hostel")) type = "bh";
+        if (t.contains("Girls' Hostel")) type = "gh";
+        if (t.contains("Faculty Rooms")) type = "frr";
+        if (t.contains("Faculty Flat")) type = "frf";
+
+
+        return type ;
+
+    }
+
 
     public  String MapPrice(String t)
     {
@@ -765,11 +779,18 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
     @Override
     public void onAcceptButtonClick(View v, int position) {
 
+        Admin_Data_PendingApproval dataRow= mAdminPendingApprovalData.get(position) ;
+
         DatabaseReference pending = FirebaseDatabase.getInstance().getReference(MainActivity.PENDING_REQUESTS + "/" + MainActivity.PENDING_APPROVAL);
         // Log.i("Pending_id",mAdminPendingApprovalData.get(position).getReqID());
 
 
+        DatabaseReference allocateRoom = FirebaseDatabase.getInstance().getReference(MainActivity.BOOKING_FINAL);
 
+        String startDate = dataRow.getDate().split(" ")[0] ;
+        String id = dataRow.getReqID() ;
+
+        //allocateRoom.child(startDate).child(id).child("guests")
         //Key removed from pending_approval
         pending.child(mAdminPendingApprovalData.get(position).getReqID()).getRef().removeValue();
         //Add females and males
@@ -1260,13 +1281,13 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
     {
         String no_of_persons;
         String no_of_rooms;
-        String raised_on;
+        String from_date;
         String total_price;
 
-        public UpdateVerifyPayment(String no_of_persons, String no_of_rooms, String raised_on, String total_price) {
+        public UpdateVerifyPayment(String no_of_persons, String no_of_rooms, String from_date, String total_price) {
             this.no_of_persons = no_of_persons;
             this.no_of_rooms = no_of_rooms;
-            this.raised_on = raised_on;
+            this.from_date = from_date;
             this.total_price = total_price;
         }
     }
