@@ -181,4 +181,17 @@ public class FacultyRegistrationActivity extends AppCompatActivity {
 
     }
 
+
+
+    public static boolean checkIIITDMailId(String email)
+    {
+        if (email.trim().contains("@iiitd.ac.in"))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }
