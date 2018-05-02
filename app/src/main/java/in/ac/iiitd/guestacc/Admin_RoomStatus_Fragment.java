@@ -447,7 +447,7 @@ public class Admin_RoomStatus_Fragment extends Fragment implements Admin_RoomSta
                         for ( String key : mAllDateRoomsAvailabilityCount.keySet() )
                         {
                             String roomNo = "Room "+Character.toString(key.charAt(key.length()-1)) ;
-                            String t = key.substring(0,key.length()-2) ;
+
                             String color ;
 
 
@@ -456,8 +456,8 @@ public class Admin_RoomStatus_Fragment extends Fragment implements Admin_RoomSta
 
                             if(c==true)         color = "A" ;
                             else                color = "NA" ;
-                            Log.i("INCOMING_DATA",t);
-                            data.add(new Admin_Data_RoomStatus(MapRoom(t),roomNo,color));
+                            Log.i("INCOMING_DATA",MapRoom(key));
+                            data.add(new Admin_Data_RoomStatus(MapRoom(key),roomNo,color));
 
                         }
 
