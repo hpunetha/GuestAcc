@@ -13,7 +13,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -68,7 +71,7 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
 
 
         // TODO Change reference here
-        mFireBaseReference = FirebaseDatabase.getInstance().getReference("pending_requests/pending_approval");
+        mFireBaseReference = FirebaseDatabase.getInstance().getReference("/");
         //mFireBaseReference = FirebaseDatabase.getInstance().getReference("/");
         final ArrayList<Integer> mGuestRooms = new ArrayList<>(); //Store rooms
 
@@ -613,7 +616,7 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
     //**************************************************************************************************
 
     @Override
-    public void onItemClick(View view, int position, List<Admin_Data_PendingApproval_RoomData> adminDataPendingApprovalRoomData) {
+    public void onItemClick(View view, final int position, List<Admin_Data_PendingApproval_RoomData> adminDataPendingApprovalRoomData) {
 
 
         View row = recyclerView.getLayoutManager().findViewByPosition(position);
@@ -621,11 +624,11 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
         LinearLayout midLinearLayout = (LinearLayout) row.findViewById(R.id.midlayout);
 
         // if the view is already clicked, then hide it and remove all the views attached to it
-        //  if (midLinearLayout.getVisibility() == View.VISIBLE) {
+          if (midLinearLayout.getVisibility() == View.VISIBLE) {
         midLinearLayout.setVisibility(View.GONE);
         midLinearLayout.removeAllViews();
-        //     return;
-        //  }
+             return;
+          }
 
 
         final View[] cardview = new View[adminDataPendingApprovalRoomData.size()];
@@ -646,6 +649,8 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
 
             /*********************     listen to the allocate button  *********************/
 
+
+
             final Integer index = i;
 
             allocateButton.setOnClickListener(new View.OnClickListener() {
@@ -655,7 +660,7 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
                     Admin_DialogSelect_PendingDetails dialogSelect = new Admin_DialogSelect_PendingDetails();//new Admin_DialogSelect_PendingDetails(cardview[index]) ;
 
                     // send reference to dialogselect
-                    dialogSelect.setCardview(cardview[index], dialogSelect);
+                    dialogSelect.setCardview(cardview[index], dialogSelect,position);
                     // set clicklistener using context of mainactivity
                     dialogSelect.setClickListener(context);
                     // get context from calling activity
@@ -669,12 +674,14 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
             midLinearLayout.addView(cardview[i]);
         }
 
-        // midLinearLayout.setVisibility(View.VISIBLE);
+         midLinearLayout.setVisibility(View.VISIBLE);
         //midLinearLayout.animate().translationY(midLinearLayout.getHeight());
         //rel.setVisibility(View.VISIBLE);
         // notifyDatasetChanged() ;
 
     }
+
+//*****************************************************  Accept button Click ******************************************************
 
     @Override
     public void onAcceptButtonClick(View v, int position) {
@@ -741,6 +748,9 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
 
     }
 
+//***********************************************  Accept button click end  *******************************************************
+
+//****************************************************  Reject button click ************************************************************
 
     @Override
     public void onRejectButtonClick(View v, int position) {
@@ -782,6 +792,40 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
         } catch (Exception e) {
         }
         //if (pending.child(mAdminPendingApprovalData.get(position).getReqID()));
+    }
+
+//**********************************************   Reject button click end   ********************************************************SSS
+    /***********       DIALOG BOX OPERATIONS   ************************/
+
+    @Override
+
+    public void onRadioGroupClicked(RadioGroup r , RadioButton one , RadioButton two ,Spinner spinnerOne , Spinner spinnerTwo , int position)
+    {
+
+        //TODO Receive rooms with price in hashmap
+        //TODO range query between dates
+        //TODO write operations in database
+        String from_date;
+        String to_date;
+        if(one.isChecked()) {
+            spinnerTwo.setVisibility(View.GONE);
+            from_date = mAdminPendingApprovalData.get(position).getDate().split(" ")[0];
+            to_date = mAdminPendingApprovalData.get(position).getDate().split(" ")[1];
+
+ //***********************************   Range Query inside One room Dialog group *****************************************************
+
+
+ //********************************* Range query end inside One room Dialog Group ****************************************************
+
+        }
+        else {
+
+            //**********************************   Range Query inside Two room Group  *****************************************************
+
+
+            //*********************************  Range query inside Two room group end  ****************************************************
+
+        }
     }
 
 

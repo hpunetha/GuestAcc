@@ -75,10 +75,10 @@ public class Admin_RoomStatus_Fragment extends Fragment implements Admin_RoomSta
     {
         String type = "";
 
-        if(t.contains("bh"))       type = "Boys' Hostel" ;
-        if(t.contains("gh"))       type = "Girls' Hostel" ;
-        if(t.contains("frr"))      type = "Faculty Rooms" ;
-        if(t.contains("frf"))      type = "Faculty Flat" ;
+        if (t.contains("bh")) type = "Boys' Hostel";
+        if (t.contains("gh")) type = "Girls' Hostel";
+        if (t.contains("frr")) type = "Faculty Rooms";
+        if (t.contains("frf")) type = "Faculty Flat";
 
 
         return type ;
@@ -469,7 +469,7 @@ public class Admin_RoomStatus_Fragment extends Fragment implements Admin_RoomSta
 
 
 /*        mAllDateRoomsAvailabilityCount = new HashMap<>();
-        mAllDateRoomsAvailabilityCount.put("bh1",true);
+     *//*   mAllDateRoomsAvailabilityCount.put("bh1",true);
         mAllDateRoomsAvailabilityCount.put("bh2",true);
         mAllDateRoomsAvailabilityCount.put("gh1",true);
         mAllDateRoomsAvailabilityCount.put("gh2",true);
