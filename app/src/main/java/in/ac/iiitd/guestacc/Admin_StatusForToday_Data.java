@@ -1,6 +1,5 @@
 package in.ac.iiitd.guestacc;
 
-import android.graphics.Color;
 
 /**
  * Created by kd on 24/4/18.

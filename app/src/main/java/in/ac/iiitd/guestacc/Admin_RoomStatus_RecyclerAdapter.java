@@ -1,6 +1,8 @@
 package in.ac.iiitd.guestacc;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,10 +55,20 @@ public class Admin_RoomStatus_RecyclerAdapter extends RecyclerView.Adapter<Admin
 
 
 
-        String bh = data.get(position).getBh() ;    // change position
+        String bh = data.get(position).getType() ;    // change position
         String room = data.get(position).getRoom();
+        String color = data.get(position).getColor();
         holder.boysh.setText(bh);
         holder.room.setText(room);
+        if(data.get(position).getColor().equals("A"))
+        {
+            holder.cardView.setBackgroundColor(Color.GREEN);
+        }
+        else
+        {
+            holder.cardView.setBackgroundColor(Color.RED);
+        }
+
 
 
 
@@ -68,6 +80,8 @@ public class Admin_RoomStatus_RecyclerAdapter extends RecyclerView.Adapter<Admin
 
         private TextView boysh;
         private TextView room ;
+        private CardView cardView;
+
         ViewHolder(View itemView)
         {
             super(itemView) ;
@@ -76,6 +90,8 @@ public class Admin_RoomStatus_RecyclerAdapter extends RecyclerView.Adapter<Admin
 
             boysh = itemView.findViewById(R.id.admin_room_status_recycler_bh) ;
             room = itemView.findViewById(R.id.admin_status_recycler_room ) ;
+            cardView = itemView.findViewById(R.id.room_status_cardview) ;
+
 
 
             itemView.setOnClickListener(this);

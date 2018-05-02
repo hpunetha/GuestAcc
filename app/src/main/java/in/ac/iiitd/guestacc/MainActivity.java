@@ -1,6 +1,8 @@
 package in.ac.iiitd.guestacc;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,7 +26,26 @@ import com.google.firebase.auth.GoogleAuthProvider;
 /**
  * Created by hpunetha on 2/20/2018.
  */
+
 public class MainActivity extends AppCompatActivity {
+    public final static String ADMIN_DETAILS = "admin_details";
+    public final static String BOOKING_FINAL = "bookings_final";
+    public final static String BOOKING_FINAL_ = "bookings_final_";
+    public final static String BOOKING_FINAL_TESTING_ = "bookings_final_testing_";
+    public final static String FACULTY_STAFF = "faculty_staff";
+    public final static String PENDING_REQUESTS = "pending_requests";
+    public final static String ROOM_DETAILS = "room_details";
+    public final static String USER = "user";
+    public final static String PENDING_APPROVAL = "pending_approval";
+    public final static String PENDING_PAYMENT = "pending_payment";
+    public final static String COMPLETED = "completed";
+    public final static String CANCELLED = "cancelled";
+    public final static String REJECTED = "rejected";
+    public final static String VERIFY_PAYMENT = "verify_payment";
+    public final static String JOIN_REQUESTS = "join_requests";
+
+    public static final String PREF ="logintype";
+
 
     private int mBackCount=0;
 
@@ -56,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
         mGSClient = GoogleSignIn.getClient(this,mGSOptions);
         mFbAuth = FirebaseAuth.getInstance();
 
+        LoginClient_Singleton.getInstance((mGSClient));
+
         mSignInButton.setOnClickListener(new View.OnClickListener()
         {
 
@@ -74,8 +97,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void authenticateFirebase(GoogleSignInAccount mGoogleAcct) {
         Log.d("MSG : ", "Firebase authentication for :" + mGoogleAcct.getId());
-        //checkIIITD(mGoogleAcct);
-        finalAuthFirebase(mGoogleAcct);
+        checkIIITD(mGoogleAcct);
+        //To directly login without checking if the mail id is IIITD,
+//        finalAuthFirebase(mGoogleAcct);
 
     }
 
@@ -120,15 +144,20 @@ public class MainActivity extends AppCompatActivity {
         {
             Log.d("Just Before Login ", "CheckIIITD Method Else=> " + mGoogleAcct.getDisplayName());
 
-            Toast.makeText(this,"Please login using the iiitd gmail account",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Only IIITD Gmail Account is allowed",Toast.LENGTH_SHORT).show();
             wrongAccFlag=-1;
             FirebaseAuth.getInstance().signOut();
-            mGSClient=null;
 
-            Intent mRefresh = new Intent(this, MainActivity.class);
-            mRefresh.putExtra("AccFlag",wrongAccFlag);
-            startActivity(mRefresh);
-            this.finish(); //
+            mGSClient.signOut()
+                    .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            // Signing out Gmail as well
+                        }
+                    });
+
+
+
         }
     }
 
@@ -157,6 +186,7 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this,"Signed in as " + mUserID.getDisplayName(),Toast.LENGTH_SHORT).show();
         Intent mLoginTypeLoad = new Intent(this, TypeLoginActivity.class);
         startActivity(mLoginTypeLoad);
+
     }
 
     @Override
@@ -166,15 +196,43 @@ public class MainActivity extends AppCompatActivity {
 //        Log.d("Flag for Wrong Acc : ", "onStart Method => " + wrongAccFlag);
 //
 //
-//        if (mFbAuth.getCurrentUser()!=null && wrongAccFlag!=-1)
-//        {
-//            Log.d("Shouldnt exec new run ", "onStart Method => " + wrongAccFlag);
-//            signInSuccessful(mFbAuth.getCurrentUser());
-//
-//        }
-//        else{
-//            mFbAuth.signOut();
-//        }
+        if (mFbAuth.getCurrentUser()!=null)
+        {
+            Log.d("Shouldnt exec new run ", "onStart Method => " + wrongAccFlag);
+            SharedPreferences mSharedPref = getSharedPreferences(MainActivity.PREF, Context.MODE_PRIVATE);
+
+            int mTypeChk = mSharedPref.getInt(TypeLoginActivity.USERTYPE,-99);
+
+            if (mTypeChk==-99)
+            {
+                //Do Nothing, let the mainactivity load.
+            }
+            else
+            {
+                if (mTypeChk==TypeLoginActivity.ADMIN)
+                {
+                    Intent mAdminHome = new Intent(this,Admin_HomeActivity.class);
+                    startActivity(mAdminHome);
+                }
+                else if(mTypeChk==TypeLoginActivity.FACULTY)
+                {
+                    Intent mFacultyHome = new Intent(this, FacultyHomeActivity.class);
+                    mFacultyHome.putExtra(TypeLoginActivity.USERTYPE, TypeLoginActivity.FACULTY);
+                    startActivity(mFacultyHome);
+
+                }
+                else
+                {
+                    Intent mUserHome = new Intent(this, FacultyHomeActivity.class);
+                    mUserHome.putExtra(TypeLoginActivity.USERTYPE,TypeLoginActivity.STUDENT);
+                    startActivity(mUserHome);
+
+
+                }
+            }
+            //signInSuccessful(mFbAuth.getCurrentUser());
+
+        }
 
     }
 

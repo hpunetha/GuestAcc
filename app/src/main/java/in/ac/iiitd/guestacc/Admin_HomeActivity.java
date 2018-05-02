@@ -3,18 +3,25 @@ package in.ac.iiitd.guestacc;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.plus.Plus;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
@@ -22,7 +29,7 @@ import com.squareup.picasso.Picasso;
 
 public class Admin_HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    GoogleApiClient mGoogleAPIClient;
     int mBackCount=0;
     FirebaseUser mFirebaseUser;
     String mCurrentUserName,mCurrentUserEmail;
@@ -77,12 +84,27 @@ public class Admin_HomeActivity extends AppCompatActivity
         mBackCount++;
 
         if (mBackCount == 1) {
-            Toast.makeText(this, "Press again to sign-out", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Press again 2 times to Sign-out", Toast.LENGTH_SHORT).show();
 
 
-        } else if (mBackCount > 1) {
+        } else if (mBackCount > 2) {
+//            FirebaseAuth.getInstance().signOut();
+//            Intent mSignOut = new Intent(Admin_HomeActivity.this, MainActivity.class);
+//            mSignOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//            startActivity(mSignOut);
+
+            LoginClient_Singleton mClient = LoginClient_Singleton.getInstance(null);
+            GoogleSignInClient mGSClient = mClient.getClient();
+            mGSClient.signOut()
+                    .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            // Signing out Gmail as well
+                        }
+                    });
             FirebaseAuth.getInstance().signOut();
-            Intent mSignOut = new Intent(Admin_HomeActivity.this, MainActivity.class);
+
+            Intent mSignOut = new Intent(this, MainActivity.class);
             mSignOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(mSignOut);
         }
@@ -106,6 +128,21 @@ public class Admin_HomeActivity extends AppCompatActivity
         } else if (id == R.id.adminAddAdmin) {
 
         } else if (id == R.id.adminLogout) {
+
+            LoginClient_Singleton mClient = LoginClient_Singleton.getInstance(null);
+            GoogleSignInClient mGSClient = mClient.getClient();
+            mGSClient.signOut()
+                    .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            // Signing out Gmail as well
+                        }
+                    });
+            FirebaseAuth.getInstance().signOut();
+
+            Intent mSignOut = new Intent(this, MainActivity.class);
+            mSignOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(mSignOut);
 
         }
 

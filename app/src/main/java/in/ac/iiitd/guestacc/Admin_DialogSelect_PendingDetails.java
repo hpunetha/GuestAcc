@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
 
 ;
 
@@ -22,12 +24,15 @@ public class Admin_DialogSelect_PendingDetails extends DialogFragment implements
 
     Admin_DialogSelect_PendingDetails currentObject ;
     private DialogClickListener mDialogClickListener ;
+    public int position ;
 
 
-    protected void setCardview(View cardview,Admin_DialogSelect_PendingDetails obj)
+
+    protected void setCardview(View cardview,Admin_DialogSelect_PendingDetails obj , int position)
     {
         this.cardview = cardview ;
         this.currentObject = obj ;
+        this.position = position ;
     }
 
     @Override
@@ -37,11 +42,25 @@ public class Admin_DialogSelect_PendingDetails extends DialogFragment implements
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
 
-        RadioButton one = (RadioButton)v.findViewById(R.id.one_room) ;
-        RadioButton two = (RadioButton)v.findViewById(R.id.two_room) ;
+        final RadioButton one = (RadioButton)v.findViewById(R.id.one_room) ;
+        final RadioButton two = (RadioButton)v.findViewById(R.id.two_room) ;
 
         one.setChecked(true);
+        final Spinner spinnerOne = (Spinner)v.findViewById(R.id.spinner1) ;
+        final Spinner spinnerTwo = (Spinner)v.findViewById(R.id.spinner2) ;
 
+        final RadioGroup mRadioGroupAllocateRoom = v.findViewById(R.id.radioGroupRoomNumbers) ;
+
+        /*==========================         RadioGroup  ======================================*/
+
+        mRadioGroupAllocateRoom.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+
+              mDialogClickListener.onRadioGroupClicked(mRadioGroupAllocateRoom , one ,two , spinnerOne ,spinnerTwo,position);
+
+            }
+        });
 
 
         builder.setView(v)
@@ -103,5 +122,6 @@ public class Admin_DialogSelect_PendingDetails extends DialogFragment implements
     public interface DialogClickListener
     {
         void onDialogClick(View view, String type) ;
+        void onRadioGroupClicked(RadioGroup r , RadioButton one , RadioButton two , Spinner spinnerOne ,Spinner spinnerTwo,int position);
     }
 }

@@ -6,16 +6,16 @@ package in.ac.iiitd.guestacc;
 
 public class Admin_Data_RoomStatus
 {
-    String bh ;
+    String type ;
     String room ;
     String color ;
 
-    public String getBh() {
-        return bh;
+    public String getType() {
+        return type;
     }
 
-    public void setBh(String bh) {
-        this.bh = bh;
+    public void setType(String bh) {
+        this.type = bh;
     }
 
     public String getRoom() {
@@ -34,8 +34,10 @@ public class Admin_Data_RoomStatus
         this.color = color;
     }
 
-    Admin_Data_RoomStatus()
+    Admin_Data_RoomStatus(String type , String room , String color)
     {
-
+        this.type = type ;
+        this.color = color ;
+        this.room = room ;
     }
 }

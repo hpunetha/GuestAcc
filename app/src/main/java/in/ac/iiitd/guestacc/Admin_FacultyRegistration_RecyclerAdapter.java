@@ -34,6 +34,8 @@ public class Admin_FacultyRegistration_RecyclerAdapter extends RecyclerView.Adap
     Context context ;
     DatabaseReference join_requests = FirebaseDatabase.getInstance().getReference("join_requests");
     DatabaseReference faculty_staff = FirebaseDatabase.getInstance().getReference("faculty_staff");
+    DatabaseReference pending = FirebaseDatabase.getInstance().getReference(MainActivity.JOIN_REQUESTS);
+
 
 
 

@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -85,8 +86,13 @@ public class Admin_HomeFragment extends Fragment {
         adminHomeCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent adminPendingApprovalIntent = new Intent(getActivity(), Admin_Pending_Approval.class);
-                startActivity(adminPendingApprovalIntent);
+                if (mTextViewPendingApproval.getText().toString().split(" ")[0].equals("0")){
+                    Toast.makeText(getActivity(),"No new faculty requests",Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Intent adminPendingApprovalIntent = new Intent(getActivity(), Admin_Pending_Approval.class);
+                    startActivity(adminPendingApprovalIntent);
+                }
             }
         });
 
@@ -95,18 +101,29 @@ public class Admin_HomeFragment extends Fragment {
         adminHomeCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent adminValidatePaymentIntent = new Intent(getActivity(), Admin_ValidatePayment.class);
-                startActivity(adminValidatePaymentIntent);
+                if (mTextViewVerifyPayment.getText().toString().split(" ")[0].equals("0")){
+                    Toast.makeText(getActivity(),"No new requests",Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Intent adminValidatePaymentIntent = new Intent(getActivity(), Admin_ValidatePayment.class);
+                    startActivity(adminValidatePaymentIntent);
+                }
             }
         });
 
         //Faculty Registration Requests
+        //TODO:Check for null value
         adminHomeCardView = (CardView) adminHomeView.findViewById(R.id.adminHomeCardView4);
         adminHomeCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (mTextViewFacultyRequest.getText().toString().split(" ")[0].equals("0")){
+                    Toast.makeText(getActivity(),"No new requests",Toast.LENGTH_SHORT).show();
+                }
+                else{
                 Intent intent = new Intent(getActivity(), Admin_FacultyRegistration.class);
                 startActivity(intent);
+                }
             }
         });
         return adminHomeView;
@@ -118,7 +135,7 @@ public class Admin_HomeFragment extends Fragment {
     private class getPendingApproval extends AsyncTask<String, String, String> {
         @Override
         protected String doInBackground(String... strings) {
-            mFireBaseReference = FirebaseDatabase.getInstance().getReference("pending_requests/pending_approval");
+            mFireBaseReference = FirebaseDatabase.getInstance().getReference(MainActivity.PENDING_REQUESTS+"/"+MainActivity.PENDING_APPROVAL);
             mFireBaseReference.addValueEventListener(new ValueEventListener() {
 
                 @SuppressLint("SetTextI18n")
@@ -141,7 +158,7 @@ public class Admin_HomeFragment extends Fragment {
     private class getVerifyPayment extends AsyncTask<String, String, String> {
         @Override
         protected String doInBackground(String... strings) {
-            mFireBaseReference = FirebaseDatabase.getInstance().getReference("pending_requests/verify_payment");
+            mFireBaseReference = FirebaseDatabase.getInstance().getReference(MainActivity.PENDING_REQUESTS+"/"+MainActivity.VERIFY_PAYMENT);
             mFireBaseReference.addValueEventListener(new ValueEventListener() {
                 @SuppressLint("SetTextI18n")
                 @Override
@@ -165,7 +182,7 @@ public class Admin_HomeFragment extends Fragment {
     private class getFacultyRequest extends AsyncTask<String, String, String> {
         @Override
         protected String doInBackground(String... strings) {
-            mFireBaseReference = FirebaseDatabase.getInstance().getReference("join_requests");
+            mFireBaseReference = FirebaseDatabase.getInstance().getReference(MainActivity.JOIN_REQUESTS);
             mFireBaseReference.addValueEventListener(new ValueEventListener() {
                 @SuppressLint("SetTextI18n")
                 @Override
@@ -191,17 +208,13 @@ public class Admin_HomeFragment extends Fragment {
         HashSet<String> mRoomNameNotAvailable = new HashSet<>();
         //        Booking mStatusForTodayBooking;
         int mRoomSize;
-        String PENDING_APPROVAL = "pending_approval";
-        String PENDING_PAYMENT = "pending_payment";
-        String COMPLETED = "completed";
-        String CANCELLED = "cancelled";
 
         @Override
         protected String doInBackground(String... strings) {
 
             //https://stackoverflow.com/questions/8654990/how-can-i-get-current-date-in-android
             String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-            mDatabaseReference = FirebaseDatabase.getInstance().getReference("room_details");
+            mDatabaseReference = FirebaseDatabase.getInstance().getReference(MainActivity.ROOM_DETAILS);
 
             mDatabaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -225,7 +238,7 @@ public class Admin_HomeFragment extends Fragment {
             });
 
             Log.i("Date", date);
-            mDatabaseStatusForToday = FirebaseDatabase.getInstance().getReference("bookings_final/" + date);
+            mDatabaseStatusForToday = FirebaseDatabase.getInstance().getReference(MainActivity.BOOKING_FINAL+"/"+date);
             mDatabaseStatusForToday.addValueEventListener(new ValueEventListener() {
                 @SuppressLint("SetTextI18n")
                 @Override
@@ -241,7 +254,7 @@ public class Admin_HomeFragment extends Fragment {
 
                             if (mStatusForTodayBooking != null) {
                                 Log.i("Status", mStatusForTodayBooking.getBooking_status());
-                                if (mStatusForTodayBooking.getBooking_status().equals(COMPLETED)) {
+                                if (mStatusForTodayBooking.getBooking_status().equals(MainActivity.COMPLETED)) {
                                     for (int i = 0; i < mStatusForTodayBooking.getGuests().size(); i++) {
                                         if (mStatusForTodayBooking.getGuests().get(i).getAllocated_room() != null) {
                                             Log.i("Check", "reached till here");

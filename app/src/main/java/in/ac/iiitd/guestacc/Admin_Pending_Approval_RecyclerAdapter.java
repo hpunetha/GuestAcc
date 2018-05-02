@@ -22,7 +22,7 @@ public class Admin_Pending_Approval_RecyclerAdapter extends RecyclerView.Adapter
     private ItemClickListener mClickListener ;
     private List<Admin_Data_PendingApproval> data ;
     private Button acceptMainButton ;
-    private Button cancelMainButton ;
+    private Button rejectMainButton ;
     RelativeLayout relativeLayout ;
     Context context;
 
@@ -108,7 +108,7 @@ public class Admin_Pending_Approval_RecyclerAdapter extends RecyclerView.Adapter
                 guest2Text = itemView.findViewById(R.id.GuestType2) ;
 
                 acceptMainButton = itemView.findViewById(R.id.accept) ;
-                cancelMainButton = itemView.findViewById(R.id.cancel) ;
+                rejectMainButton = itemView.findViewById(R.id.cancel) ;
 
                 relativeLayout = itemView.findViewById(R.id.expandable) ;
 
@@ -123,9 +123,17 @@ public class Admin_Pending_Approval_RecyclerAdapter extends RecyclerView.Adapter
                     public void onClick(View v)
                     {
 
-                    mClickListener.onButtonClick(v,getAdapterPosition());
+                    mClickListener.onAcceptButtonClick(v,getAdapterPosition());
                         // getting context from main activity
                        // dialogSelect.show(((AppCompatActivity)context).getSupportFragmentManager(),"123");
+                    }
+                });
+
+                rejectMainButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view)
+                    {
+                        mClickListener.onRejectButtonClick(v,getAdapterPosition());
                     }
                 });
 
@@ -158,7 +166,8 @@ public class Admin_Pending_Approval_RecyclerAdapter extends RecyclerView.Adapter
     public interface ItemClickListener
     {
         void onItemClick(View view, int position, List<Admin_Data_PendingApproval_RoomData> adminDataPendingApprovalRoomData) ;
-        void onButtonClick(View v,int position) ;
+        void onAcceptButtonClick(View v,int position) ;
+        void onRejectButtonClick(View v,int position) ;
     }
 
 }

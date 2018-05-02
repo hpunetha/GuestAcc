@@ -40,7 +40,7 @@ public class FacultyRegistrationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_faculty_registration);
 
 
-        mMyFirebaseRef = FirebaseDatabase.getInstance().getReference("join_requests");
+        mMyFirebaseRef = FirebaseDatabase.getInstance().getReference(MainActivity.JOIN_REQUESTS);
 
         mNameF = (EditText)findViewById(R.id.editTextName);
         mEmail = (EditText) findViewById(R.id.editTextEmail);
