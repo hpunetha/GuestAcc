@@ -1,7 +1,9 @@
 package in.ac.iiitd.guestacc;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.StrictMode;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +21,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -51,8 +55,9 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
     FirebaseUser mFirebaseUser;
     String mCurrentUserName;
     String mCurrentUserEmail;
-
-
+    String mRequestId;
+    SimpleDateFormat formatter;
+    Date todaydate;
     //Request Stages
     String PENDING_APPROVAL = "pending_approval";
     String PENDING_PAYMENT= "pending_payment";
@@ -120,7 +125,8 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
         }
         btnBook.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
 
                     boolean flag_emptyEntry = false;
 
@@ -181,7 +187,8 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
                         }
                     }
                 }
-                if (flag_emptyEntry==false) {
+                if (flag_emptyEntry==false)
+                {
                         System.out.println("Null entry found");
                         System.out.println(hm_guestDetails);
                         System.out.println("show =================>fragments ");
@@ -285,8 +292,8 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
                         booking.setTimestamp(tsLong.toString());
                         booking.setTotal_booking_price(String.valueOf(FacultyHomeActivity.mTotalPrice));
 
-                        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                        Date todaydate = new Date();
+                        formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                        todaydate = new Date();
                         booking.setRaised_on(formatter.format(todaydate));
                         System.out.println("mCurrentUserEmail"+mCurrentUserEmail);
                         System.out.println("mCurrentUserName"+mCurrentUserName);
@@ -310,44 +317,58 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
                             booking.guests.add(guest);
                         }
 
-                        String mRequestId = databaseReference_key_generator.child(FacultyHomeActivity.mSendFromDate).push().getKey();
-                        databaseReference_bookings_final.child(FacultyHomeActivity.mSendFromDate).child(mRequestId).setValue(booking);
-                        System.out.println("mRequestId=======>" + mRequestId);
-
-                        //Insert in pending table correct.
-                        Request request = new Request();
-                        request.setFrom_date(FacultyHomeActivity.mSendFromDate);
-                        databaseReference_pending_approval.child(mRequestId).setValue(request);
-
-
-                        UserBookingDetails userBookingDetails = new UserBookingDetails();
-                        userBookingDetails.setFrom_date(FacultyHomeActivity.mSendFromDate);
-                        userBookingDetails.setNumber_of_persons(String.valueOf(FacultyHomeActivity.mTotalGuests));
-                        userBookingDetails.setNumber_of_rooms(String.valueOf(FacultyHomeActivity.mTotalRooms));
-                        userBookingDetails.setRaised_on(formatter.format(todaydate));
-                        userBookingDetails.setStatus(PENDING_APPROVAL);
-                        userBookingDetails.setTotal_amount(String.valueOf(FacultyHomeActivity.mTotalPrice));
-                        String email="";
+                        mRequestId = databaseReference_key_generator.child(FacultyHomeActivity.mSendFromDate).push().getKey();
                         try {
-                            email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+                            databaseReference_bookings_final.child(FacultyHomeActivity.mSendFromDate).child(mRequestId).setValue(booking).addOnCompleteListener(new OnCompleteListener<Void>()
+                            {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    //Insert in pending table correct.
+                                    Request request = new Request();
+                                    request.setFrom_date(FacultyHomeActivity.mSendFromDate);
+                                    databaseReference_pending_approval.child(mRequestId).setValue(request);
 
-                        }
-                        catch (NullPointerException e)
+
+                                    UserBookingDetails userBookingDetails = new UserBookingDetails();
+                                    userBookingDetails.setFrom_date(FacultyHomeActivity.mSendFromDate);
+                                    userBookingDetails.setNumber_of_persons(String.valueOf(FacultyHomeActivity.mTotalGuests));
+                                    userBookingDetails.setNumber_of_rooms(String.valueOf(FacultyHomeActivity.mTotalRooms));
+                                    userBookingDetails.setRaised_on(formatter.format(todaydate));
+                                    userBookingDetails.setStatus(PENDING_APPROVAL);
+                                    userBookingDetails.setTotal_amount(String.valueOf(FacultyHomeActivity.mTotalPrice));
+                                    String email="";
+                                    try {
+                                        email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+
+                                    }
+                                    catch (NullPointerException e)
+                                    {
+                                        e.printStackTrace();
+                                    }
+                                    databaseReference_user.child(email.replace("@iiitd.ac.in","")).child(mRequestId).setValue(userBookingDetails);
+                                    Toast.makeText(getApplicationContext(), "Your request is submitted sucessfully", Toast.LENGTH_LONG).show();
+                                    //finish();
+                                    System.out.println("============>>>>>Enter");
+                                    // btnBook.setEnabled(false);
+                                    Intent mFacultyHomeActivity = new Intent(BookingDetail.this, FacultyHomeActivity.class);
+                                    startActivity(mFacultyHomeActivity);
+                                    finish();
+                                    return;
+
+
+                                }
+                            });
+
+                        }catch (Exception e)
                         {
                             e.printStackTrace();
                         }
-                        databaseReference_user.child(email.replace("@iiitd.ac.in","")).child(mRequestId).setValue(userBookingDetails);
+                        System.out.println("mRequestId=======>" + mRequestId);
+
 
                         //System.out.println("Your Request is submitted sucessfully");
-                        Toast.makeText(getApplicationContext(), "Your request is submitted sucessfully", Toast.LENGTH_LONG).show();
-                        //finish();
-                    System.out.println("============>>>>>Enter");
-                   // btnBook.setEnabled(false);
 
-                    finish();
-                    //Intent mFacultyHomeActivity = new Intent(BookingDetail.this, FacultyHomeActivity.class);
-                    //startActivity(mFacultyHomeActivity);
-                    System.out.println("================>>>>>>>>>Completed");
+                   // System.out.println("================>>>>>>>>>Completed");
 
                     }
                     else
