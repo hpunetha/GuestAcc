@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,6 +23,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -792,7 +795,7 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
     @Override
     public void onAcceptButtonClick(View v, int position)
     {
-
+        final int newpos = position;
         Admin_Data_PendingApproval dataRow= mAdminPendingApprovalData.get(position) ;
 
         DatabaseReference pending = FirebaseDatabase.getInstance().getReference(MainActivity.PENDING_REQUESTS + "/" + MainActivity.PENDING_APPROVAL);
@@ -889,14 +892,19 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
         pending = FirebaseDatabase.getInstance().getReference(MainActivity.BOOKING_FINAL + "/" + date + "/" + mAdminPendingApprovalData.get(position).getReqID());
 
         try {
-            pending.child("booking_status").setValue("pending_payment");
+            pending.child("booking_status").setValue("pending_payment").addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    mAdminPendingApprovalData.remove(newpos) ;
+                    adapter.notifyDataSetChanged();
+                }
+            });
         } catch (Exception e) {
         }
         //if (pending.child(mAdminPendingApprovalData.get(position).getReqID()));
 
 
-        mAdminPendingApprovalData.remove(position) ;
-        adapter.notifyDataSetChanged();
+
 
     }
 
