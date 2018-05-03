@@ -107,16 +107,22 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
     public String ReverseMap(String t)
     {
         String type = "" ;
+        String no;
+        if (t!=null) {
+            no = Character.toString(t.charAt(t.length() - 1));
 
-        String no = Character.toString(t.charAt(t.length()-1)) ;
+            if (t.contains("Boys' Hostel")) type = "bh";
+            if (t.contains("Girls' Hostel")) type = "gh";
+            if (t.contains("Faculty Rooms")) type = "frr";
+            if (t.contains("Faculty Flat")) type = "frf";
+            return type+no ;
+        }
+        else
+        {
+            return null;
+        }
 
-        if (t.contains("Boys' Hostel")) type = "bh";
-        if (t.contains("Girls' Hostel")) type = "gh";
-        if (t.contains("Faculty Rooms")) type = "frr";
-        if (t.contains("Faculty Flat")) type = "frf";
 
-
-        return type+no ;
 
     }
 
@@ -813,6 +819,7 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
 
                 for (int j = 0; j < guestData.size(); j++) {
                     if (guestData.get(j).getName().equals(guest1)) {
+
                         guestData.get(j).setAllocated_room(ReverseMap(rooms.get(i).guest1AllocatedRoom));
                     }
                 }

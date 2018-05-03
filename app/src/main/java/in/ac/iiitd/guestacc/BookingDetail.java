@@ -310,7 +310,10 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
                             booking.guests.add(guest);
                         }
 
-                        String mRequestId = databaseReference_bookings_final.child(FacultyHomeActivity.mSendFromDate).push().getKey();
+                        //String mRequestId = databaseReference_bookings_final.child(FacultyHomeActivity.mSendFromDate).push().getKey();
+                        String fromd = FacultyHomeActivity.mSendFromDate;
+                        databaseReference_bookings_final.child(fromd).push();
+                        String mRequestId =      databaseReference_bookings_final.getKey();
                         databaseReference_bookings_final.child(FacultyHomeActivity.mSendFromDate).child(mRequestId).setValue(booking);
                         System.out.println("mRequestId=======>" + mRequestId);
 

@@ -156,26 +156,33 @@ public class Admin_ValidatePayment_RecyclerAdapter extends RecyclerView.Adapter<
                     mBOOKING_FINAL.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            Log.d("date===>",data.get(getAdapterPosition()).getFromDate());
-                            Log.d("id===>",data.get(getAdapterPosition()).getReqId());
+//                            Log.d("date===>",data.get(getAdapterPosition()).getFromDate());
+//                            Log.d("id===>",data.get(getAdapterPosition()).getReqId());
 
-                            ValidatePymentRequestUserId = dataSnapshot.child(data.get(getAdapterPosition()).getFromDate()).child( data.get(getAdapterPosition()).getReqId()).child("userid").getValue().toString();
+                            try {
+                                ValidatePymentRequestUserId = dataSnapshot.child(data.get(getAdapterPosition()).getFromDate()).child(data.get(getAdapterPosition()).getReqId()).child("userid").getValue().toString();
 
-                            Log.d("VUserId==>",ValidatePymentRequestUserId);
-
-
-                            mBOOKING_FINAL.child(data.get(getAdapterPosition()).getFromDate()).child( data.get(getAdapterPosition()).getReqId()).child("booking_status").setValue(MainActivity.COMPLETED);
+                                Log.d("VUserId==>", ValidatePymentRequestUserId);
 
 
-                            DatabaseReference user = FirebaseDatabase.getInstance().getReference("user"+"/"+ValidatePymentRequestUserId);
+                                mBOOKING_FINAL.child(data.get(getAdapterPosition()).getFromDate()).child(data.get(getAdapterPosition()).getReqId()).child("booking_status").setValue(MainActivity.COMPLETED);
 
-                            user.child(data.get(getAdapterPosition()).getReqId()).child("status").setValue(MainActivity.COMPLETED);
 
-                            mVERIFYPAYMENT.child(data.get(getAdapterPosition()).getReqId()).getRef().removeValue();
-                            data.remove(getAdapterPosition());
-                            Snackbar.make(((View)itemView.findViewById( R.id.npersons)), "Request validated sucessfully", Snackbar.LENGTH_LONG)
-                                    .setAction("Action", null).show();
-                            notifyDataSetChanged();
+                                DatabaseReference user = FirebaseDatabase.getInstance().getReference("user" + "/" + ValidatePymentRequestUserId);
+
+                                user.child(data.get(getAdapterPosition()).getReqId()).child("status").setValue(MainActivity.COMPLETED);
+
+                                mVERIFYPAYMENT.child(data.get(getAdapterPosition()).getReqId()).getRef().removeValue();
+                                data.remove(getAdapterPosition());
+                                Snackbar.make(((View) itemView.findViewById(R.id.npersons)), "Request validated sucessfully", Snackbar.LENGTH_LONG)
+                                        .setAction("Action", null).show();
+                                notifyDataSetChanged();
+                            }catch (ArrayIndexOutOfBoundsException e)
+                            {
+                                Snackbar.make(((View) itemView.findViewById(R.id.npersons)), "Some Exception Occured. Please Try again Later", Snackbar.LENGTH_LONG)
+                                        .setAction("Action", null).show();
+
+                            }
                         }
 
                         @Override
