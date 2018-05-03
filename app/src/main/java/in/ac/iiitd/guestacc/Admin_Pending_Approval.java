@@ -227,7 +227,7 @@ public class Admin_Pending_Approval extends AppCompatActivity implements Admin_P
 
                 Booking mAdminBooking;
                 for (DataSnapshot val2 : dataSnapshot.getChildren()) {
-                    if (val2.getKey().equalsIgnoreCase("bookings_final")) {
+                    if (val2.getKey().equalsIgnoreCase(MainActivity.BOOKING_FINAL)) {
                         Log.i("enter1", "Bookings Final Entered");
                         for (DataSnapshot snapshot1 : val2.getChildren()) {
                             Log.i("enter2", snapshot1.getChildren().toString());
@@ -603,8 +603,8 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
                         requestId = val.getKey();
                         fromDate = val.child("from_date").getValue().toString();
 
-                        //mFireBaseReferencePendingApproval = FirebaseDatabase.getInstance().getReference("bookings_final/" + fromDate + "/" + requestId);
-                        mFireBaseReferencePendingApproval = FirebaseDatabase.getInstance().getReference("bookings_final/" + fromDate + "/" + requestId);
+                        //mFireBaseReferencePendingApproval = FirebaseDatabase.getInstance().getReference(MainActivity.BOOKING_FINAL+"/" + fromDate + "/" + requestId);
+                        mFireBaseReferencePendingApproval = FirebaseDatabase.getInstance().getReference(MainActivity.BOOKING_FINAL+"/" + fromDate + "/" + requestId);
 
                         mFireBaseReferencePendingApproval.addValueEventListener(new ValueEventListener() {
                             @Override
@@ -1064,8 +1064,7 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
                     Log.i("Date List", mDateList.toString());
 
                     final DatabaseReference myRef;
-                    // String basetable ="bookings_final";
-                    String basetable = "bookings_final";
+                    String basetable = MainActivity.BOOKING_FINAL;
 
                     //
                     String strDBAccess = basetable;

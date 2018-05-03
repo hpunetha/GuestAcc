@@ -628,12 +628,7 @@ public class FacultyHomeActivity extends AppCompatActivity
                 Log.i("Date List",mDateList.toString());
 
                 final DatabaseReference myRef;
-               // String basetable ="bookings_final";
-                /*String basetable ="bookings_final";
 
-                //
-                String strDBAccess = basetable;
-                Log.i("date access",strDBAccess);*/
                 myRef = mDatabase.getReference(MainActivity.BOOKING_FINAL);
 
                 myRef.addValueEventListener(new ValueEventListener() {

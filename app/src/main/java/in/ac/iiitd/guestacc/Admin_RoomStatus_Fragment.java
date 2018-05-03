@@ -350,12 +350,7 @@ public class Admin_RoomStatus_Fragment extends Fragment implements Admin_RoomSta
                 Log.i("Date List", mDateList.toString());
 
                 final DatabaseReference myRef;
-                // String basetable ="bookings_final";
-              /*  String basetable = "bookings_final";
 
-                //
-                String strDBAccess = basetable;
-                Log.i("date access", strDBAccess);*/
 
 
                 Log.e("KULDEEP",mAllDateRoomsAvailabilityCount.toString());
@@ -517,7 +512,7 @@ public class Admin_RoomStatus_Fragment extends Fragment implements Admin_RoomSta
 //                Log.i("Date list", String.valueOf(mDateList.size()));
 //
 //                DatabaseReference myRef;
-//                String basetable = "bookings_final";
+//                String basetable = MainActivity.BOOKING_FINAL;
 //
 //                for (Date tempdate : mDateList) {
 //                    final String tempDateString = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(tempdate);

@@ -27,7 +27,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 public class MainActivity extends AppCompatActivity {
     public final static String ADMIN_DETAILS = "admin_details";
-    public final static String BOOKING_FINAL = "bookings_final";
+    public final static String BOOKING_FINAL = "bookings_final_temp";
     public final static String BOOKING_FINAL_ = "bookings_final_";
     public final static String BOOKING_FINAL_TESTING_ = "bookings_final_testing_";
     public final static String FACULTY_STAFF = "faculty_staff";
