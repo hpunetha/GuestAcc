@@ -336,15 +336,16 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
                         {
                             e.printStackTrace();
                         }
-                        databaseReference_user.child(email.replace("@iiitd.ac.in","")).child(mRequestId).setValue(userBookingDetails);
+                        String check = email.replace("@iiitd.ac.in","");
+                        databaseReference_user.child(check).child(mRequestId).setValue(userBookingDetails);
 
                         //System.out.println("Your Request is submitted sucessfully");
                         Toast.makeText(getApplicationContext(), "Your request is submitted sucessfully", Toast.LENGTH_LONG).show();
-                        //finish();
+                        finish();
                     System.out.println("============>>>>>Enter");
                    // btnBook.setEnabled(false);
 
-                    finish();
+                    //finish();
                     //Intent mFacultyHomeActivity = new Intent(BookingDetail.this, FacultyHomeActivity.class);
                     //startActivity(mFacultyHomeActivity);
                     System.out.println("================>>>>>>>>>Completed");

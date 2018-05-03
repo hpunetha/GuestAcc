@@ -149,7 +149,7 @@ public class Admin_CancelBookings_RecyclerAdapter extends RecyclerView.Adapter<A
                     Log.d("getStartDate()=>",data.get(getAdapterPosition()).getStartDate());
                     Log.d("getReqID()=>", data.get(getAdapterPosition()).getReqID());
 
-                   if (reason.getText().equals(""))
+                   if (!reason.getText().equals(""))
                    {
 
                        mBOOKING_FINAL.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -175,6 +175,7 @@ public class Admin_CancelBookings_RecyclerAdapter extends RecyclerView.Adapter<A
 
                                Snackbar.make(((View)itemView.findViewById( R.id.start_date)), "Request cancelled sucessfully", Snackbar.LENGTH_LONG)
                                        .setAction("Action", null).show();
+                               ((Admin_CancelBookings)context).finish();
                            }
 
 
