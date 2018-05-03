@@ -863,9 +863,9 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
         UpdateVerifyPayment updatePayment = new UpdateVerifyPayment(String.valueOf(no_of_persons), String.valueOf(mAdminPendingApprovalData.get(position).getRoomsData().size()),
                 mAdminPendingApprovalData.get(position).getDate().split(" ")[0], mAdminPendingApprovalData.get(position).getTotalPrice());
 
-        pending = FirebaseDatabase.getInstance().getReference(MainActivity.PENDING_REQUESTS + "/" + MainActivity.VERIFY_PAYMENT);
+        DatabaseReference pending_payment = FirebaseDatabase.getInstance().getReference(MainActivity.PENDING_REQUESTS + "/" + MainActivity.VERIFY_PAYMENT);
 
-        pending.child(mAdminPendingApprovalData.get(position).getReqID()).setValue(updatePayment).addOnCompleteListener(new OnCompleteListener<Void>() {
+        pending_payment.child(mAdminPendingApprovalData.get(position).getReqID()).setValue(updatePayment).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
 
@@ -882,32 +882,26 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
                 //Log.i("Email",);
                 String email = userEmail.replace("@iiitd.ac.in", "");
                 Log.i("Data", email);
-                pending = FirebaseDatabase.getInstance().getReference(MainActivity.USER + "/" + email);
+                DatabaseReference addin_user = FirebaseDatabase.getInstance().getReference(MainActivity.USER + "/" + email);
                 try {
-                    pending.child(mAdminPendingApprovalData.get(newpos).getReqID()).child("status").setValue("pending_payment").addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            String date = mAdminPendingApprovalData.get(newpos).getDate().split(" ")[0];
-                            pending = FirebaseDatabase.getInstance().getReference(MainActivity.BOOKING_FINAL + "/" + date + "/" + mAdminPendingApprovalData.get(newpos).getReqID());
-
-                            try {
-                                pending.child("booking_status").setValue("pending_payment").addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        mAdminPendingApprovalData.remove(newpos) ;
-                                        adapter.notifyDataSetChanged();
-                                    }
-                                });
-                            } catch (Exception e) {
-                            }
-
-                        }
-                    });
+                    addin_user.child(mAdminPendingApprovalData.get(newpos).getReqID()).child("status").setValue("pending_payment");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
+                String date = mAdminPendingApprovalData.get(newpos).getDate().split(" ")[0];
+                DatabaseReference booking_final = FirebaseDatabase.getInstance().getReference(MainActivity.BOOKING_FINAL + "/" + date + "/" + mAdminPendingApprovalData.get(newpos).getReqID());
 
+                try {
+                    booking_final.child("booking_status").setValue("pending_payment").addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            mAdminPendingApprovalData.remove(newpos) ;
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+                } catch (Exception e) {
+                }
 
             }
         });
