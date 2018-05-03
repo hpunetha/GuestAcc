@@ -89,8 +89,8 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
         spinner_personal_funding.setAdapter(adapter_fundedBy);
 
         final Button btnBook = (Button)findViewById(R.id.btnBook);
-        databaseReference_key_generator = FirebaseDatabase.getInstance().getReference(MainActivity.BOOKING_FINAL);
-        databaseReference_bookings_final = FirebaseDatabase.getInstance().getReference(MainActivity.BOOKING_FINAL);
+        databaseReference_key_generator = FirebaseDatabase.getInstance().getReference("bookings_final_temp");
+        databaseReference_bookings_final = FirebaseDatabase.getInstance().getReference("bookings_final_temp");
         databaseReference_pending_approval = FirebaseDatabase.getInstance().getReference(MainActivity.PENDING_REQUESTS+"/"+MainActivity.PENDING_APPROVAL);
         databaseReference_user = FirebaseDatabase.getInstance().getReference(MainActivity.USER);
 //        if(btnBook.isEnabled())
@@ -310,7 +310,7 @@ public class BookingDetail extends AppCompatActivity implements FragmentPersonal
                             booking.guests.add(guest);
                         }
 
-                        String mRequestId = databaseReference_bookings_final.child(FacultyHomeActivity.mSendFromDate).push().getKey();
+                        String mRequestId = databaseReference_key_generator.child(FacultyHomeActivity.mSendFromDate).push().getKey();
                         databaseReference_bookings_final.child(FacultyHomeActivity.mSendFromDate).child(mRequestId).setValue(booking);
                         System.out.println("mRequestId=======>" + mRequestId);
 
