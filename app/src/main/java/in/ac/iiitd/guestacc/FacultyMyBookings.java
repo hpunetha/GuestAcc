@@ -84,15 +84,26 @@ public class FacultyMyBookings extends AppCompatActivity implements FacultyMyBoo
 
                     for (DataSnapshot ds2 : dataSnapshot.getChildren()) {
                         if (ds2 != null) {
+                            try
+                            {
 
-                            mFacultyMyBookingsData = new FacultyMyBookings_Data();
-                            mFacultyMyBookingsData.setReqId(ds2.getKey());
-                            mFacultyMyBookingsData.setPersons(ds2.child("number_of_persons").getValue().toString());
-                            mFacultyMyBookingsData.setRooms(ds2.child("number_of_rooms").getValue().toString());
-                            mFacultyMyBookingsData.setTotal(ds2.child("total_amount").getValue().toString());
-                            mFacultyMyBookingsData.setRoomStatus(ds2.child("status").getValue().toString());
-                            Log.i("madmindata", mFacultyMyBookingsData.getPersons() + " " + mFacultyMyBookingsData.getReqId() + " " + mFacultyMyBookingsData.getRooms() + " " + mFacultyMyBookingsData.getTotal());
-                            data.add(mFacultyMyBookingsData);
+                                Log.i("SnapShot", ds2.toString());
+
+                                mFacultyMyBookingsData = new FacultyMyBookings_Data();
+                                mFacultyMyBookingsData.setReqId(ds2.getKey());
+                                if (ds2.child("number_of_persons").getValue() != null) {
+                                    mFacultyMyBookingsData.setPersons(ds2.child("number_of_persons").getValue().toString());
+                                }
+                                mFacultyMyBookingsData.setRooms(ds2.child("number_of_rooms").getValue().toString());
+                                mFacultyMyBookingsData.setTotal(ds2.child("total_amount").getValue().toString());
+                                mFacultyMyBookingsData.setRoomStatus(ds2.child("status").getValue().toString());
+                                Log.i("madmindata", mFacultyMyBookingsData.getPersons() + " " + mFacultyMyBookingsData.getReqId() + " " + mFacultyMyBookingsData.getRooms() + " " + mFacultyMyBookingsData.getTotal());
+                                data.add(mFacultyMyBookingsData);
+                            }
+                            catch (NullPointerException e)
+                            {
+                                continue;
+                            }
                         }
                     }
 
