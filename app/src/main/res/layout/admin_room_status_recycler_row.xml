@@ -17,6 +17,7 @@
         card_view:cardElevation="3dp"
         android:layout_margin="10sp"
 
+
         card_view:cardUseCompatPadding="true">
 
         <LinearLayout
