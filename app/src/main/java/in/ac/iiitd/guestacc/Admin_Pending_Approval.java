@@ -50,7 +50,7 @@ import java.util.Map;
 
 public class Admin_Pending_Approval extends AppCompatActivity implements Admin_Pending_Approval_RecyclerAdapter.ItemClickListener
         , Admin_DialogSelect_PendingDetails.DialogClickListener {
-
+    DatabaseReference pending;
     DatabaseReference mFireBaseReference, mFireBaseReferencePendingApproval;
     ProgressDialog progressDialog;
     List<Admin_Data_PendingApproval> mAdminPendingApprovalData = new ArrayList<>(); //Store pending approval data
@@ -798,7 +798,7 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
         final int newpos = position;
         Admin_Data_PendingApproval dataRow= mAdminPendingApprovalData.get(position) ;
 
-        DatabaseReference pending = FirebaseDatabase.getInstance().getReference(MainActivity.PENDING_REQUESTS + "/" + MainActivity.PENDING_APPROVAL);
+        pending = FirebaseDatabase.getInstance().getReference(MainActivity.PENDING_REQUESTS + "/" + MainActivity.PENDING_APPROVAL);
         // Log.i("Pending_id",mAdminPendingApprovalData.get(position).getReqID());
 
 
@@ -865,42 +865,55 @@ adapter = new Admin_Pending_Approval_RecyclerAdapter(context, mAdminPendingAppro
 
         pending = FirebaseDatabase.getInstance().getReference(MainActivity.PENDING_REQUESTS + "/" + MainActivity.VERIFY_PAYMENT);
 
-        pending.child(mAdminPendingApprovalData.get(position).getReqID()).setValue(updatePayment);
+        pending.child(mAdminPendingApprovalData.get(position).getReqID()).setValue(updatePayment).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+                FirebaseUser mFirebaseUser;
+                String userEmail = null;
+                try {
+                    mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                    if (mFirebaseUser != null) {
+                        userEmail = mFirebaseUser.getEmail();
+                    }
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+                //Log.i("Email",);
+                String email = userEmail.replace("@iiitd.ac.in", "");
+                Log.i("Data", email);
+                pending = FirebaseDatabase.getInstance().getReference(MainActivity.USER + "/" + email);
+                try {
+                    pending.child(mAdminPendingApprovalData.get(newpos).getReqID()).child("status").setValue("pending_payment").addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            String date = mAdminPendingApprovalData.get(newpos).getDate().split(" ")[0];
+                            pending = FirebaseDatabase.getInstance().getReference(MainActivity.BOOKING_FINAL + "/" + date + "/" + mAdminPendingApprovalData.get(newpos).getReqID());
+
+                            try {
+                                pending.child("booking_status").setValue("pending_payment").addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        mAdminPendingApprovalData.remove(newpos) ;
+                                        adapter.notifyDataSetChanged();
+                                    }
+                                });
+                            } catch (Exception e) {
+                            }
+
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+
+            }
+        });
         //  TODO Hide pane
 
-        FirebaseUser mFirebaseUser;
-        String userEmail = null;
-        try {
-            mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-            if (mFirebaseUser != null) {
-                userEmail = mFirebaseUser.getEmail();
-            }
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-        //Log.i("Email",);
-        String email = userEmail.replace("@iiitd.ac.in", "");
-        Log.i("Data", email);
-        pending = FirebaseDatabase.getInstance().getReference(MainActivity.USER + "/" + email);
-        try {
-            pending.child(mAdminPendingApprovalData.get(position).getReqID()).child("status").setValue("pending_payment");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-        String date = mAdminPendingApprovalData.get(position).getDate().split(" ")[0];
-        pending = FirebaseDatabase.getInstance().getReference(MainActivity.BOOKING_FINAL + "/" + date + "/" + mAdminPendingApprovalData.get(position).getReqID());
-
-        try {
-            pending.child("booking_status").setValue("pending_payment").addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    mAdminPendingApprovalData.remove(newpos) ;
-                    adapter.notifyDataSetChanged();
-                }
-            });
-        } catch (Exception e) {
-        }
         //if (pending.child(mAdminPendingApprovalData.get(position).getReqID()));
 
 
